@@ -10,8 +10,8 @@ One of the fundamental concepts behind the RSA is the *Data Cube*. The RSA can e
 The RSA provides an easily extensible method to perform complex spatial-temporal queries through the query engine.
 
 ##Dependencies
-- The Geospatial Data Abstraction Layer (GDAL), as used for geospatial data transformations ([www.gdal.org](www.gdal.org))
-- PostgreSQL, to maintain meta-data and geospatial tile relationships ([www.postgresql.org](www.postgresql.org))
+- The Geospatial Data Abstraction Layer (GDAL), as used for geospatial data transformations ([www.gdal.org](http://www.gdal.org))
+- PostgreSQL, to maintain meta-data and geospatial tile relationships ([www.postgresql.org](http://www.postgresql.org))
 
 ##Licensing
 The RSA is licensed under the GPL v3, please see [LICENSE.txt](LICENSE.txt).
