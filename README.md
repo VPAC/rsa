@@ -5,7 +5,7 @@ The Raster Storage Archive (RSA) is a platform built to store and distribute lar
 
 Datasets are imported into the RSA via the command line interface or web-services. RSA will process these uploaded datasets into manageable sized files sharing a common projection and alignment. It will also handle the merging process with existing geospatial data. RSA simply manages the uploaded data; third party tools can always access the stored geospatial from RSAs hierarchical file system and read meta-data from the database directly.
 
-One of the fundamental concepts behind the RSA is the *Data Cube*. The RSA can export a *Data Cube' given appropriate spatial and temporal extents.
+One of the fundamental concepts behind the RSA is the *Data Cube*. The RSA can export a *Data Cube* given appropriate spatial and temporal extents.
 
 The RSA provides an easily extensible method to perform complex spatial-temporal queries through the query engine.
 
