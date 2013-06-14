@@ -17,7 +17,7 @@ To contribute, file bug reports or issues, please visit RSA [GitHub repository](
 ## Installation
 
 * [Using Vagrant](VAGRANT_INSTALL.md) - How to automatically build RSA and its environtment using Vagrant
- * [Manual Install](MANUAL_INSTALL.md) - How to install RSA and its dependencies from scratch on Debian/Ubuntu or Centos/RedHat
+* [Manual Install](MANUAL_INSTALL.md) - How to install RSA and its dependencies from scratch on Debian/Ubuntu or Centos/RedHat
  
 ## Basic Usage
 
