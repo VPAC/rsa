@@ -1,4 +1,3 @@
-![Logo](logo.png) 
 # RSA Manual Install
 
 This section describe step by step instructions on:
@@ -9,7 +8,7 @@ This section describe step by step instructions on:
 * Building RSA from source
 
 
-##1. Core Requirements:
+## 1. Core Requirements:
 
 The RSA requires: 
 

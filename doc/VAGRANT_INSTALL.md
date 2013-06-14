@@ -1,4 +1,3 @@
-![Logo](logo.png)
 # Building RSA and its environment using vagrant:
 
  1. Install vagrant using the following [instructions](http://docs.vagrantup.com/v2/installation/index.html).
