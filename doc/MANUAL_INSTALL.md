@@ -1,6 +1,6 @@
 #Manual Install
 
-This section describe step by step instruction on:
+This section describe step by step instructions on:
 
 * Installing Core Requirements
 * Configuring database access

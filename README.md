@@ -16,8 +16,8 @@ To contribute, file bug reports or issues, please visit RSA [GitHub repository](
 
 ## Installation
 
-* [Using Vagrant](VAGRANT_INSTALL.md) - How to automatically build RSA and its environtment using Vagrant
-* [Manual Install](MANUAL_INSTALL.md) - How to install RSA and its dependencies from scratch on Debian/Ubuntu or Centos/RedHat
+* [Using Vagrant](doc/VAGRANT_INSTALL.md) - How to automatically build RSA and its environtment using Vagrant
+* [Manual Install](doc/MANUAL_INSTALL.md) - How to install RSA and its dependencies from scratch on Debian/Ubuntu or Centos/RedHat
  
 ## Basic Usage
 
@@ -30,7 +30,7 @@ The core functionalities/capabilities can be easily accessed via:
 
 Stands for RSA command line client.  It is developed to facilitate quick and easy usage on the command line.  It is specially optimised for frequent usage on the command line.
 
-The [tutorial](TUTORIAL.md)
+The [tutorial](doc/TUTORIAL.md)
 has a detailed walk-through of all usage, but here are the common usage:
 
     $ rsa -h 									# see a complete list of usage
@@ -63,7 +63,7 @@ from the rsacli directory.
 
 ### `spatialcubeservice`
 
-* For how to access RSA via web services, use this [spatialcubeservice RESTful API](spatialcubeservice_RESTful_API.pdf).
+* For how to access RSA via web services, use this [spatialcubeservice RESTful API](doc/spatialcubeservice_RESTful_API.pdf).
 * For how to perform query via web UI, see this [Query UI demonstration](youtube.com/rsa/query_ui_2.wmv).
 
 ## Configuration
@@ -75,16 +75,16 @@ Open [rsa.xml](rsa.xml) to see how RSA can be configured.
 See below for details instructions/guides:
 
  * [Query UI demonstration](youtube.com/rsa/query_ui_2.wmv) - Step by step guide on performing query using query UI
- * [Tutorial](TUTORIAL.md) - Step by step guide on how to use RSA
- * [Vagrant Install](MANUAL_INSTALL.md) - How to install RSA and its environtment using vagrant 
- * [Manual Install](MANUAL_INSTALL.md) - How to install RSA from scratch on Debian/Ubuntu or Centos/RedHat 
- * [Deployment](DEPLOY.md) - How to deploy `spatialcubeservice` on Tomcat6
- * [Writing Query](QUERY.md) - Simple guide on write query for RSA
- * [THREDDS plugin](PLUGIN.md) - How to enable RSA plugin for allowing access to RSA *Data Cube* on thredds
+ * [Tutorial](doc/TUTORIAL.md) - Step by step guide on how to use RSA
+ * [Vagrant Install](doc/VAGRANT_INSTALL.md) - How to install RSA and its environtment using vagrant 
+ * [Manual Install](doc/MANUAL_INSTALL.md) - How to install RSA from scratch on Debian/Ubuntu or Centos/RedHat 
+ * [Deployment](doc/DEPLOY.md) - How to deploy `spatialcubeservice` on Tomcat6
+ * [Writing Query](doc/QUERY.md) - Simple guide on write query for RSA
+ * [THREDDS plugin](doc/PLUGIN.md) - How to enable RSA plugin for allowing access to RSA *Data Cube* on thredds
 
 ## Screenshot
 
-![Screenshot](screenshot.png)
+![Screenshot](doc/screenshot.png)
 
 ## License & Acknowledgements
 
