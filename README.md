@@ -1,4 +1,5 @@
-#Raster Storage Archive
+![Logo](doc/logo.png)
+# Raster Storage Archive
 
 The Raster Storage Archive (RSA) is a platform built to store and distribute large geospatial raster datasets.  Datasets can have multiple bands and a temporal component.
 

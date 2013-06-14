@@ -1,4 +1,5 @@
-# Building rsa and its environment using vagrant:
+![Logo](logo.png)
+# Building RSA and its environment using vagrant:
 
  1. Install vagrant using the following [instructions](http://docs.vagrantup.com/v2/installation/index.html).
     
@@ -15,7 +16,7 @@
 		vagrant up
 		
 
-After running the above command, you'll will have a fully running Centos VM with `rsa` installed.
+After running the above command, you'll will have a fully running Centos VM with RSA installed.
     
 **Note:** User could easily configure vagrant to load up other type of VM such as Ubuntu with minimum changes to the scripts in rsabuild project.
 

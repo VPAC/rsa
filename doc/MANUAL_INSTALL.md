@@ -1,16 +1,17 @@
-#Manual Install
+![Logo](logo.png) 
+# RSA Manual Install
 
 This section describe step by step instructions on:
 
 * Installing Core Requirements
 * Configuring database access
 * Configuring the filesystem
-* Building `rsa` from source
+* Building RSA from source
 
 
 ##1. Core Requirements:
 
-The `rsa` requires: 
+The RSA requires: 
 
 | Software   | Version      | Notes |
 |:-----------|:-------------|:-------------|
@@ -28,8 +29,8 @@ Additional web server dependencies required for `spatialcubeservice` war deploym
 |:-----------|:--------|:-------------|
 |Tomcat      | 6.0.x   | An [Apache Tomcat](http://tomcat.apache.org/) server 6 stack| 
 
-Several other packages relied upon by the `rsa` application, such as the
-Hibernate ORM framework, are distributed as JAR archives as part of the `rsa` itself.
+Several other packages relied upon by the RSA application, such as the
+Hibernate ORM framework, are distributed as JAR archives as part of the RSA itself.
 
 **Note:** This document doesn't include advice on the Tomcat
    installation and configuration, as this differs considerably for
@@ -245,12 +246,12 @@ You should also do a dynamic library update to be safe:
 
 ### Access protocol
 
-The `rsa` connects to PostgreSQL databases via JDBC on the localhost using
+The RSA connects to PostgreSQL databases via JDBC on the localhost using
 passwords (MD5).
 No external access is required, though as a user you way wish to enable
 remote administration. 
 
-By default the `rsa` accesses the database on port 5432 (though this can
+By default the RSA accesses the database on port 5432 (though this can
 be configured in the web application's datasource.xml). You should
 double-check these values.
 
@@ -267,28 +268,28 @@ Centos/RedHat:
 	vi /var/lib/pgsql/data/postgresql.conf
 
 Navigate to the 'port =' line, and make sure it is 5432 if you wish to
-leave `rsa`'s as default.
+leave RSA's as default.
 
 **Note:** The Ubuntu Server Postgres documentation suggests removing
    the '#' at the start of the line *listen_addresses = 'localhost'*
    to enable TCP/IP access, but this hasn't proved necessary for jdbc
-   access in the `rsa` thus far.
+   access in the RSA thus far.
 
 See also: [https://help.ubuntu.com/11.10/serverguide/C/postgresql.html](https://help.ubuntu.com/11.10/serverguide/C/postgresql.html)
 
 ###Setting up new user roles and empty database
 
 Choose a database name, and user/password for use throughout the
-`rsa`. We then need to:
+RSA. We then need to:
 
  * Create a new postgres user;
  * Create an empty database owned by the user and specify appropriate permissions;
  * (later) Save the appropriate configurations to the `rsacli` and `spatialcubeservice` datasource.xml file.
 
-The `rsa` will automatically initialise the database with required tables 
+The RSA will automatically initialise the database with required tables 
 when it's first deployed.
 
-The default connection role the `rsa` will use is:
+The default connection role the RSA will use is:
 
  * Username: ula
  * Password: password
@@ -299,8 +300,8 @@ will just need to modify the `rsacli` and `spatialcubeservice`'s datasource.xml 
 
 ###Creating database (from the command line)
 
-To create `rsa` database from the command-line, run a command such as that below -
-substituting values for `rsa` database name and accessing user as appropriate:
+To create RSA database from the command-line, run a command such as that below -
+substituting values for RSA database name and accessing user as appropriate:
 
 	$ sudo -u postgres createuser -D -A -P ula
 	$ sudo -u postgres createdb -O ula uladb
@@ -308,13 +309,13 @@ substituting values for `rsa` database name and accessing user as appropriate:
 You'll be prompted to enter a password for the new user after the first command. When asked *Shall the new role be allowed to create more new
 roles?*, answer *n*.
 
-**Important:** Remember to record the values chosen for database name and user, as you'll have to configure the `rsa`'s connection to them via the datasource.xml file in `rsacli` and `spatialcubeservice` later.
+**Important:** Remember to record the values chosen for database name and user, as you'll have to configure the RSA's connection to them via the datasource.xml file in `rsacli` and `spatialcubeservice` later.
 
 **Note:** It is possible to set up the database graphically using [pgAdmin](http://www.pgadmin.org/) - but you may need to change the database access rules in *postgresql.conf* to allow it to connect.
 
 ## 3. Configuring the filesystem
 
-The `rsa` requires four directories on the filesystem:
+The RSA requires four directories on the filesystem:
 
 	upload
    		Stores uploaded data before it is tiled and moved to the storage pool.
@@ -332,7 +333,7 @@ The `rsa` requires four directories on the filesystem:
 
 ###Creating directories
 
-Create directories the `rsa` to write to:
+Create directories the RSA to write to:
 
 	$ sudo mkdir -p /var/lib/ndg/storagepool
 	$ sudo mkdir -p /var/spool/ndg/upload
@@ -350,7 +351,7 @@ datasets there.
 
 ## 4. Building rsa from source
 
-To build `rsa` from source using [`ant`](http://ant.apache.org/):
+To build RSA from source using [ant](http://ant.apache.org/):
 
 
 
