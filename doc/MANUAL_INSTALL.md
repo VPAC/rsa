@@ -331,8 +331,7 @@ Create directories the RSA to write to:
 	$ sudo mkdir -p /var/tmp/ndg
 
 These directories should be configured to be writable by the Tomcat
-user. When configuring for a server, this would be the user
-*tomcat*. For a development system, it would be your own user
+user. For a development system, it would be your own user
 name.
 
 At this stage, for a production server you may wish to mount NFS locations
