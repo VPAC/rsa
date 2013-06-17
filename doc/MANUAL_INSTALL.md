@@ -1,32 +1,38 @@
-# RSA Manual Install
+# Manual Install
 
-This section describe step by step instructions on:
+This section details about:
 
-* Installing Core Requirements
-* Configuring database access
-* Configuring the filesystem
-* Building RSA from source
+1. Dependencies
+2. Configuring RSA database
+3. Configuring RSA filesystem
+4. Building RSA from source
 
-
-## 1. Core Requirements:
+## 1. Dependencies
 
 The RSA requires: 
 
 | Software   | Version      | Notes |
 |:-----------|:-------------|:-------------|
-| GDAL       | 1.9.2+ (svn) | [GDAL](http://www.gdal.org) is used for geospatial data transformation. Latest svn checkout is recommended due to improvements with its netCDF driver. |
-| netCDF     | 4.2.1+       | [netCDF](http://www.unidata.ucar.edu/software/netcdf/) is used for high-performance array-based data processing (including rasters). |
-| HDF5       | 1.8.9+       | Hierarchical Data Format library. Advanced and scalable storage backend used by netCDF. |
+| GDAL       | 1.9.2+ (svn) | [GDAL][1] - used for geospatial data transformation. Latest svn checkout is recommended due to improvements with its netCDF driver. |
+| netCDF     | 4.3.0+       | [netCDF][2] - high-performance array-based data processing (including rasters). |
+| HDF5       | 1.8.6+       | [HDF5][3] - advanced, scalable storage backend used by netCDF. |
 | zlib       | 1.2.5+       | Compression library used by HDF5. |
 | swig       | 2.0+         | Its compiler allows creation of Java bindings to GDAL. |
-| Java 7 JRE | 7 (1.7)      | [OpenJDK](http://openjdk.java.net/) is suitable. If you also wish to compile/develop, you'll need a Java 7 JDK as well.|
-| PostgreSQL | 8.4+         | [PostgreSQL](http://www.postgresql.org/) deployed as core database backend. |
+| Java 7 JRE | 7 (1.7)      | [OpenJDK][4] is suitable. If you also wish to compile/develop, you'll need a Java 7 JDK as well.|
+| PostgreSQL | 8.4+         | [PostgreSQL][5] - deployed as core database backend. |
+
+[1]: 	http://www.gdal.org/
+[2]: 	http://www.unidata.ucar.edu/software/netcdf/
+[3]:	http://www.hdfgroup.org/HDF5/
+[4]:	http://openjdk.java.net/
+[5]:	http://www.postgresql.org/
+[6]:	http://tomcat.apache.org/ 
 
 Additional web server dependencies required for `spatialcubeservice` war deployment:
 
 | Software   | Version | Notes |
 |:-----------|:--------|:-------------|
-|Tomcat      | 6.0.x   | An [Apache Tomcat](http://tomcat.apache.org/) server 6 stack| 
+|Tomcat      | 6.0.x   | An [Apache Tomcat][6] server 6 stack| 
 
 Several other packages relied upon by the RSA application, such as the
 Hibernate ORM framework, are distributed as JAR archives as part of the RSA itself.
@@ -35,28 +41,7 @@ Hibernate ORM framework, are distributed as JAR archives as part of the RSA itse
    installation and configuration, as this differs considerably for
    Development versus Server setups.
 
-
-Details for installing GDAL and the dependencies listed above are
-available in the section `Installing latest GDAL and required
-drivers`.
-
-### Installing Core Dependencies (on Debian/Ubuntu or Centos/RedHat)
-
-**Important:** If you are connected to AARNET, read the section
-   `AARNET downloads of Ubuntu packages` before installing packages.
-
-#### Installing a JDK
-
-Debian/Ubuntu 12.04:
-
-	$ sudo apt-get install openjdk-7-jdk
-
-Centos/RedHat:
-
-	$ sudo yum install java-1.7.0-openjdk
-	
-**Note:** The OpenJDK distribution has been tested to work successfully
-as well as Sun's Java.	
+### Installing Dependencies (on Debian/Ubuntu or Centos/RedHat)
 
 #### Installing PostgreSQL
 
@@ -74,7 +59,38 @@ Centos/RedHat:
 	$ sudo service postgresql initdb
 	$ sudo service postgresql start
 
-#### Installing latest GDAL and required drivers
+#### Installing a JDK
+
+Debian/Ubuntu 12.04:
+
+	$ sudo apt-get install openjdk-7-jdk
+
+Centos/RedHat:
+
+	$ sudo yum install java-1.7.0-openjdk
+	
+**Note:** The OpenJDK distribution has been tested to work successfully
+as well as Sun's Java.	
+
+#### Installing zlib (required for netCDF)   
+
+	$ ./configure
+	$ make
+	$ sudo make install
+ 	   
+#### Installing HDF5 (required for netCDF)
+		
+	$ ./configure --prefix=/usr/local --with-zlib=/usr/local
+	$ make
+	$ sudo make install
+
+#### Installing netCDF
+
+	$ CPPFLAGS=-I/usr/local/include LDFLAGS=-L/usr/local/lib ./configure
+	$ make
+	$ sudo make install
+       
+#### Installing GDAL and required drivers
 
 ##### Installing build dependencies
 
@@ -90,16 +106,9 @@ Centos/RedHat:
 	$ sudo yum groupinstall "Development Tools"
 	$ sudo yum install swig ant
 
-**Note:** *ant* may depend on a old version of Java; in this case, it will
-install the other version, but should not replace Java 1.7.
-
 ##### Installing driver dependencies
 
 Core reprojection capabilities of gdal rely on the Proj4 project.
-As specified above, we also require netCDF and HDF5 software to be
-installed to use the netCDF driver via GDAL.  You are free to install other GDAL driver
-software for image conversion, this is the core list needed currently
-though.
 
 Debian/Ubuntu:
 
@@ -114,20 +123,13 @@ Centos/RedHat:
    yum, however this constitutes a security risk, and should be
    cleared with the system admin team first.
 
-The version of NetCDF installed needs to be 4.2.1 or above.
-Build with configure flags similar to:
+As specified above, we also require netCDF and HDF5 software to be
+installed to use the netCDF driver via GDAL.
 
-	PREFIX=/usr/local
-	LDFLAGS=-L$PREFIX/lib CPPFLAGS=-I$PREFIX/include ./configure --enable-netcdf4 --prefix=$PREFIX
-
-LDFLAGS and CPPFLAGS are necessary when using a custom build of libhdf5.
-
-##### Installing GDAL Development version
+##### Installing GDAL from source
 
 As listed above, we currently require a 'trunk' version of GDAL to be checked out and
 installed (recommended version 1.9.2+), as it contains recent improvements to the GDAL netCDF capabilities.
-
-Included below are instructions for a manual build of GDAL from source.
  
 If you don't yet have subversion installed yet:
 
@@ -139,23 +141,17 @@ Centos/RedHat:
 
 	$ sudo yum install subversion
 
-Make a directory and check out the latest svn source of GDAL::
+Check out the latest svn source of GDAL:
 
-	$ mkdir ~/local
-	$ cd ~/local
 	$ svn checkout https://svn.osgeo.org/gdal/trunk  gdal-trunk
 
-An alternative to an svn checkout would be to get a nightly build from Nov 2011 onwards from [here](http://trac.osgeo.org/gdal/wiki/DownloadSource).
+An alternative to an svn checkout would be to get a nightly build from [here](http://trac.osgeo.org/gdal/wiki/DownloadSource).
 
 Then configure gdal:
 
 	$ cd gdal-trunk/gdal
-	$ ./configure --prefix=/usr/local --with-java --enable-netcdf4
+	$ ./configure --with-netcdf=/usr/local
   
-If need to specify netcdf or hdf5 installation:
-
-	$ ./configure --prefix=/usr/local --enable-netcdf4
-
 **Important:** At the end of the configure, it's important that in the status
   report printed, HDF5 and netCDF support are both listed as 'yes'.
 
@@ -184,9 +180,8 @@ e.g. via creating an updatePath.sh script to source containing:
 	export PATH=$GDAL_DIR/bin:$PATH
 	export LD_LIBRARY_PATH=$GDAL_DIR/lib:$LD_LIBRARY_PATH
 
-That script should be configured to run from your login script
-(e.g. *~/.bashrc*). You can also perform some GDAL tests via the
-'autotest' directory (optional).
+That script could be configured to run from your login script
+(e.g. *~/.bashrc*).
 
 ##### Installing GDAL Java libraries
 
@@ -241,14 +236,12 @@ You should also do a dynamic library update to be safe:
 
 	$ sudo ldconfig
 
-## 2. Configuring database access
+## 2. Configuring RSA database
 
-### Access protocol
+### Configuring PostgreSQL
 
 The RSA connects to PostgreSQL databases via JDBC on the localhost using
-passwords (MD5).
-No external access is required, though as a user you way wish to enable
-remote administration. 
+passwords (MD5). 
 
 By default the RSA accesses the database on port 5432 (though this can
 be configured in the web application's datasource.xml). You should
@@ -273,8 +266,6 @@ leave RSA's as default.
    the '#' at the start of the line *listen_addresses = 'localhost'*
    to enable TCP/IP access, but this hasn't proved necessary for jdbc
    access in the RSA thus far.
-
-See also: [https://help.ubuntu.com/11.10/serverguide/C/postgresql.html](https://help.ubuntu.com/11.10/serverguide/C/postgresql.html)
 
 ###Setting up new user roles and empty database
 
@@ -312,7 +303,7 @@ roles?*, answer *n*.
 
 **Note:** It is possible to set up the database graphically using [pgAdmin](http://www.pgadmin.org/) - but you may need to change the database access rules in *postgresql.conf* to allow it to connect.
 
-## 3. Configuring the filesystem
+## 3. Configuring RSA filesystem
 
 The RSA requires four directories on the filesystem:
 
@@ -348,9 +339,45 @@ At this stage, for a production server you may wish to mount NFS locations
 within the storagepool directory if you intend to store large contiguous
 datasets there.
 
-## 4. Building rsa from source
+## 4. Building RSA from source
 
-To build RSA from source using [ant](http://ant.apache.org/):
+RSA consists of these main components:
 
+* storagemanager - the storage and database component
+* rsaquery - the query engine and processing capability
+* cmdclient - the command line client component
+* spatialcubeservice - the web application and web services component
 
+Building all RSA components from source using [ant](http://ant.apache.org/):
+
+	$ git clone https://github.com/VPAC/rsa.git
+	$ cd rsa/src
+	$ ant
+
+Once the build process completes, user can find all RSA components inside dist directory.
+	
+Optionally, user can build each RSA components separately, if they prefer to do so.
+
+Building storagemanager individually:
+
+	$ cd rsa/src/storagemanager
+	$ ant
+
+Building rsaquery individually:
+
+	$ cd rsa/src/rsaquery
+	$ ant
+
+Building cmdclient individually:
+
+	$ cd rsa/src/cmdclient
+	$ ant
+
+Building spatialcubeservice individually:
+
+	$ cd rsa/src/spatialcubeservice
+	$ ant
+
+	
+	
 
