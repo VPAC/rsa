@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="SpatialCubeService" default="war" basedir=".">
+	<description>Build file for the rsa spatialcubeservice</description>
+
+	<!-- Project directories, referenced below -->
+	<property name="src" location="src" />
+	<property name="build" location="build" />
+	<property name="dist" location="dist" />
+	<property name="doc" location="doc" />
+	<property name="inc" location="lib" />
+	<property name="config" location="config" />
+	<property name="bin" location="bin" />
+
+	<!--  Application definitions -->
+	<property name="app.name" value="spatialcubeservice" />
+	<property name="app.path" value="/spatialcubeservice" />
+	<!-- Versions numbers are populated by master build file; see ../build.xml. -->
+	<property name="version.number" value="local" />
+	<property name="svn.info.lastRev" value="rN"/>
+	<property name="storagemanager.app.name" value="storagemanager" />
+
+	<!-- Web archive (WAR) file definitions -->
+	<property name="warfile" value="${app.name}_${version.number}_${svn.info.lastRev}-dev.war" />
+
+	<!-- Tomcat manager definitions for deployment tasks -->
+	<property name="tomcat.manager.url" value="http://localhost:8080/manager/html" />
+	<property name="tomcat.manager.username" value="admin" />
+	<property name="tomcat.manager.password" value="iet6Theengohchae" />
+
+	<!-- Project Dependencies -->
+	<property name="storagemanager" location="../${storagemanager.app.name}" />
+	<property name="storagemanagerSrc" location="../storagemanager/src" />
+	<property name="storagemanagerConfig" location="../storagemanager/config" />
+	<property name="storagemanagerDist" location="../storagemanager/dist" />
+	<property name="storagemanagerInc" location="../storagemanager/lib" />
+	<property name="storagemanagerAntFile" location="${storagemanager}/build.xml" />
+	<property name="storagemanagerResources" location="../storagemanager/resources" />
+	<property name="rsaquerySrc" location="../rsaquery/src" />
+	<property name="rsaqueryFilterSrc" location="../rsaquery/filter-src" />
+	<property name="webRoot" location="src/main/webapp" />
+
+	<!-- Make sure gdal library location is correct for production -->
+	<condition property="gdalLib" value="C:\tmp\gdalapps\bin">
+		<os family="windows" />
+	</condition>
+	<condition property="gdalLib" value="/usr/local/lib">
+		<os family="unix" />
+	</condition>
+	<property name="target" value="1.7" />
+	<property name="source" value="1.7" />
+
+	<condition property="tomcatLib" value="C:\work\apps\install\apache-tomcat-6.0.26\lib">
+		<os family="windows" />
+	</condition>
+	<condition property="tomcatLib" value="/usr/share/tomcat6/lib">
+		<os family="unix" />
+	</condition>
+
+	<path id="classpath">
+		<fileset dir="${webRoot}/WEB-INF/lib">
+			<include name="*.jar" />
+		</fileset>
+		<fileset dir="${tomcatLib}/">
+			<include name="*.jar" />
+		</fileset>
+		<pathelement location="${gdalLib}/gdal.jar" />
+	</path>
+
+	<path id="storageManager-classpath">
+		<fileset dir="${storagemanagerInc}">
+			<include name="**/*.jar"/>
+		</fileset>
+	</path>
+
+	<!-- Initialisation -->
+	<target name="init">
+		<!-- Create the time stamp -->
+		<tstamp />
+		<!-- Create the build directory structure used by compile -->
+		<mkdir dir="${dist}" />
+		<mkdir dir="${doc}" />
+	</target>
+
+	<!-- Clean up temporary build directories -->
+	<target name="clean">
+		<delete dir="${build}" quiet="true" />
+		<delete dir="${dist}" quiet="true" />
+		<delete dir="${doc}" quiet="true" />
+	</target>
+
+	<!-- Copies dependencies from SpatialCubeService (html, js code) 
+	     and the storagemanager (lots of jar files) -->
+	<target name="copy-resources">
+		<copy todir="${build}">
+			<!-- Non-configuration resources -->
+			<fileset dir="${storagemanagerResources}">
+				<include name="**/*.xml" />
+			</fileset>
+			<!-- Default configuration -->
+			<fileset dir="${storagemanagerConfig}">
+				<exclude name="README.txt" />
+			</fileset>
+			<!-- Configuration overrides for web services -->
+			<fileset dir="${config}">
+				<exclude name="README.txt" />
+			</fileset>
+		</copy>
+		<!-- Libraries; ignore directory structure of source -->
+		<copy todir="${webRoot}/WEB-INF/lib" flatten="true" verbose="true">
+			<path refid="storageManager-classpath" />
+		</copy>
+	</target>
+
+	<!-- Compile the java code -->
+	<target name="compile" depends="init" description="compile the source">
+		<mkdir dir="${build}" />
+		<echo message="Java home = ${java.home}" />
+		<javac destdir="${build}" source="${source}" target="${target}" debug="on" debuglevel="lines,vars,source">
+			<classpath refid="classpath" />
+			<src path="${src}" />
+			<!-- Include dependencies. These don't compile to intermediate jar files
+			     that can be added to the classpath. -->
+			<src path="${storagemanagerSrc}" />
+			<src path="${rsaquerySrc}" />
+			<src path="${rsaqueryFilterSrc}" />
+		</javac>
+	</target>
+
+	<!-- Web archive file creation (this is consumed by Tomcat). -->
+	<target name="war" depends="clean,compile,copy-resources,source">
+		<mkdir dir="${dist}" />
+		<!-- Package up WAR file. If there are duplicate files this task will
+		     fail, because it indicates a bug! Avoid duplicates by explicitely
+		     excluding them. -->
+		<war destfile="${dist}/${warfile}" webxml="src/main/webapp/WEB-INF/web.xml" update="true" duplicate="fail">
+			<classes dir="${build}" />
+			<fileset dir="${webRoot}">
+				<exclude name="WEB-INF/classes/**" />
+				<exclude name="WEB-INF/lib/**" />
+			</fileset>
+			<lib dir="${webRoot}/WEB-INF/lib" />
+<!--
+			<metainf>
+				<fileset dir="${webRoot}/META-INF">
+					<include name="**/*.*"/>
+				</fileset>
+			</metainf>
+-->
+		</war>
+	</target>
+
+	<!-- Create javadoc for the SpatialCubeService project -->
+	<target name="javadoc">
+		<javadoc access="public" author="true" classpathref="classpath" destdir="${doc}" doctitle="SpatialCubeService Documentation" nodeprecated="false" nodeprecatedlist="false" noindex="false" nonavbar="false" notree="false" source="${source}" sourcepath="${src};${storagemanagerSrc};${rsaquerySrc};${rsaqueryFilterSrc}" splitindex="true" use="true" version="true" />
+
+		<!-- Zip javadocs into a zipped file -->
+		<zip destfile="${dist}/${app.name}-JAVADOC.zip" basedir="${doc}" update="false" whenempty="fail" compress="true" />
+
+		<!-- Create javadoc for the storagemanager project -->
+		<ant antfile="${storagemanagerAntFile}" target="javadoc" dir="${storagemanager}" inheritall="false" />
+
+		<!-- Copies API for SpatialCubeService -->
+		<copy file="${storagemanager}/dist/${storagemanager.app.name}-JAVADOC.zip" toDir="${dist}" />
+	</target>
+
+	<!-- Create souce code compilation for the SpatialCubeService project -->
+	<target name="source">
+		<!-- Zip source into a zipped file -->
+		<zip destfile="${dist}/${app.name}_SOURCE.zip" basedir="${src}" />
+
+		<!-- Zip source into a zipped file -->
+		<ant antfile="${storagemanagerAntFile}" target="source" dir="${storagemanager}" inheritall="false" />
+
+		<!-- Copies source for SpatialCubeService -->
+		<copy file="${storagemanager}/dist/${storagemanager.app.name}_SOURCE.zip" toDir="${dist}" />
+	</target>
+
+	<path id="tomcat">
+		<pathelement location="${tomcatLib}/catalina-ant.jar"/>
+	</path>
+
+	<!-- Tomcat task definitions. These require catalina-ant.jar to be on the
+	     classpath (in Eclipse, see External Tools Configurations). You can find
+	     the jar file in the lib/ directory of your Tomcat installation. -->
+	<taskdef name="deploy" classname="org.apache.catalina.ant.DeployTask" classpathref="tomcat" />
+	<taskdef name="install" classname="org.apache.catalina.ant.InstallTask" classpathref="tomcat" />
+	<taskdef name="list" classname="org.apache.catalina.ant.ListTask" classpathref="tomcat" />
+	<taskdef name="reload" classname="org.apache.catalina.ant.ReloadTask" classpathref="tomcat" />
+	<taskdef name="remove" classname="org.apache.catalina.ant.RemoveTask" classpathref="tomcat" />
+	<taskdef name="resources" classname="org.apache.catalina.ant.ResourcesTask" classpathref="tomcat" />
+	<taskdef name="roles" classname="org.apache.catalina.ant.RolesTask" classpathref="tomcat" />
+	<taskdef name="start" classname="org.apache.catalina.ant.StartTask" classpathref="tomcat" />
+	<taskdef name="stop" classname="org.apache.catalina.ant.StopTask" classpathref="tomcat" />
+	<taskdef name="undeploy" classname="org.apache.catalina.ant.UndeployTask" classpathref="tomcat" />
+
+	<target name="remove">
+		<echo message="removing demo" />
+		<remove url="${tomcat.manager.url}" username="${tomcat.manager.username}" password="${tomcat.manager.password}" path="${app.path}" failonerror="false" />
+	</target>
+
+	<!-- Deploy the WAR file on TomCat manager -->
+	<target name="deploy" depends="war, remove">
+		<echo message="deploying" />
+		<deploy url="${tomcat.manager.url}" username="${tomcat.manager.username}" password="${tomcat.manager.password}" path="${app.path}" war="file:${dist}/${warfile}" />
+	</target>
+
+	<!-- Undeploy the WAR file on TomCat manager -->
+	<target name="undeploy">
+		<echo message="undeploying" />
+		<undeploy url="${tomcat.manager.url}" username="${tomcat.manager.username}" password="${tomcat.manager.password}" path="${app.path}" />
+	</target>
+</project>

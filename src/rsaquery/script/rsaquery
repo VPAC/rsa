@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+EXECUTABLE=$0
+if [ -L $0 ]; then
+    # Dereference symbolic link so that libraries can be found. This is in case
+    # the user has a link to this script from somewhere like ~/bin/rsa
+    EXECUTABLE=$(readlink -f ${0})
+fi
+ROOTDIR=$(dirname ${EXECUTABLE})
+
+
+MAIN_JAR=$(ls -1 $ROOTDIR/rsaquery*.jar | head -n1)
+MAIN_CLASS="org.vpac.ndg.query.QueryRunner"
+CLASSPATH="${ROOTDIR}/config:${ROOTDIR}/filter:${MAIN_JAR}:${ROOTDIR}/lib/*"
+
+# http://stackoverflow.com/questions/743454/space-in-java-command-line-arguments
+echo java $JAVA_OPTS -classpath ${CLASSPATH} ${MAIN_CLASS} ${1+"$@"}
+java $JAVA_OPTS -classpath ${CLASSPATH} ${MAIN_CLASS} ${1+"$@"}

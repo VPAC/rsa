@@ -1,0 +1,18 @@
+<configuration>
+
+	<appender name="STDERR" class="ch.qos.logback.core.ConsoleAppender">
+		<target>System.err</target>
+		<encoder>
+			<pattern>%-5level %logger{0} - %msg%n
+			</pattern>
+		</encoder>
+	</appender>
+
+	<root level="info">
+		<appender-ref ref="STDERR" />
+	</root>
+
+	<logger name="org.vpac.ndg" level="info"/>
+	<logger name="org.vpac.ndg.query" level="debug"/>
+
+</configuration>

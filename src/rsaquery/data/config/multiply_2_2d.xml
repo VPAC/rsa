@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<query xmlns="http://www.vpac.org/namespaces/rsaquery-0.2">
+
+	<input id="infile" href="../input/2d_dataset.nc" />
+
+	<output id="outfile" >
+		<grid ref="#infile" />
+
+		<variable name="Band1" ref="#combine/output">
+			<attribute name="_FillValue" value="0" />
+		</variable>
+	</output>
+
+	<!-- Before we can multiply the two bands together, they need to be
+	     mapped to the 0-1 range. -->
+	<filter id="normaliseTemp" cls="org.vpac.ndg.query.NormaliseRange">
+		<sampler name="input" ref="#infile/temp" />
+	</filter>
+
+	<filter id="normaliseTime" cls="org.vpac.ndg.query.NormaliseRange">
+		<literal name="upper" value="150" />
+		<sampler name="input" ref="#infile/time" />
+	</filter>
+
+	<filter id="combine" cls="org.vpac.ndg.query.MulBinary">
+		<sampler name="inputA" ref="#normaliseTemp/output" />
+		<sampler name="inputB" ref="#normaliseTime/output" />
+	</filter>
+</query>
+

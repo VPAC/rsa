@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<query xmlns="http://www.vpac.org/namespaces/rsaquery-0.2">
+
+	<input id="infile" href="../input/noise.nc" />
+
+	<cache pages="5" precedence="time" volume="200" window="4 4" />
+
+	<output id="outfile" >
+		<grid ref="#infile" />
+		<variable name="Band1" ref="#MinVariance/output" />
+		<variable name="time" ref="#MinVariance/outtime" />
+	</output>
+
+	<filter id="MinVariance" cls="org.vpac.ndg.query.MinimiseVariance">
+		<literal name="windowSize" value="3" />
+		<sampler name="input" ref="#infile/Band1"  />
+		<sampler name="intime" ref="#infile/time"  />
+	</filter>
+</query>

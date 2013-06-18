@@ -1,0 +1,109 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+		http://www.springframework.org/schema/context
+		http://www.springframework.org/schema/context/spring-context-3.1.xsd
+		http://www.springframework.org/schema/aop
+		http://www.springframework.org/schema/aop/spring-aop-3.1.xsd">
+	<!-- Service object -->
+	<bean id="applicationContextProvider" class="org.vpac.ndg.ApplicationContextProvider"></bean>
+	<bean id="gdalInterface" class="org.vpac.ndg.GdalInterface" lazy-init="true"/>
+	<bean id="ogrInterface" class="org.vpac.ndg.OgrInterface" lazy-init="true"/>
+	<bean id="datasetDao" class="org.vpac.ndg.storage.dao.DatasetDaoImpl" lazy-init="true" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="uploadDao" class="org.vpac.ndg.storage.dao.UploadDaoImpl" lazy-init="true" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="timeSliceDao" class="org.vpac.ndg.storage.dao.TimeSliceDaoImpl" lazy-init="true" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="bandDao" class="org.vpac.ndg.storage.dao.BandDaoImpl" lazy-init="true" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="activityDao" class="org.vpac.ndg.storage.dao.ActivityDaoImpl" lazy-init="true" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="jobProgressDao" class="org.vpac.ndg.storage.dao.JobProgressDaoImpl" lazy-init="true" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="timeSliceLockDao" class="org.vpac.ndg.storage.dao.TimeSliceLockDaoImpl" lazy-init="true" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="processDao" class="org.vpac.ndg.storage.dao.ProcessDaoImpl" lazy-init="true">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="uploadUtil" class="org.vpac.ndg.storage.util.UploadUtil" lazy-init="true" >
+		<property name="ndgConfigManager" ref="ndgConfigManager" />
+	</bean>
+	<bean id="datasetUtil" class="org.vpac.ndg.storage.util.DatasetUtil" lazy-init="true" >
+		<property name="datasetDao" ref="datasetDao" />
+	</bean>
+	<bean id="timeSliceUtil" class="org.vpac.ndg.storage.util.TimeSliceUtil" lazy-init="true" >
+		<property name="timeSliceDao" ref="timeSliceDao" />
+		<property name="datasetUtil" ref="datasetUtil" />
+	</bean>
+	<bean id="bandUtil" class="org.vpac.ndg.storage.util.BandUtil" lazy-init="true" >
+		<property name="datasetUtil" ref="datasetUtil" />
+		<property name="ndgConfigManager" ref="ndgConfigManager" />
+	</bean>
+	<bean id="ndgConfigManager" class="org.vpac.ndg.configuration.NdgConfigManager" init-method="configure" lazy-init="true">
+	</bean>
+	<bean id="tileManager" class="org.vpac.ndg.geometry.TileManager" lazy-init="true">
+	</bean>
+	<bean id="rsaDatasetReader" class="org.vpac.ndg.datamodel.RsaDatasetReader" lazy-init="true" />
+	<bean id="activityLogger" class="org.vpac.ndg.storagemanager.ActivityLogger" lazy-init="true" />
+	<aop:config>
+		<aop:aspect id="afterCreateDataset" ref="activityLogger">
+			<aop:after-returning method="afterCreateDatasetReturning" pointcut="execution(* org.vpac.ndg.storage.dao.DatasetDaoImpl.create(..) )"/>
+			<aop:after-throwing method="afterCreateDatasetThrowing" pointcut="execution(* org.vpac.ndg.storage.dao.DatasetDaoImpl.create(..) )" throwing="error"/>
+		</aop:aspect>
+		<aop:aspect id="afterRenameDataset" ref="activityLogger">
+			<aop:after-returning method="afterRenameDatasetReturning" pointcut="execution(* org.vpac.ndg.storage.util.DatasetUtil.update(..) )"/>
+			<aop:after-throwing method="afterRenameDatasetThrowing" pointcut="execution(* org.vpac.ndg.storage.util.DatasetUtil.update(..) )" throwing="error"/>
+		</aop:aspect>
+		<aop:aspect id="afterUpdateDataset" ref="activityLogger">
+			<aop:after-returning method="afterUpdateDatasetReturning" pointcut="execution(* org.vpac.ndg.storage.dao.DatasetDaoImpl.update(..) )"/>
+			<aop:after-throwing method="afterUpdateDatasetThrowing" pointcut="execution(* org.vpac.ndg.storage.dao.DatasetDaoImpl.update(..) )" throwing="error"/>
+		</aop:aspect>
+		<aop:aspect id="afterDeleteDataset" ref="activityLogger">
+			<aop:after-returning method="afterDeleteDatasetReturning" pointcut="execution(* org.vpac.ndg.storage.dao.DatasetDaoImpl.delete(..) )"/>
+			<aop:after-throwing method="afterDeleteDatasetThrowing" pointcut="execution(* org.vpac.ndg.storage.dao.DatasetDaoImpl.delete(..) )" throwing="error"/>
+		</aop:aspect>
+		<aop:aspect id="afterAddBand" ref="activityLogger">
+			<aop:after-returning method="afterAddBandReturning" pointcut="execution(* org.vpac.ndg.storage.dao.DatasetDaoImpl.addBand(..) )"/>
+			<aop:after-throwing method="afterAddBandThrowing" pointcut="execution(* org.vpac.ndg.storage.dao.DatasetDaoImpl.addBand(..) )" throwing="error"/>
+		</aop:aspect>
+				<aop:aspect id="afterRenameBand" ref="activityLogger">
+			<aop:after-returning method="afterRenameBandReturning" pointcut="execution(* org.vpac.ndg.storage.util.BandUtil.update(..) )"/>
+			<aop:after-throwing method="afterRenameBandThrowing" pointcut="execution(* org.vpac.ndg.storage.util.BandUtil.update(..) )" throwing="error"/>
+		</aop:aspect>
+		<aop:aspect id="afterUpdateBand" ref="activityLogger">
+			<aop:after-returning method="afterUpdateBandReturning" pointcut="execution(* org.vpac.ndg.storage.dao.BandDaoImpl.update(..) )"/>
+			<aop:after-throwing method="afterUpdateBandThrowing" pointcut="execution(* org.vpac.ndg.storage.dao.BandDaoImpl.update(..) )" throwing="error"/>
+		</aop:aspect>
+		<aop:aspect id="afterDeleteBand" ref="activityLogger">
+			<aop:after-returning method="afterDeleteBandReturning" pointcut="execution(* org.vpac.ndg.storage.dao.BandDaoImpl.delete(..) )"/>
+			<aop:after-throwing method="afterDeleteBandThrowing" pointcut="execution(* org.vpac.ndg.storage.dao.BandDaoImpl.delete(..) )" throwing="error"/>
+		</aop:aspect>
+		<aop:aspect id="afterAddTimeSlice" ref="activityLogger">
+			<aop:after-returning method="afterAddTimeSliceReturning" pointcut="execution(* org.vpac.ndg.storage.dao.DatasetDaoImpl.addTimeSlice(..) )"/>
+			<aop:after-throwing method="afterAddTimeSliceThrowing" pointcut="execution(* org.vpac.ndg.storage.dao.DatasetDaoImpl.addTimeSlice(..) )" throwing="error"/>
+		</aop:aspect>
+		<aop:aspect id="afterRenameTimeSlice" ref="activityLogger">
+			<aop:after-returning method="afterRenameTimeSliceReturning" pointcut="execution(* org.vpac.ndg.storage.util.TimeSliceUtil.update(..) )"/>
+			<aop:after-throwing method="afterRenameTimeSliceThrowing" pointcut="execution(* org.vpac.ndg.storage.util.TimeSliceUtil.update(..) )" throwing="error"/>
+		</aop:aspect>
+		<aop:aspect id="afterUpdateTimeSlice" ref="activityLogger">
+			<aop:after-returning method="afterUpdateTimeSliceReturning" pointcut="execution(* org.vpac.ndg.storage.dao.TimeSliceDaoImpl.update(..) )"/>
+			<aop:after-throwing method="afterUpdateTimeSliceThrowing" pointcut="execution(* org.vpac.ndg.storage.dao.TimeSliceDaoImpl.update(..) )" throwing="error"/>
+		</aop:aspect>
+		<aop:aspect id="afterDeleteTimeSlice" ref="activityLogger">
+			<aop:after-returning method="afterDeleteTimeSliceReturning" pointcut="execution(* org.vpac.ndg.storage.dao.TimeSliceDaoImpl.delete(..) )"/>
+			<aop:after-throwing method="afterDeleteTimeSliceThrowing" pointcut="execution(* org.vpac.ndg.storage.dao.TimeSliceDaoImpl.delete(..) )" throwing="error"/>
+		</aop:aspect>
+	</aop:config>
+</beans>

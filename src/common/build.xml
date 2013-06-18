@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Common" default="dist" basedir=".">
+	<description>Build file for the rsa common</description>
+	<property name="src" location="src" />
+	<property name="bin" location="bin" />
+	<property name="dist" location="dist" />
+	<property name="pub" location="pub" />
+	<property name="doc" location="doc" />
+
+	<property name="app.name" value="common" />
+
+	<property name="target" value="1.7" />
+	<property name="source" value="1.7" />
+
+	<!-- Classpath -->
+	<path id="classpath">
+	</path>
+
+	<!-- Initialize build -->
+	<target name="init">
+		<mkdir dir="${bin}" />
+		<mkdir dir="${dist}" />
+		<mkdir dir="${pub}" />
+		<mkdir dir="${doc}" />
+	</target>
+
+	<!-- Compile the source code -->
+	<target name="compile" depends="init">
+		<!-- Compile the java code from ${src} into ${build} -->
+		<echo message="Java home = ${java.home}" />
+		<javac srcdir="${src}" destdir="${bin}" source="${source}" target="${target}" debug="on" debuglevel="lines,vars,source">
+			<classpath refid="classpath" />
+		</javac>
+	</target>
+
+	<!-- Create the JAR file -->
+	<target name="dist" depends="clean,compile,javadoc">
+		<jar jarfile="${dist}/${app.name}.jar" basedir="${bin}" />
+	</target>
+
+	<!-- Publish distribution -->
+	<target name="publish" depends="dist">
+		<copy todir="${pub}">
+			<fileset dir="${dist}" includes="${app.name}.jar"></fileset>
+			<fileset dir="${dist}" includes="${app.name}.zip"></fileset>
+		</copy>
+	</target>
+
+	<!-- Create Javadocs -->
+	<target name="javadoc" depends="init">
+		<javadoc source="${source}" destdir="${doc}" windowtitle="${app.name}" classpathref="classpath">
+			<classpath refid="classpath" />
+			<fileset dir="${src}" defaultexcludes="yes"></fileset>
+			<doctitle><![CDATA[<h1>Common</h1>]]></doctitle>
+			<bottom><![CDATA[<i>Copyright &#169; 2012 VPAC</i>]]></bottom>
+		</javadoc>
+		<zip basedir="${doc}" destfile="${dist}/${app.name}-JAVADOC.zip" />
+	</target>
+
+	<!-- Zip source into a zipped file -->
+	<target name="source" depends="init">
+		<zip destfile="${dist}/${app.name}_SOURCE.zip" basedir="${src}" />
+	</target>
+
+	<!-- Clean all the build related directories -->
+	<target name="clean">
+		<delete dir="${bin}" />
+		<delete dir="${dist}" />
+		<delete dir="${pub}" />
+		<delete dir="${doc}" />
+	</target>
+</project>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
+  <wb-module deploy-name="SpatialCubeService">
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
+        <wb-resource deploy-path="/" source-path="/src/main/webapp" tag="defaultRootSource"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/test"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/smsrc"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/StorageManagerSrc"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/StorageManagerResources"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/config"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/StorageManagerConfig"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/rsaquerySrc"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/rsaqueryFilterSrc"/>
+        <dependent-module archiveName="StorageManager.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/StorageManager/StorageManager">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="Common.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/Common/Common">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+    <property name="java-output-path" value="/target/classes"/>
+        <property name="context-root" value="SpatialCubeService"/>
+  </wb-module>
+</project-modules>

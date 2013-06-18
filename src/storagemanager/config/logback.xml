@@ -1,0 +1,26 @@
+<configuration>
+
+	<appender name="STDERR" class="ch.qos.logback.core.ConsoleAppender">
+		<target>System.err</target>
+		<encoder>
+			<pattern>%-5level %logger{5} - %msg%n
+			</pattern>
+		</encoder>
+	</appender>
+
+	<root level="error">
+		<appender-ref ref="STDERR" />
+	</root>
+
+	<!-- The following entries override the "root" definitions above.
+	     Error levels are, in ascending order:
+
+	         trace, debug, info, warn, error, fatal
+
+	-->
+
+	<logger name="org.vpac.ndg" level="warn"/>
+	<logger name="org.hibernate" level="error"/>
+	<logger name="org.springframework" level="error"/>
+
+</configuration>

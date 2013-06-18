@@ -1,0 +1,232 @@
+#!/usr/bin/env bash
+
+#
+# Run the RSA command line client.
+#
+# Usage:
+#       rsa -[kd] [--restart]
+#       rsa -[1] <command> <action> [options] <...>
+# Options:
+#       -d --start      Start a daemon to speed up commands.
+#       -k --stop       Stop the daemon.
+#       --restart       Restart the daemon.
+#       -1 --no-daemon  Run in a new Java process, and exit when done.
+#       --daemon        Use the a background process to speed up commands. This
+#                       is the default.
+#
+# Note that by default a daemon will be started the first time the client is
+# run. To prevent that from happening, pass in --no-daemon as the first
+# argument or set nailgun=false in config/rsa.ini.
+#
+# Other options for startup may be set in config/rsa.ini.
+#
+
+# Find executable and libraries.
+
+EXECUTABLE=$0
+if [ -L $0 ]; then
+    # Dereference symbolic link so that libraries can be found. This is in case
+    # the user has a link to this script from somewhere like ~/bin/rsa
+    EXECUTABLE=$(readlink -f ${0})
+fi
+ROOTDIR=$(dirname ${EXECUTABLE})
+
+RSACLIJAR=$(ls -1 $ROOTDIR/rsacli*.jar | head -n1)
+MAIN_CLASS="org.vpac.ndg.cli.Client"
+
+# Process options from environment variables and ini file.
+function _get_options() {
+	local val CFILE
+	CFILE="$ROOTDIR/config/rsa.ini"
+
+	# Heap size - unless specified in environment variable
+	if [[ "$JAVA_OPTS" != *-Xmx* ]]; then
+		val=$(sed -n 's/max_heap *= *\(.*\)/\1/p' < $CFILE)
+		if [ -n "$val" ]; then
+			JAVA_OPTS="$JAVA_OPTS -Xmx$val"
+		fi
+	fi
+
+	# GDAL location
+	GDAL_HOME=$(sed -n 's/gdal_prefix *= *\(.*\)/\1/p' < $CFILE)
+	if [ ! -x ${GDAL_HOME}/bin/gdalinfo -o ! -r ${GDAL_HOME}/lib/gdal.jar ]; then
+		echo "Warning: GDAL_HOME \"${GDAL_HOME}\" does not appear to contain GDAL." >&2
+		echo "Ensure you have GDAL installed. See http://www.gdal.org/" >&2
+	fi
+	JAVA_OPTS="$JAVA_OPTS -Djava.library.path=${GDAL_HOME}/lib"
+
+	# Classpath. First, see if the user has specified any additional elements.
+	# Then construct the compilation classpath, which consists of the user
+	# elements plus a base. The construct the runtime classpath, which consists
+	# of the compilation one plus filters and config resources.
+	val=$(sed -n 's/classpath_extra *= *\(.*\)/\1/p' < $CFILE)
+	if [ -n "$CLASSPATH" ]; then
+		CLASSPATH="$CLASSPATH:$val"
+	else
+		CLASSPATH="$val"
+	fi
+	COMPILE_CLASSPATH="${RSACLIJAR}:${ROOTDIR}/lib/*:${GDAL_HOME}/lib/gdal.jar"
+	if [ -n "$CLASSPATH" ]; then
+		COMPILE_CLASSPATH="${CLASSPATH}:${RSACLIJAR}:${ROOTDIR}/lib/*:${GDAL_HOME}/lib/gdal.jar"
+	fi
+	CLASSPATH="${ROOTDIR}/config:${ROOTDIR}/filter:${COMPILE_CLASSPATH}"
+
+	# Compile options. Store in array to allow multiple options.
+	COMPILE_OPTS=( $(sed -n 's/compile_opts *= *\(.*\)/\1/p' < $CFILE) )
+	COMPILE_OPTS=( ${COMPILE_OPTS[@]} -cp "${COMPILE_CLASSPATH}" )
+
+	# Nailgun Java server flags
+	val=$(sed -n 's/nailgun *= *\(.*\)/\1/p' < $CFILE)
+	case ${val} in
+		false|no|off|0)
+			WITH_NAILGUN=0
+			;;
+		*)
+			WITH_NAILGUN=1
+	esac
+
+	#echo "GDAL_HOME=$GDAL_HOME"
+	#echo "JAVA_OPTS=$JAVA_OPTS"
+	#echo "CLASSPATH=$CLASSPATH"
+	#echo "COMPILE_CLASSPATH=$COMPILE_CLASSPATH"
+	#echo "COMPILE_OPTS=${COMPILE_OPTS[@]} ${#COMPILE_OPTS[*]}"
+	#echo "WITH_NAILGUN=$WITH_NAILGUN"
+}
+
+function _compile_filters() {
+	FILTER_CLASS_DIR="${ROOTDIR}/filter"
+	src_dir="${ROOTDIR}/filter-src"
+
+	JAVAC=$(which javac)
+	if [ $? -ne 0 ]; then
+		echo "Error: No apparent Java compiler. Ensure a JDK is installed." >&2
+		return 1
+	fi
+
+	# IFS needs to be set to ensure files are converted into an array, with one
+	# element per source line.
+	_old_ifs="${IFS}"
+	IFS="
+"
+	source_files=( $(find "${src_dir}" -iname '*.java') )
+	IFS="${_old_ifs}"
+
+	echo "Compiling ${#source_files[@]} classes to ${FILTER_CLASS_DIR}." >&2
+
+	#echo "$JAVAC" ${COMPILE_OPTS[@]} -d "${FILTER_CLASS_DIR}" ${source_files[@]}
+	"$JAVAC" ${COMPILE_OPTS[@]} -d "${FILTER_CLASS_DIR}" ${source_files[@]}
+
+	if _nailgun_is_running; then
+		echo "Nailgun will need to be restarted for the changes to take effect; run:" >&2
+		echo -e "\t$0 --restart" >&2
+		echo "Note that doing so may affect running jobs." >&2
+	fi
+
+	return 0
+}
+
+
+if [[ $(uname) == MINGW* ]]; then
+    # Windows
+    NAILGUN="${ROOTDIR}/ng.exe"
+else
+    # Linux
+    NAILGUN="${ROOTDIR}/ng"
+fi
+
+# Functions for running RSA as a daemon or standalone. The daemon uses Nailgun
+# to service requests; see http://www.martiansoftware.com/nailgun/
+
+function _nailgun_is_running() {
+    ${NAILGUN} ng-version &> /dev/null
+    return $?
+}
+
+function _start_nailgun() {
+    local ng_pid
+    echo "Starting Nailgun Java server" >&2
+    java $JAVA_OPTS -server -classpath ${CLASSPATH} com.martiansoftware.nailgun.NGServer 127.0.0.1 &
+    ng_pid=$!
+    # Wait for the server to open the port.
+    sleep 2
+
+    # Make sure the server is still running. If not, then startup failed for
+    # some reason (e.g. port already in use).
+    proc_details=$(ps -w -w -p $ng_pid -o args=)
+    echo ${proc_details} | egrep "rsacli.*NGServer" -q
+
+    if [ $? -ne 0 ]; then
+        echo "Server failed to start."
+        return 1
+    else
+        return 0
+    fi
+}
+
+function _stop_nailgun() {
+    echo "Stopping Nailgun Java server" >&2
+    ${NAILGUN} ng-stop 2> /dev/null
+    if [ $? -eq 230 ]; then
+        echo "Server was not running."
+        return 230
+    fi
+    return 0
+}
+
+function _start_rsa_with_nailgun() {
+    if ! _nailgun_is_running; then
+        _start_nailgun
+        if [ $? -ne 0 ]; then
+            exit 1
+        fi
+    fi
+    ${NAILGUN} ${MAIN_CLASS} ${1+"$@"}
+    return $?
+}
+
+function _start_rsa_without_nailgun() {
+    # http://stackoverflow.com/questions/743454/space-in-java-command-line-arguments
+    #echo "Starting RSA without Nailgun."
+    java $JAVA_OPTS -classpath ${CLASSPATH} ${MAIN_CLASS} ${1+"$@"}
+    return $?
+}
+
+# Run RSA.
+
+_get_options
+
+case ${1} in
+	-c|--compile-filters)
+		_compile_filters
+		;;
+    -k|--stop)
+        _stop_nailgun
+        ;;
+    -d|--start)
+        _start_nailgun
+        ;;
+    --restart)
+        _stop_nailgun
+        _start_nailgun
+        ;;
+    -1|--no-daemon)
+        # Run without a daemon even if enabled in config.
+        args=( ${1+"$@"} )
+        _start_rsa_without_nailgun ${args[@]:1}
+        ;;
+    --daemon)
+        # Run with a daemon even if disabled in config.
+        args=( ${1+"$@"} )
+        _start_rsa_with_nailgun ${args[@]:1}
+        ;;
+    *)
+        if [ $WITH_NAILGUN -eq 1 ]; then
+	        _start_rsa_with_nailgun ${1+"$@"}
+	    else
+            _start_rsa_without_nailgun ${1+"$@"}
+        fi
+        ;;
+esac
+
+exit $?
+

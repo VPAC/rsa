@@ -1,0 +1,15 @@
+org.vpac.ndg.query.PassThrough
+org.vpac.ndg.query.AddBinary
+org.vpac.ndg.query.AddUnary
+org.vpac.ndg.query.SubBinary
+org.vpac.ndg.query.MulBinary
+org.vpac.ndg.query.GreaterOrEqual
+org.vpac.ndg.query.LessThan
+org.vpac.ndg.query.Blur
+org.vpac.ndg.query.NormaliseRange
+org.vpac.ndg.query.NodataMask
+org.vpac.ndg.query.Variance
+org.vpac.ndg.query.MaximiseForTime
+org.vpac.ndg.query.MinimiseForTime
+org.vpac.ndg.query.MeanOverTime
+org.vpac.ndg.query.SumOverTime

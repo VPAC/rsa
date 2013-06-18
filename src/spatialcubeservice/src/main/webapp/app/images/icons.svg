@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="100"
+   height="100"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.48+devel r"
+   sodipodi:docname="icons.svg"
+   inkscape:export-filename="/home/alex/WorkDocuments/ula/trunk_src/RSA/SpatialCubeService/src/main/webapp/app/images/error_icon.png"
+   inkscape:export-xdpi="90"
+   inkscape:export-ydpi="90">
+  <defs
+     id="defs4" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="1"
+     inkscape:cx="48.902965"
+     inkscape:cy="61.084202"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:snap-bbox="true"
+     inkscape:window-width="1301"
+     inkscape:window-height="744"
+     inkscape:window-x="65"
+     inkscape:window-y="24"
+     inkscape:window-maximized="1">
+    <inkscape:grid
+       type="xygrid"
+       id="grid810" />
+  </sodipodi:namedview>
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Snapshot"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(0,-952.36218)"
+     style="display:none">
+    <path
+       id="path814"
+       style="opacity:0.5;color:#000000;color-interpolation:sRGB;color-interpolation-filters:linearRGB;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:2;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate;clip-rule:nonzero"
+       d="m 62.247462,1007.3622 c 0,8.2843 -6.715729,15 -15,15 -8.284271,0 -15,-6.7157 -15,-15 0,-8.2843 6.715729,-15.00003 15,-15.00003 C 55.531733,992.36217 62.247462,999.0779 62.247462,1007.3622 Z M 12.5,989.86217 l 0,34.75003 c 0,3.5646 1.985865,5.25 5.25,5.25 l 65,0 c 3.342529,0 4.75,-1.6075 4.75,-4.75 l 0,-35.50003 c 0,-2.72967 -2.305355,-4.75 -5.25,-4.75 l -19.75,0 -2.5,-5 c -2.33059,-4.66118 -2.509782,-5 -7.375,-5 l -10.25,0 c -5.14713,0 -5.228483,0.70697 -7.375,5 l -2.5,5 -15,0 C 14.386932,984.86217 12.5,986.73717 12.5,989.86217 Z"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="sssssssssssscsssscss" />
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer2"
+     inkscape:label="Error"
+     style="display:inline">
+    <text
+       xml:space="preserve"
+       style="font-size:40px;font-style:normal;font-weight:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="40"
+       y="65"
+       id="text823"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan825"
+         x="40"
+         y="65" /></text>
+    <path
+       style="opacity:0.25;fill:#000000;fill-opacity:1;stroke:none"
+       d="m 35.499138,14.991385 4.011606,40.116058 C 39.872924,58.729235 41.629889,60 45.254834,60 l 9.545942,0 c 3.705777,0 5.339043,-1.398185 5.706533,-5.073089 L 64.518915,14.810853 C 64.882108,11.17892 63.29932,10 59.750523,10 l -19.79899,0 C 36.677856,10 35.156338,11.563379 35.499138,14.991385 Z"
+       id="path827"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="sssssssss" />
+    <path
+       sodipodi:type="arc"
+       style="opacity:0.25;color:#000000;color-interpolation:sRGB;color-interpolation-filters:linearRGB;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:2;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate;clip-rule:nonzero"
+       id="path829"
+       sodipodi:cx="47.5"
+       sodipodi:cy="82.5"
+       sodipodi:rx="12.5"
+       sodipodi:ry="12.5"
+       d="M 60,82.5 A 12.5,12.5 0 1 1 35,82.5 12.5,12.5 0 1 1 60,82.5 Z"
+       transform="translate(2.5,-3.5355339)" />
+  </g>
+</svg>

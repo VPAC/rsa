@@ -1,0 +1,228 @@
+<project name="rsaquery" default="dist" basedir=".">
+	<description>
+        Build file for the RSA query system
+    </description>
+
+	<!-- set global properties for this build -->
+	<property name="src" value="src" />
+	<property name="filter-src" value="filter-src" />
+	<property name="filter-build" location="filter-build" />
+	<property name="script" value="script" />
+	<property name="config" value="config" />
+	<property name="build" location="build" />
+	<property name="dist" location="dist" />
+	<property name="doc" location="doc/javadoc" />
+	<property name="test-src" value="test-src" />
+	<property name="test-build" location="test-build" />
+	<property name="test-results" location="test-results" />
+	<property name="test-output" location="data/output" />
+	<property name="lib" value="lib" />
+	<property name="lib-local" value="lib-references" />
+
+	<property name="app.name" value="rsaquery" />
+	<!-- Versions numbers are populated by master build file; see ../build.xml. -->
+	<property name="version.number" value="local" />
+	<property name="svn.info.lastRev" value="rN" />
+	<property name="dist.name" value="${app.name}-${version.number}" />
+
+	<property name="target" value="1.7" />
+	<property name="source" value="1.7" />
+
+	<path id="classpath">
+		<pathelement location="${build}" />
+		<fileset dir="${lib}">
+			<include name="**/*.jar"/>
+		</fileset>
+	</path>
+
+	<path id="classpath-javadoc">
+		<path refid="classpath" />
+		<pathelement location="${lib-local}/javadocAll-4.2.jar" />
+	</path>
+
+	<path id="classpath-test">
+		<path refid="classpath" />
+		<path refid="filter.classpath" />
+		<pathelement location="${test-build}" />
+		<pathelement location="${lib-local}/junit.jar" />
+	</path>
+
+	<path id="classpath-dist">
+		<path refid="classpath" />
+		<pathelement location="${resources}/logback.xml" />
+	</path>
+
+	<!-- Used for filter-compile -->
+	<path id="filter.classpath">
+		<pathelement location="${build}" />
+		<pathelement location="${filter-build}" />
+	</path>
+
+	<tstamp>
+		<format property="current-date" pattern="yyyyMMdd" locale="en,AU" />
+	</tstamp>
+
+	<!-- List all needed jar in our classpath for used when creating MANIFEST.MF -->
+	<manifestclasspath property="lib.list" jarfile="${lib}">
+		<classpath refid="classpath-dist" />
+	</manifestclasspath>
+
+	<target name="init">
+		<!-- Create the time stamp -->
+		<tstamp />
+		<!-- Create the build directory structure used by compile -->
+		<mkdir dir="${build}" />
+		<mkdir dir="${filter-build}" />
+		<mkdir dir="${doc}" />
+		<mkdir dir="${test-results}" />
+	</target>
+
+	<target name="compile" depends="init" description="compile the source ">
+		<!-- Compile the java code from ${src} into ${build} -->
+
+		<echo message="Java home = ${java.home}" />
+		<javac destdir="${build}" source="${source}" target="${target}"
+				debug="on" debuglevel="lines,vars,source">
+			<src path="${src}" />
+			<classpath refid="classpath" />
+		</javac>
+	</target>
+
+	<target name="test" depends="compile,filter-compile" description="run unit tests">
+		<!-- Run JUnit test on test classes -->
+		<mkdir dir="${test-build}" />
+		<javac destdir="${test-build}" source="${source}" target="${target}"
+				debug="on" debuglevel="lines,vars,source">
+			<src path="${test-src}" />
+			<classpath refid="classpath-test" />
+		</javac>
+		<pathconvert pathsep="${line.separator}    " property="myclasspath" refid="classpath-test"/>
+		<!--<property name="myclasspath" refid="classpath-test"/>-->
+		<echo message="Classpath = ${myclasspath}"/>
+		<junit fork="yes" haltonfailure="no" dir="${basedir}">
+			<classpath refid="classpath-test" />
+			<formatter type="plain" usefile="false" />
+			<formatter type="xml" />
+			<batchtest todir="${test-results}">
+				<fileset dir="${test-build}" includes="org/vpac/ndg/query/AllTests.class" />
+			</batchtest>
+		</junit>
+	</target>
+
+	<target name="filter-compile" depends="init, compile" description="compile filters">
+		<!-- Note that the rsa startup script has a compile-filters function
+		     that does the same thing. -->
+		<echo message="Java home = ${java.home}" />
+		<javac srcdir="${filter-src}" destdir="${filter-build}" source="${source}" target="${target}" debug="on" debuglevel="lines,vars,source">
+			<classpath refid="classpath" />
+			<classpath refid="filter.classpath" />
+		</javac>
+	</target>
+
+	<target name="dist" depends="clean,snapshot,compile,test,filter-compile,javadoc,source"
+			description="generate the distribution">
+
+		<!-- Create the distribution directory -->
+		<mkdir dir="${dist}/${dist.name}/lib" />
+		<mkdir dir="${dist}/${dist.name}/config" />
+		<mkdir dir="${dist}/${dist.name}/filter-src" />
+		<mkdir dir="${dist}/${dist.name}/filter" />
+
+		<copy todir="${dist}/${dist.name}/lib" flatten="true" verbose="true">
+			<path refid="classpath" />
+		</copy>
+
+		<!-- copy config. Because this combines the contents of several
+		     directories, the readme files are concatenated. -->
+		<copy todir="${dist}/${dist.name}/config" flatten="false" verbose="true">
+			<fileset dir="${config}" />
+		</copy>
+
+		<!-- copy filters: source and compiled -->
+		<copy todir="${dist}/${dist.name}/filter-src" flatten="false" verbose="true">
+			<fileset dir="${filter-src}" />
+		</copy>
+		<copy todir="${dist}/${dist.name}/filter" flatten="false" verbose="true">
+			<fileset dir="${filter-build}" />
+		</copy>
+
+		<!-- copy script into the distribution-->
+		<copy todir="${dist}/${dist.name}" flatten="true" verbose="true">
+			<fileset dir="${script}">
+				<exclude name="**/*~" />
+			</fileset>
+		</copy>
+
+		<!-- Allow easy execution on Unix -->
+		<chmod file="${dist}/${dist.name}/rsaquery" perm="ugo+x"/>
+		<symlink link="${dist}/${app.name}" resource="${dist.name}" overwrite="true" />
+
+		<!-- Put everything in ${build} into the MyProject-${DSTAMP}.jar file -->
+		<jar jarfile="${dist}/${dist.name}/${dist.name}.jar" basedir="${build}">
+			<manifest>
+				<attribute name="Main-Class" value="org.vpac.ndg.query.QueryRunner" />
+				<attribute name="Class-Path" value="${lib.list}"/>
+			</manifest>
+		</jar>
+
+		<!-- Zip distribution into a zipped file -->
+		<zip destfile="${dist}/${dist.name}.zip" whenempty="fail">
+			<!-- Some fancy stuff to make sure the script is executable. -->
+			<zipfileset dir="${dist}" includes="${dist.name}/**/*" excludes="${dist.name}/rsaquery" />
+			<zipfileset dir="${dist}" includes="${dist.name}/rsaquery" filemode="755" />
+		</zip>
+	</target>
+
+	<target name="clean" description="clean up files/folders created during build">
+		<!-- Delete the ${build} and ${dist} directory trees -->
+		<delete dir="${build}" />
+		<delete dir="${filter-build}" />
+		<delete dir="${test-build}" />
+		<delete dir="${test-results}" />
+		<delete dir="${dist}" />
+		<delete dir="${doc}" />
+		<delete dir="${test-output}" excludes="*.txt,.gitignore,convert_to_png.sh" />
+	</target>
+
+	<target name="javadoc">
+		<javadoc access="public" author="true" classpathref="classpath-javadoc"
+				destdir="${doc}" doctitle="RSA Query Engine Documentation"
+				nodeprecated="false" nodeprecatedlist="false" noindex="false"
+				nonavbar="false" notree="false" source="1.7" sourcepath="${src}"
+				splitindex="true" use="true" version="true"
+				overview="${src}/overview.html" />
+
+		<!-- Zip javadocs into a zipped file -->
+		<zip destfile="${dist}/${dist.name}-JAVADOC.zip" basedir="${doc}"
+				update="false" whenempty="fail" compress="true" />
+	</target>
+
+	<target name="source">
+		<mkdir dir="${dist}" />
+		<!-- Zip source into a zipped file -->
+		<zip destfile="${dist}/${dist.name}-SOURCE.zip">
+			<zipfileset dir="${src}" />
+			<zipfileset dir="${filter-src}" />
+		</zip>
+	</target>
+
+	<target name="snapshot">
+		<mkdir dir="${dist}" />
+		<!-- Zip source into a zipped file -->
+		<zip destfile="../${app.name}-SNAPSHOT-${current-date}.zip" >
+			<zipfileset dir=".">
+				<!-- For some reason certain variables don't seem to work here? -->
+				<exclude name="dist/"/>
+				<exclude name="build/**"/>
+				<exclude name="filter-build/**"/>
+				<exclude name="test-results/**"/>
+				<exclude name="test-build/**"/>
+				<exclude name="doc/javadoc/**"/>
+				<exclude name="${lib}/**"/>
+				<exclude name="${lib-local}/**"/>
+				<exclude name="bin/**"/>
+			</zipfileset>
+		</zip>
+		<move file="../${app.name}-SNAPSHOT-${current-date}.zip" todir="${dist}" />
+	</target>
+</project>

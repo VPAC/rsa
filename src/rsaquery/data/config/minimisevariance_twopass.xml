@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<query xmlns="http://www.vpac.org/namespaces/rsaquery-0.2">
+
+	<input id="infile" href="../input/noise.nc" />
+
+	<output id="outfile" >
+		<grid ref="#infile" />
+		<variable name="Band1" ref="#minimise/output" />
+		<variable name="time" ref="#minimise/outtime" />
+	</output>
+
+	<!-- First pass: calculate variance. -->
+	<filter id="variance" cls="org.vpac.ndg.query.Variance">
+		<literal name="windowSize" value="3" />
+		<sampler name="input" ref="#infile/Band1" />
+	</filter>
+
+	<!-- Second pass: Find minimum. -->
+	<filter id="minimise" cls="org.vpac.ndg.query.MinimiseForTime">
+		<sampler name="toKeep" ref="#infile/Band1" />
+		<sampler name="toMinimise" ref="#variance/output" />
+		<sampler name="intime" ref="#infile/time" />
+	</filter>
+
+</query>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<query xmlns="http://www.vpac.org/namespaces/rsaquery-0.2">
+
+	<input id="infile" href="rsa:small_landsat/25m" />
+
+	<output id="outfile">
+ 		<grid ref="#infile" bounds="950000.00 -3575000.0 997500.00 -3550000.0" />
+
+		<variable name="wet" ref="#wet/output">
+			<attribute name="_FillValue" value="-1" />
+		</variable>
+	</output>
+
+	<filter id="ndvi" cls="org.vpac.ndg.cli.query.Ndvi">
+		<sampler name="band3" ref="#infile/B30"  />
+		<sampler name="band4" ref="#infile/B40"  />
+	</filter>
+
+	<filter id="wet" cls="org.vpac.ndg.cli.query.WetByNdvi">
+		<literal name="dryThreshold" value="1000" />
+		<literal name="ndviThreshold" value="0.08" />
+
+		<sampler name="ndvi" ref="#ndvi/output"  />
+		<sampler name="band5" ref="#infile/B50"  />
+	</filter>
+</query>
+

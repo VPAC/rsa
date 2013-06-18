@@ -1,0 +1,27 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+		http://www.springframework.org/schema/context
+		http://www.springframework.org/schema/context/spring-context-3.1.xsd
+		http://www.springframework.org/schema/aop
+		http://www.springframework.org/schema/aop/spring-aop-3.1.xsd">
+	<context:annotation-config/>
+	<!-- Service object -->
+	<import resource="classpath*:spring/config/BeanLocations.xml" />
+	<!-- Remote StorageManager beans -->
+	<bean id="restTemplate" class="org.springframework.web.client.RestTemplate" />
+	<bean id="datasetConnector" class="org.vpac.ndg.cli.smadaptor.remote.RemoteDatasetConnector" scope="prototype" lazy-init="true" />
+	<bean id="timesliceConnector" class="org.vpac.ndg.cli.smadaptor.remote.RemoteTimesliceConnector" scope="prototype" lazy-init="true" />
+	<bean id="bandConnector" class="org.vpac.ndg.cli.smadaptor.remote.RemoteBandConnector" scope="prototype" lazy-init="true" />
+	<bean id="taskConnector" class="org.vpac.ndg.cli.smadaptor.remote.RemoteTaskConnector" scope="prototype" lazy-init="true" />
+	<bean id="dataUpload" class="org.vpac.ndg.cli.smadaptor.remote.RemoteDataUpload" scope="prototype" lazy-init="true" />
+	<bean id="dataImport" class="org.vpac.ndg.cli.smadaptor.remote.RemoteDataImport" scope="prototype" lazy-init="true" />
+	<bean id="dataExport" class="org.vpac.ndg.cli.smadaptor.remote.RemoteDataExport" scope="prototype" lazy-init="true" />
+ 	<bean id="dataQuery" class="org.vpac.ndg.cli.smadaptor.remote.RemoteDataQuery" scope="prototype" lazy-init="true" />
+ 	<bean id="dataCleanup" class="org.vpac.ndg.cli.smadaptor.remote.RemoteDataCleanup" scope="prototype" lazy-init="true" />
+	<bean id="dataDownloader" class="org.vpac.ndg.cli.smadaptor.remote.RemoteDataDownloader" scope="prototype" lazy-init="true" />
+	<bean id="dataProvider" class="org.vpac.ndg.cli.smadaptor.local.RsaDatasetProvider" lazy-init="true" />
+</beans>

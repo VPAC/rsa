@@ -1,0 +1,200 @@
+<project name="StorageManager" default="dist" basedir=".">
+	<description>
+        	Build file for the storage manager
+    	</description>
+
+	<!-- Global properties for this build -->
+	<property name="app.name" value="storagemanager" />
+	<property name="src" value="src" />
+	<property name="test-src" value="test" />
+	<property name="resources" value="resources" />
+	<property name="test-resources" value="test-resources" />
+	<property name="config" value="config" />
+	<property name="inc" value="lib" />
+	<property name="inc-test" value="lib-test" />
+	<property name="build" location="build" />
+	<property name="test-build" location="test-build" />
+	<property name="test-data" value="data" />
+	<property name="dist" location="dist" />
+	<property name="doc" location="doc" />
+	<property name="test-results" location="test-results" />
+	<property name="test-reports" location="test-reports" />
+
+	<!-- Project Dependencies -->
+	<!-- Make sure gdal library location is correct for production -->
+	<condition property="gdalLib" value="C:\tmp\gdalapps\bin">
+		<os family="windows" />
+	</condition>
+	<condition property="gdalLib" value="/usr/local/lib">
+		<os family="unix" />
+	</condition>
+	<!-- Make sure dll property is set -->
+	<condition property="dllWildcard" value="*.dll">
+	   <os family="windows"/>
+	</condition>
+	<condition property="dllWildcard" value="*.so">
+	   <os family="unix"/>
+	</condition>
+
+	<!-- Host name, for benchmark results -->
+	<exec executable="hostname" outputproperty="hostname"/>
+
+	<!-- Java Compilation version -->
+	<property name="target" value="1.7" />
+	<property name="source" value="1.7" />
+
+	<!-- Used for init-gdal-jar and compile -->
+	<path id="classpath" >
+		<fileset dir="${inc}">
+			<include name="**/*.jar"/>
+		</fileset>
+	</path>
+
+	<!-- Used for init-gdal-jar and compile -->
+	<path id="gdal-classpath" >
+		<fileset file="${gdalLib}/gdal.jar" />		
+	</path>
+
+	<!-- Used for test-compile -->
+	<path id="test.classpath">
+		<pathelement location="${build}" />
+		<pathelement location="${test-build}" />
+		<pathelement location="${resources}" />
+		<pathelement location="${test-resources}" />
+		<pathelement location="${config}" />
+				<!-- Reuse the classpath -->
+		<path refid="classpath" />
+		<path refid="gdal-classpath" />
+		<fileset file="${inc-test}/junit-benchmarks-0.4.0.jar" />
+	</path>
+
+	<!-- List all needed jar in our classpath for used when creating MANIFEST.MF -->
+	<manifestclasspath property="lib.list" jarfile="${inc}">
+		<classpath refid="classpath" />
+	</manifestclasspath>
+
+	<target name="init">
+		<!-- Create the time stamp -->
+		<tstamp />
+		<!-- Create the build directory structure used by compile -->
+		<mkdir dir="${build}" />
+		<mkdir dir="${test-build}" />
+		<mkdir dir="${dist}" />
+		<mkdir dir="${doc}" />
+		<mkdir dir="${test-results}" />
+		<mkdir dir="${test-reports}" />
+	</target>
+
+	<target name="clean" description="clean up files/folders created during build">
+		<!-- Delete the ${build} and ${dist} directory trees -->
+		<delete dir="${build}" />
+		<delete dir="${test-build}" />
+		<delete dir="${dist}" />
+		<delete dir="${doc}" />
+		<delete dir="${test-results}" />
+		<delete dir="${test-reports}" />
+	</target>
+
+	<target name="compile" depends="init" description="compile the source ">
+		<!-- Compile the java code from ${src} into ${build} -->
+		<echo message="Java home = ${java.home}" />
+		<javac srcdir="${src}" destdir="${build}" source="${source}" target="${target}" debug="on" debuglevel="lines,vars,source">
+			<classpath refid="classpath" />
+			<classpath refid="gdal-classpath" />
+		</javac>
+	</target>
+
+	<target name="test-compile" depends="init,compile" description="compile unit tests">
+		<!-- Compile the test cases -->
+		<echo message="Java home = ${java.home}" />
+		<echo message="Test build dir = ${build}" />
+		<javac srcdir="${test-src}" destdir="${test-build}" source="${source}" target="${target}" debug="on" debuglevel="lines,vars,source">
+			<classpath refid="test.classpath" />
+		</javac>
+	</target>
+
+	<target name="test" depends="test-compile" description="run unit tests">
+		<!-- Run JUnit test on test classes -->
+		<junit fork="yes" haltonfailure="no" dir="${basedir}">
+			<!-- Include GDAL share library -->
+			<env key="LD_LIBRARY_PATH" value="${env.LD_LIBRARY_PATH}:${gdalLib}" />
+			<classpath refid="test.classpath" />
+			<formatter type="plain" usefile="false" />
+			<formatter type="xml" />
+
+			<!-- Write benchmark results to a file. Note that the results are
+			     dependant on the machine. -->
+			<jvmarg value="-Djub.consumers=CONSOLE,XML"/>
+			<jvmarg value="-Djub.xml.file=${test-data}/benchmarks_${hostname}.xml"/>
+
+			<!-- 
+			Single Test Example
+			<test name="org.vpac.ndg.storage.TimeSliceUtilTest" todir="${test-results}" />
+			
+			Batch Test Example	
+            <batchtest todir="${test-results}" >
+                <fileset dir="${build}" includes="**/*Test.class"/>
+            </batchtest>   
+			-->
+			<test name="org.vpac.ndg.AllTests" todir="${test-results}" />
+		</junit>
+	</target>
+
+	<target name="copy-resources" depends="init" >
+		<!-- copy all .xml or .properties files into build -->
+		<copy todir="${build}">
+			<fileset dir="${src}">
+				<include name="**/*.xml" />
+				<include name="**/*.properties" />
+			</fileset>
+			<fileset dir="${resources}">
+				<include name="**/*.xml" />
+				<include name="**/*.properties" />
+			</fileset>
+		</copy>
+	</target>
+
+	<target name="dist" depends="clean,compile,copy-resources" description="generate the distribution">
+		<echo>Manifest Class-Path: ${lib.list}</echo>
+		<fail message="Re-run the ant script once more to ensure lib folder contains all needed jars so that Manifest Class-Path: is not empty.">
+			<condition>
+				<length string="${lib.list}" trim="true" when="equal" length="0"/>
+			</condition>
+		</fail>
+		<mkdir dir="${dist}/lib" />
+		<!-- copy all needed jars into the distribution -->
+		<copy todir="${dist}/lib" flatten="true" verbose="true">
+			<path refid="classpath" />
+		</copy>
+		<mkdir dir="${dist}/config" />
+		<copy todir="${dist}/config" verbose="true">
+			<fileset dir="${config}">
+			</fileset>
+		</copy>
+
+		<jar jarfile="${dist}/${app.name}.jar" basedir="${build}">
+			<manifest>
+				<attribute name="Main-Class" value="org.vpac.ndg.geometry.Projection" />
+				<attribute name="Class-Path" value="config ${lib.list}"/>
+			</manifest>
+		</jar>
+
+		<echo>Note: gdal is not included in ${app.name}.jar.</echo>
+	</target>
+
+	<target name="javadoc">
+		<javadoc access="public" author="true" destdir="${doc}" doctitle="Storage Manager Documentation" nodeprecated="false" nodeprecatedlist="false" noindex="false" nonavbar="false" notree="false" source="${source}" sourcepath="${src}" splitindex="true" use="true" version="true">
+			<classpath refid="classpath" />
+			<classpath refid="gdal-classpath" />
+		</javadoc>
+
+		<!-- Zip javadocs into a zipped file -->
+		<zip destfile="${dist}/${app.name}-JAVADOC.zip" basedir="${doc}" update="false" whenempty="fail" compress="true" />
+	</target>
+
+	<target name="source">
+		<mkdir dir="${dist}" />
+		<!-- Zip source into a zipped file -->
+		<zip destfile="${dist}/${app.name}_SOURCE.zip" basedir="${src}" />
+	</target>
+</project>

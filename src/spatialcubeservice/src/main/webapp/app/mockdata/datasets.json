@@ -1,0 +1,63 @@
+[ {
+	"name": "small_landsat",
+	"type": "input",
+	"qualname": "rsa:small_landsat/100m",
+	"description": "A small sample of Landsat 7 data",
+	"inputs": [],
+	"outputs": [ {
+		"name": "grid",
+		"type": "meta"
+	}, {
+		"name": "time",
+		"type": "scalar,axis"
+	}, {
+		"name": "y",
+		"type": "scalar,axis"
+	}, {
+		"name": "x",
+		"type": "scalar,axis"
+	}, {
+		"name": "B10",
+		"type": "scalar"
+	}, {
+		"name": "B20",
+		"type": "scalar"
+	} ]
+}, {
+	"name": "GaLandsat",
+	"type": "input",
+	"qualname": "rsa:GaLandsat/25m",
+	"description": "A larger sample of Landsat 7 data, processed by Geoscience Australia",
+	"inputs": [],
+	"outputs": [ {
+		"name": "grid",
+		"type": "meta"
+	}, {
+		"name": "time",
+		"type": "scalar,axis"
+	}, {
+		"name": "y",
+		"type": "scalar,axis"
+	}, {
+		"name": "x",
+		"type": "scalar,axis"
+	}, {
+		"name": "B10",
+		"type": "scalar"
+	}, {
+		"name": "B20",
+		"type": "scalar"
+	}, {
+		"name": "B30",
+		"type": "scalar"
+	}, {
+		"name": "B40",
+		"type": "scalar"
+	}, {
+		"name": "B50",
+		"type": "scalar"
+	}, {
+		"name": "B70",
+		"type": "scalar"
+	} ]
+} ]
