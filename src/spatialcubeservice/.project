@@ -38,37 +38,37 @@
 		<link>
 			<name>CommonSrc</name>
 			<type>2</type>
-			<locationURI>PARENT-1-PROJECT_LOC/common/src</locationURI>
+			<locationURI>$%7BPARENT-1-PROJECT_LOC%7D/common/src</locationURI>
 		</link>
 		<link>
 			<name>StorageManagerConfig</name>
 			<type>2</type>
-			<locationURI>PARENT-1-PROJECT_LOC/storagemanager/config</locationURI>
+			<locationURI>$%7BPARENT-1-PROJECT_LOC%7D/storagemanager/config</locationURI>
 		</link>
 		<link>
 			<name>StorageManagerResources</name>
 			<type>2</type>
-			<locationURI>PARENT-1-PROJECT_LOC/storagemanager/resources</locationURI>
+			<locationURI>$%7BPARENT-1-PROJECT_LOC%7D/storagemanager/resources</locationURI>
 		</link>
 		<link>
 			<name>StorageManagerSrc</name>
 			<type>2</type>
-			<locationURI>PARENT-1-PROJECT_LOC/storagemanager/src</locationURI>
+			<locationURI>$%7BPARENT-1-PROJECT_LOC%7D/storagemanager/src</locationURI>
 		</link>
 		<link>
 			<name>rsaqueryFilterSrc</name>
 			<type>2</type>
-			<locationURI>PARENT-1-PROJECT_LOC/rsaquery/filter-src</locationURI>
+			<locationURI>$%7BPARENT-1-PROJECT_LOC%7D/rsaquery/filter-src</locationURI>
 		</link>
 		<link>
 			<name>rsaquerySrc</name>
 			<type>2</type>
-			<locationURI>PARENT-1-PROJECT_LOC/rsaquery/src</locationURI>
+			<locationURI>$%7BPARENT-1-PROJECT_LOC%7D/rsaquery/src</locationURI>
 		</link>
 	</linkedResources>
 	<filteredResources>
 		<filter>
-			<id>1350948765501</id>
+			<id>0</id>
 			<name>StorageManagerConfig</name>
 			<type>6</type>
 			<matcher>

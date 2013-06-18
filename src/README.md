@@ -6,7 +6,7 @@ detailed documentation, refer to the [../doc](../doc) directory.
 ### Storage Manager
 
 The [Storage Manager](storagemanager) is the heart of the RSA. It can import
-spatial data into the storage pool, performing the require transforms along the
+spatial data into the storage pool, performing the required transforms along the
 way (such as reprojection and splitting into tiles). It also provides access to
 the data, either by exporting chunks of the data cube or by direct views of the
 live data.
