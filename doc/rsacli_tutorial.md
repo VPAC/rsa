@@ -1,3 +1,5 @@
+# Basic Usage
+
 The command line client provides a convenient way to interact with
 the RSA from a text shell. Data can be imported, exported, and queried using
 rsaquery. This makes it ideal for administrative tasks, or for processing data
