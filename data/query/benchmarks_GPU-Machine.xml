@@ -1,27 +1,43 @@
-<benchmark-results tstamp="2013-03-13T14:54:33.772+1100">
+<benchmark-results tstamp="2013-06-19T13:10:20.684+1000">
 
-	<testname classname="org.vpac.ndg.cli.QueryTest" name="testAddUnary"
+	<testname classname="org.vpac.ndg.cli.QueryTest" name="testWetNdviReduced"
 		 benchmark-rounds="4" warmup-rounds="1"
-		 round-avg="10.527" round-stddev="0.536"
+		 round-avg="5.359" round-stddev="0.43"
 		 gc-avg="0" gc-stddev="0"
-		 gc-invocations="14" gc-time="0.172"
-		 benchmark-time-total="42.104" warmup-time-total="11.724"
-		 threads="1"/>
-
-	<testname classname="org.vpac.ndg.cli.QueryTest" name="testAddBinary"
-		 benchmark-rounds="4" warmup-rounds="1"
-		 round-avg="8.854" round-stddev="0.014"
-		 gc-avg="0" gc-stddev="0"
-		 gc-invocations="36" gc-time="0.404"
-		 benchmark-time-total="35.416" warmup-time-total="8.835"
+		 gc-invocations="5" gc-time="0.086"
+		 benchmark-time-total="21.434" warmup-time-total="7.196"
 		 threads="1"/>
 
 	<testname classname="org.vpac.ndg.cli.QueryTest" name="testThreshold"
 		 benchmark-rounds="4" warmup-rounds="1"
-		 round-avg="6.788" round-stddev="0.033"
+		 round-avg="4.819" round-stddev="0.439"
 		 gc-avg="0" gc-stddev="0"
-		 gc-invocations="13" gc-time="0.115"
-		 benchmark-time-total="27.151" warmup-time-total="6.863"
+		 gc-invocations="4" gc-time="0.039"
+		 benchmark-time-total="19.275" warmup-time-total="5.059"
+		 threads="1"/>
+
+	<testname classname="org.vpac.ndg.cli.QueryTest" name="testAddUnary"
+		 benchmark-rounds="4" warmup-rounds="1"
+		 round-avg="7.308" round-stddev="0.432"
+		 gc-avg="0" gc-stddev="0"
+		 gc-invocations="8" gc-time="0.077"
+		 benchmark-time-total="29.233" warmup-time-total="8.071"
+		 threads="1"/>
+
+	<testname classname="org.vpac.ndg.cli.QueryTest" name="testAddBinary"
+		 benchmark-rounds="4" warmup-rounds="1"
+		 round-avg="6.302" round-stddev="0.432"
+		 gc-avg="0" gc-stddev="0"
+		 gc-invocations="17" gc-time="0.322"
+		 benchmark-time-total="25.209" warmup-time-total="6.052"
+		 threads="1"/>
+
+	<testname classname="org.vpac.ndg.cli.QueryTest" name="testWetNdvi"
+		 benchmark-rounds="4" warmup-rounds="1"
+		 round-avg="5.061" round-stddev="0.013"
+		 gc-avg="0" gc-stddev="0"
+		 gc-invocations="8" gc-time="0.081"
+		 benchmark-time-total="20.243" warmup-time-total="5.052"
 		 threads="1"/>
 
 </benchmark-results>
