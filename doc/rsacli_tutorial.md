@@ -31,9 +31,9 @@ The most common commands are:
 
 ## Command completion
 
-Bash completion is available for some RSA commands - including completion of metadata such as dataset names. To enable it, run:
+Bash completion is available for some RSA commands - including completion of metadata such as dataset names. To enable it, change to the rsacli installation directory and run:
 
     $ . _rsacli_bash_completion.sh
     
-from the rsacli installation directory. This runs the RSA to query the database, therefore it is best to use this feature in conjunction with Nailgun to ensure responsiveness.
+The completion rules run the RSA to query the database, therefore it is best to use this feature in conjunction with Nailgun to ensure responsiveness.
 
