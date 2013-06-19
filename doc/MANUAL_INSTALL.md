@@ -150,7 +150,7 @@ An alternative to an svn checkout would be to get a nightly build from [here](ht
 Then configure gdal:
 
 	$ cd gdal-trunk/gdal
-	$ ./configure --with-netcdf=/usr/local
+	$ ./configure --with-netcdf=/usr/local --with-hdf5=/usr/local
   
 **Important:** At the end of the configure, it's important that in the status
   report printed, HDF5 and netCDF support are both listed as 'yes'.
