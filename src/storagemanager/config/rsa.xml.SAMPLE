@@ -1,15 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rsaConfig>
+
+	<!-- spatial reference system (SRS) EPSG code to be used -->
 	<targetSrsEpsgId>3577</targetSrsEpsgId>
+
+	<!-- Origin in specified SRS -->
 	<gridOriginPointInTargetSrs>
 		<x class="double">-2690000.0</x>
 		<y class="double">-1000000.0</y>
 	</gridOriginPointInTargetSrs>
+
+	<!-- Whether Y axis increases heading north -->
 	<upPositive>true</upPositive>
+
+	<!-- Turn on/off file locking capability -->
 	<filelockingOn>true</filelockingOn>
+
+	<!-- Time in seconds between each heartbeat (keepalive) -->
 	<heartBeatSpacing>60.0</heartBeatSpacing>
+
+	<!-- How many heartbeats can be missed before lock expires -->
 	<lockDeadline>3</lockDeadline>
+
+	<!-- Generate ncml/vrt aggregation on import, this is useful for testing -->
 	<generateImportTileAggregation>false</generateImportTileAggregation>
+
+	<!-- Specify all supported resolutions here -->
 	<resolutionList>
 		<entry>
 			<cellSize>km10</cellSize>
@@ -61,21 +77,13 @@
 		</entry>
 	</resolutionList>
 
-	<!-- Unix storage locations -->
+	<!-- Specify rsa directories here -->
 	<storagepool>/var/lib/ndg/storagepool</storagepool>
 	<temploc>/var/tmp/ndg</temploc>
 	<uploadloc>/var/spool/ndg/upload</uploadloc>
 	<pickuploc>/var/spool/ndg/pickup</pickuploc>
+
+	<!-- Specify gdal location here -->
 	<gdalprefix>/usr/local</gdalprefix>
-
-	<!-- Windows storage locations -->
-<!-- 	<storagepool>C:\ndg\storagepool</storagepool> -->
-<!-- 	<temploc>C:\ndg\tmp</temploc> -->
-<!-- 	<uploadloc>C:\ndg\upload</uploadloc> -->
-<!-- 	<pickuploc>C:\ndg\pickup</pickuploc> -->
-<!-- 	<gdalprefix>C:\tmp\gdalapps</gdalprefix> -->
-
-	<ncWmsAdminUsername>admin</ncWmsAdminUsername>
-	<ncWmsAdminPassword>ncWMS</ncWmsAdminPassword>
 </rsaConfig>
 
