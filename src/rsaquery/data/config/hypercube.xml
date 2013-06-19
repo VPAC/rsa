@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- This test has multiple input datasets with different time axes. The query
+	engine should align the axes. -->
+
+<query xmlns="http://www.vpac.org/namespaces/rsaquery-0.2">
+
+	<!-- shape = (6, 64, 64) -->
+	<input id="noise" href="../input/noise.nc" />
+	<!-- shape = (3, 64, 64) -->
+	<input id="abstract" href="../input/abstract.nc" />
+
+	<output id="outfile">
+		<grid ref="#noise" />
+		<variable name="Band1" ref="#filter/output" />
+		<variable name="time" ref="#filter/outtime" />
+	</output>
+
+	<filter id="filter" cls="org.vpac.ndg.query.MaximiseForTime">
+		<sampler name="toKeep" ref="#noise/Band1" />
+		<sampler name="toMaximise" ref="#abstract/Quality" />
+		<sampler name="intime" ref="#noise/time" />
+	</filter>
+</query>
+

@@ -1,0 +1,10 @@
+bin
+build
+dist
+rsacli.sh~
+test-build
+test-results
+pub
+doc
+filter-build
+*.xml.nc

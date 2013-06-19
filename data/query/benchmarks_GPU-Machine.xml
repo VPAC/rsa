@@ -1,0 +1,27 @@
+<benchmark-results tstamp="2013-03-13T14:54:33.772+1100">
+
+	<testname classname="org.vpac.ndg.cli.QueryTest" name="testAddUnary"
+		 benchmark-rounds="4" warmup-rounds="1"
+		 round-avg="10.527" round-stddev="0.536"
+		 gc-avg="0" gc-stddev="0"
+		 gc-invocations="14" gc-time="0.172"
+		 benchmark-time-total="42.104" warmup-time-total="11.724"
+		 threads="1"/>
+
+	<testname classname="org.vpac.ndg.cli.QueryTest" name="testAddBinary"
+		 benchmark-rounds="4" warmup-rounds="1"
+		 round-avg="8.854" round-stddev="0.014"
+		 gc-avg="0" gc-stddev="0"
+		 gc-invocations="36" gc-time="0.404"
+		 benchmark-time-total="35.416" warmup-time-total="8.835"
+		 threads="1"/>
+
+	<testname classname="org.vpac.ndg.cli.QueryTest" name="testThreshold"
+		 benchmark-rounds="4" warmup-rounds="1"
+		 round-avg="6.788" round-stddev="0.033"
+		 gc-avg="0" gc-stddev="0"
+		 gc-invocations="13" gc-time="0.115"
+		 benchmark-time-total="27.151" warmup-time-total="6.863"
+		 threads="1"/>
+
+</benchmark-results>

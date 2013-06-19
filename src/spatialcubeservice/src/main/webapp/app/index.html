@@ -1,0 +1,87 @@
+<!doctype html>
+<html ng-app="graphEditor">
+<head>
+  <link rel="stylesheet" href="css/jquery-ui/smoothness/jquery-ui.css" />
+  <link rel="stylesheet" href="css/angular/bootstrap.css" />
+  <link rel="stylesheet" href="css/rsa.css" />
+  <script src="lib/jquery/jquery.js"></script>
+  <script src="lib/jquery/jquery-ui.js"></script>
+  <script src="lib/jsplumb/jquery.jsPlumb.js"></script>
+  <script src="lib/angular/angular.js"></script>
+  <script src="lib/angular/angular-resource.js"></script>
+  <script src="lib/angular/angular-sanitize.js"></script>
+  <script src="lib/angular/angular-ui.js"></script>
+  <script src="lib/angular/transition.js"></script>
+  <script src="lib/angular/tabs.js"></script>
+  <script src="lib/angular/dialog.js"></script>
+<!--   <script src="lib/webfont.js"></script> -->
+
+  <script src="js/util.js"></script>
+  <script src="js/jquery-ext.js"></script>
+
+  <script src="js/services.js"></script>
+  <script src="js/controllers.js"></script>
+  <script src="js/directives.js"></script>
+
+<!--[if lte IE 8]>
+  <script>
+  window.myCustomTags = [ 'workspace', 'node', 'socket', 'tool' ];
+  </script>
+  <script src="build/angular-ui-ieshiv.js"></script>
+<![endif]-->
+
+</head>
+
+<body>
+
+  <h1><span>Raster Storage Archive</span> <span class="subdir">rsaquery</span>
+    <span class="subtitle">A query engine and image processing system for large
+    raster datasets</span>
+  </h1>
+
+  <div id="split-1" ng-controller="GraphEditor" ui-jq="splitPanel"
+    ui-options="{orientation: 'horizontal'}">
+    <div id="toolbox">
+      <h2>Toolbox <a ng-click="fetchTools()" class="btn btn-link">Refresh</a></h2>
+      <div ui-jq="accordionVpac" ui-options="{heightStyle: 'fill'}">
+        <h3>{{toolbox[0].name}}</h3>
+        <div>
+          <p ng-show="!toolbox[0].items.length">Loading...</p>
+          <ul>
+            <tool ng-repeat="tool in toolbox[0].items"></tool>
+          </ul>
+        </div>
+        <h3>{{toolbox[1].name}}</h3>
+        <div>
+          <p ng-show="!toolbox[0].items.length">Loading...</p>
+          <ul>
+            <tool ng-repeat="tool in toolbox[1].items"></tool>
+          </ul>
+        </div>
+      </div>
+    </div> <!-- end toolbox -->
+
+    <div ui-jq="splitPanel" ui-options="{orientation: 'vertical'}">
+      <workspace style="bottom: 20em">
+        <!-- This placeholder will be replaced with nodes from the model. -->
+        <node ng-repeat="node in nodes"></node>
+      </workspace>
+
+      <div id="serialised">
+        <tabs>
+          <pane heading="Preview"><div class="preview-panel">
+            <ul class="thumbnails">
+              <li class="preview snapshot"><a class="thumbnail" ng-click="fetchPreview()">Snapshot</a></li>
+              <preview ng-repeat="result in getPreviewImages()">
+            </ul>
+          </div></pane>
+          <pane heading="XML"><div class="serialised-content">{{nodes | rsaquery}}</div></pane>
+          <pane heading="JSON"><div class="serialised-content">{{nodes | json}}</div></pane>
+        </tabs>
+      </div> <!-- end serialised -->
+    </div> <!-- end split-1-2 -->
+
+  </div> <!-- end split-1 -->
+</body>
+
+</html>

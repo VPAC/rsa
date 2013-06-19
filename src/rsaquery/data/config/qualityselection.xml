@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<query xmlns="http://www.vpac.org/namespaces/rsaquery-0.1">
+
+	<input id="infile" href="../input/colour.nc" />
+
+	<output id="outfile" >
+		<grid ref="#infile" />
+
+		<variable name="colour" ref="#Quality/output" />
+		<variable name="quality" ref="#Quality/outquality" />
+		<variable name="time" ref="#Quality/outtime" />
+	</output>
+
+
+	<filter id="Quality" cls="org.vpac.ndg.query.QualitySelection">
+		<literal name="qualityThreshold" value="127" />
+
+		<sampler name="input">
+			<sampler ref="#infile/Red"  />
+			<sampler ref="#infile/Green"  />
+			<sampler ref="#infile/Blue"  />
+		</sampler>
+		<sampler name="inquality" ref="#infile/Quality"  />
+		<sampler name="intime" ref="#infile/time"  />
+
+	</filter>
+</query>
+

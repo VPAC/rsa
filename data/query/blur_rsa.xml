@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<query xmlns="http://www.vpac.org/namespaces/rsaquery-0.1">
+
+	<input id="infile" href="rsa:GA_LS7_NBAR/25m" />
+
+	<output id="outfile">
+		<grid ref="#infile" bounds="935175.00 -3675500.0 1050975.0 -3582900.0" />
+
+		<dimension ref="#infile/x" />
+		<dimension ref="#infile/y" />
+		<dimension ref="#infile/time" />
+
+		<variable ref="#infile/B10" type="Float" />
+	</output>
+
+
+	<filter id="BlurTest" cls="org.vpac.ndg.query.Blur">
+		<sampler name="input" ref="#infile/B10"  />
+		<cell name="output" ref="#outfile/B10" />
+	</filter>
+</query>
+

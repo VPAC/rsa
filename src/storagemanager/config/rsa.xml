@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rsaConfig>
+	<targetSrsEpsgId>3577</targetSrsEpsgId>
+	<gridOriginPointInTargetSrs>
+		<x class="double">-2690000.0</x>
+		<y class="double">-1000000.0</y>
+	</gridOriginPointInTargetSrs>
+	<upPositive>true</upPositive>
+	<filelockingOn>true</filelockingOn>
+	<heartBeatSpacing>60.0</heartBeatSpacing>
+	<lockDeadline>3</lockDeadline>
+	<generateImportTileAggregation>false</generateImportTileAggregation>
+	<resolutionList>
+		<entry>
+			<cellSize>km10</cellSize>
+			<int>5000</int>
+		</entry>
+		<entry>
+			<cellSize>km1</cellSize>
+			<int>5000</int>
+		</entry>
+		<entry>
+			<cellSize>m500</cellSize>
+			<int>5000</int>
+		</entry>
+		<entry>
+			<cellSize>m250</cellSize>
+			<int>5000</int>
+		</entry>
+		<entry>
+			<cellSize>m100</cellSize>
+			<int>5000</int>
+		</entry>
+		<entry>
+			<cellSize>m50</cellSize>
+			<int>5000</int>
+		</entry>
+		<entry>
+			<cellSize>m25</cellSize>
+			<int>5000</int>
+		</entry>
+		<entry>
+			<cellSize>m20</cellSize>
+			<int>5000</int>
+		</entry>
+		<entry>
+			<cellSize>m10</cellSize>
+			<int>5000</int>
+		</entry>
+		<entry>
+			<cellSize>m5</cellSize>
+			<int>5000</int>
+		</entry>
+		<entry>
+			<cellSize>m2p5</cellSize>
+			<int>5000</int>
+		</entry>
+		<entry>
+			<cellSize>m1</cellSize>
+			<int>5000</int>
+		</entry>
+	</resolutionList>
+
+	<!-- Unix storage locations -->
+	<storagepool>/var/lib/ndg/storagepool</storagepool>
+	<temploc>/var/tmp/ndg</temploc>
+	<uploadloc>/var/spool/ndg/upload</uploadloc>
+	<pickuploc>/var/spool/ndg/pickup</pickuploc>
+	<gdalprefix>/usr/local</gdalprefix>
+
+	<!-- Windows storage locations -->
+<!-- 	<storagepool>C:\ndg\storagepool</storagepool> -->
+<!-- 	<temploc>C:\ndg\tmp</temploc> -->
+<!-- 	<uploadloc>C:\ndg\upload</uploadloc> -->
+<!-- 	<pickuploc>C:\ndg\pickup</pickuploc> -->
+<!-- 	<gdalprefix>C:\tmp\gdalapps</gdalprefix> -->
+
+	<ncWmsAdminUsername>admin</ncWmsAdminUsername>
+	<ncWmsAdminPassword>ncWMS</ncWmsAdminPassword>
+</rsaConfig>
+

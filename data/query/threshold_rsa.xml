@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<query xmlns="http://www.vpac.org/namespaces/rsaquery-0.2">
+
+	<input id="infile" href="rsa:small_landsat/25m" />
+
+	<cache precedence="time" />
+
+	<output id="outfile">
+		<grid ref="#infile" />
+
+		<variable name="temp" ref="#Fire/output" />
+		<variable name="time" ref="#Fire/outtime" />
+	</output>
+
+
+	<filter id="Fire" cls="org.vpac.ndg.cli.query.Threshold">
+		<literal name="threshold" value="4000" />
+
+		<sampler name="input" ref="#infile/B50" />
+		<sampler name="intime" ref="#infile/time" />
+	</filter>
+</query>
+

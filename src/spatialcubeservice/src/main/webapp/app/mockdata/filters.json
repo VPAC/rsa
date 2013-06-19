@@ -1,0 +1,55 @@
+[ {
+	"name": "Add",
+	"type": "filter",
+	"qualname": "org.vpac.ndg.query.AddBinary",
+	"description": "Add two bands together\nsum = a + b",
+	"inputs": [ {
+		"name": "inputA",
+		"type": "any"
+	}, {
+		"name": "inputB",
+		"type": "any"
+	} ],
+	"outputs": [ {
+		"name": "output",
+		"type": "any"
+	} ]
+}, {
+	"name": "Subtract",
+	"type": "filter",
+	"qualname": "org.vpac.ndg.query.SubBinary",
+	"description": "Subtract one band from another\ndifference = a - b",
+	"inputs": [ {
+		"name": "inputA",
+		"type": "any"
+	}, {
+		"name": "inputB",
+		"type": "any"
+	} ],
+	"outputs": [ {
+		"name": "output",
+		"type": "any"
+	} ]
+}, {
+	"name": "Maximise",
+	"type": "filter",
+	"qualname": "org.vpac.ndg.query.MaximiseForTime",
+	"description": "Find and keep the greatest value",
+	"inputs": [ {
+		"name": "toMaximise",
+		"type": "scalar"
+	}, {
+		"name": "toKeep",
+		"type": "any"
+	}, {
+		"name": "intime",
+		"type": "any"
+	} ],
+	"outputs": [ {
+		"name": "output",
+		"type": "any"
+	}, {
+		"name": "outtime",
+		"type": "any"
+	} ]
+} ]

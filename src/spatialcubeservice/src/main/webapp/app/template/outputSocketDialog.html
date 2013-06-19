@@ -1,0 +1,14 @@
+<div>
+  <h2>Edit Socket</h2>
+</div>
+<div class="modal-body">
+  <p>
+    Name: <input ng-model="socket.name" />
+  </p>
+  <p ng-show="socket.type == 'scalar'">
+    Dimensions: <input ng-model="socket.dimensions" />
+  </p>
+</div>
+<div class="modal-footer">
+  <button ng-click="close(socket)" class="btn btn-primary">Close</button>
+</div>

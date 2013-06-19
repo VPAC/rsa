@@ -1,0 +1,77 @@
+<project name="RSA" default="dist">
+	<description>
+		Builds all distributable parts of the RSA.
+	</description>
+
+	<!-- Properies defined here will override those of the child ant scripts. -->
+	<property name="version.number" value="2.3.5" />
+	<property name="svn.info.lastRev" value="r2336" />
+
+	<target name="dist" depends="clean,cli,web_services,rsaquery">
+	</target>
+
+	<target name="publish" depends="dist">
+		<exec executable="rsync" dir="dist">
+			<arg value="-avz0" />
+			<arg value="-e" /><arg value="ssh" />
+			<arg value="--exclude=.svn" />
+			<arg value="." />
+			<arg value="ula-rsa.vpac.org:/var/www/releases/${version.number}" />
+		</exec>
+	</target>
+
+	<target name="test" depends="storagemanager-test,rsaquery-test,cli-test">
+	</target>
+
+	<target name="clean">
+		<delete dir="dist" />
+	</target>
+
+	<target name="init">
+		<mkdir dir="dist" />
+	</target>
+
+	<target name="cli" depends="init" description="Command line client">
+		<ant dir="cmdclient" target="dist" />
+
+		<copy todir="dist" flatten="false" verbose="true">
+			<fileset dir="cmdclient/dist">
+				<include name="*.zip" />
+			</fileset>
+		</copy>
+	</target>
+
+	<target name="rsaquery" depends="init" description="Stand-alone rsaquery library">
+		<ant dir="rsaquery" target="dist" />
+
+		<copy todir="dist" flatten="false" verbose="true">
+			<fileset dir="rsaquery/dist">
+				<include name="*.zip" />
+			</fileset>
+		</copy>
+	</target>
+
+	<target name="storagemanager-test" description="Storage manager unit testing">
+		<ant dir="storagemanager" target="test" />
+	</target>
+
+	<target name="cli-test" description="Command line client unit testing">
+		<ant dir="cmdclient" target="test" />
+	</target>
+	
+	<target name="rsaquery-test" description="rsaquery unit testing">
+		<ant dir="rsaquery" target="test" />
+	</target>
+
+	<target name="web_services" depends="init" description="Spatial Cube Services">
+		<ant dir="spatialcubeservice" target="war" />
+
+		<copy todir="dist" flatten="false" verbose="true">
+			<fileset dir="spatialcubeservice/dist">
+				<include name="*.zip" />
+				<include name="*.war" />
+			</fileset>
+		</copy>
+	</target>
+
+</project>

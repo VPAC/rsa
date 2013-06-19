@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<query xmlns="http://www.vpac.org/namespaces/rsaquery-0.2">
+
+	<input id="infile" href="rsa:small_landsat/25m" />
+
+	<cache pages="1" precedence="y x time" volume="2000000" />
+
+	<output id="outfile">
+ 		<grid ref="#infile" bounds="950000.00 -3575000.0 997500.00 -3550000.0" />
+
+		<variable name="wet" ref="#maximise/output">
+			<attribute name="_FillValue" value="-1" />
+		</variable>
+		<variable name="time" ref="#maximise/outtime">
+			<attribute name="_FillValue" value="-1" />
+		</variable>
+	</output>
+
+	<!-- Find NDVI. -->
+	<filter id="ndvi" cls="org.vpac.ndg.cli.query.Ndvi">
+		<sampler name="band3" ref="#infile/B30"  />
+		<sampler name="band4" ref="#infile/B40"  />
+	</filter>
+
+	<!-- Determine wetness. -->
+	<filter id="wet" cls="org.vpac.ndg.cli.query.WetByNdvi">
+		<literal name="dryThreshold" value="1000" />
+		<literal name="ndviThreshold" value="0.08" />
+
+		<sampler name="ndvi" ref="#ndvi/output"  />
+		<sampler name="band5" ref="#infile/B50"  />
+	</filter>
+
+	<!-- Reduce. -->
+	<filter id="maximise" cls="org.vpac.ndg.query.MaximiseForTime">
+		<literal name="threshold" value="2" />
+
+		<sampler name="toKeep" ref="#wet/output" />
+		<sampler name="toMaximise" ref="#wet/output" />
+		<sampler name="intime" ref="#infile/time" />
+	</filter>
+</query>
+

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<query xmlns="http://www.vpac.org/namespaces/rsaquery-0.2">
+	<!-- Input file has simple declaration. -->
+	<input id="infile" href="../input/abstract.nc" />
+
+	<!-- Output file needs more detail to enable construction. -->
+	<output id="outfile" >
+		<!-- Inherit coordinate system from source file. -->
+		<grid ref="#infile" />
+
+		<!-- Create new grid variables - but inherit attributes. -->
+		<variable name="wet" ref="#Wet/output" />
+		<!-- Create metadata band. This will be a 2D variable, but based on 1D
+			input data (the filter makes it 2D). This shows, for each pixel,
+			which time it came from. -->
+		<variable name="time" ref="#Wet/outtime" />
+	</output>
+
+	<!-- Declare a filter to transform #infile into #outfile. -->
+	<filter id="Wet" cls="org.vpac.ndg.query.WettingExtents">
+		<!-- A literal uniform (effectively a constant). -->
+		<literal name="dryThreshold" value="64" />
+
+		<!-- Define inputs. -->
+		<sampler name="input" ref="#infile/Band1" />
+		<sampler name="intime" ref="#infile/time" />
+	</filter>
+</query>
+

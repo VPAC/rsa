@@ -1,0 +1,51 @@
+<benchmark-results tstamp="2012-10-23T15:24:11.595+1100">
+
+	<testname classname="org.vpac.ndg.task.ExporterTest" name="testExportDataCube"
+		 benchmark-rounds="1" warmup-rounds="0"
+		 round-avg="2.875" round-stddev="0"
+		 gc-avg="0" gc-stddev="0"
+		 gc-invocations="0" gc-time="0"
+		 benchmark-time-total="2.874" warmup-time-total="0.002"
+		 threads="1"/>
+
+	<testname classname="org.vpac.ndg.task.ExporterTest" name="testExportDataCubeWithTargetProjection"
+		 benchmark-rounds="1" warmup-rounds="0"
+		 round-avg="4.682" round-stddev="0"
+		 gc-avg="0" gc-stddev="0"
+		 gc-invocations="0" gc-time="0"
+		 benchmark-time-total="4.682" warmup-time-total="0"
+		 threads="1"/>
+
+	<testname classname="org.vpac.ndg.task.ExporterTest" name="testExportOnLargeTimeseriesData"
+		 benchmark-rounds="1" warmup-rounds="0"
+		 round-avg="0.007" round-stddev="0"
+		 gc-avg="0" gc-stddev="0"
+		 gc-invocations="0" gc-time="0"
+		 benchmark-time-total="0.007" warmup-time-total="0"
+		 threads="1"/>
+
+	<testname classname="org.vpac.ndg.task.ExporterTest" name="testExportOnLargeRsaDataNc"
+		 benchmark-rounds="1" warmup-rounds="0"
+		 round-avg="0.007" round-stddev="0"
+		 gc-avg="0" gc-stddev="0"
+		 gc-invocations="0" gc-time="0"
+		 benchmark-time-total="0.007" warmup-time-total="0"
+		 threads="1"/>
+
+	<testname classname="org.vpac.ndg.task.ExporterTest" name="testExportOnLargeRsaDataTif"
+		 benchmark-rounds="1" warmup-rounds="0"
+		 round-avg="0.008" round-stddev="0"
+		 gc-avg="0" gc-stddev="0"
+		 gc-invocations="0" gc-time="0"
+		 benchmark-time-total="0.008" warmup-time-total="0"
+		 threads="1"/>
+
+	<testname classname="org.vpac.ndg.task.ExporterTest" name="testExport"
+		 benchmark-rounds="1" warmup-rounds="0"
+		 round-avg="7.593" round-stddev="0"
+		 gc-avg="0" gc-stddev="0"
+		 gc-invocations="0" gc-time="0"
+		 benchmark-time-total="7.593" warmup-time-total="0"
+		 threads="1"/>
+
+</benchmark-results>

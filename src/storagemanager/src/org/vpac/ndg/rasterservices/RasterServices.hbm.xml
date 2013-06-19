@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC  "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+  
+    <class name="org.vpac.ndg.rasterservices.RasterTask" table="RasterTasks" discriminator-value="UndefinedTask" >
+    	<id name="id" type="string" column="ID">
+            <generator class="uuid"/>
+        </id> 
+        <discriminator column="type" type="string"/>
+           
+        <property name="version" type="string" column="VERSION"/>
+        <property name="inputDataset" type="string" column="INPUT" length="512"/>
+        <property name="outputDataset" type="string" column="OUTPUT" length="512"/>
+        <property name="title" type="string" column="TITLE"/>
+        <property name="cmd" type="string" column="CMD" length="512"/>
+                
+        <subclass name="org.vpac.ndg.rasterservices.GetFileInformation" discriminator-value="GetFileInformation" />
+    </class>
+</hibernate-mapping>

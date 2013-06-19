@@ -1,0 +1,174 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>    
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="http://twitter.github.com/bootstrap/assets/css/bootstrap.css" />
+	<link rel="stylesheet" type="text/css" href="../css/divz.css" />
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.8.0.min.js"></script>
+    <script type="text/javascript" src="http://d3js.org/d3.v2.min.js"></script>
+    <script type="text/javascript" src="http://twitter.github.com/bootstrap/assets/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript">google.load('visualization', '1.0', {'packages': ['corechart', 'table']});</script>
+    <script type="text/javascript" src="../js/dviz.js"></script>
+    <script type="text/javascript">$(function() {dviz.run();});</script>
+    <title>DViz examples</title>
+</head>
+<body style="margin: 1em;">
+<div class="dviz-content" style="max-width: 500px;">
+
+<h2>Sparkline</h2>
+<p>Parallel sparklines:</p>
+<ul>
+    <li>A: <code>5, 3, 7, 1, 3, 7, 9 (@sparkline)</code></li>
+    <li>B: <code>5, 4, 3, 8, 8, 9, 10 (@sparkline)</code></li>
+    <li>C: <code>3, 7, 1, 7, 8, 1, 5 (@sparkline)</code></li>
+</ul>
+<p>Embedded <code>1, 1, 2, 3, 5, 8 (@sparkline)</code> sparkline.</p>
+
+<h2>Bar Chart</h2>
+<p>Single column bar chart:</p>
+<pre><code>
+    Name, Count
+    Apple, 1352
+    Orange, 5997
+    Banana, 5287
+</code></pre>
+<p><code>(@bar)</code></p>
+
+<p>Multi-column bar chart:</p>
+<pre><code>
+Name, A, B
+Apple, 965, 387
+Orange, 2944, 3053
+Banana, 4170, 1117
+</code></pre>
+<p><code>(@bar)</code></p>
+
+<p>Stacked bar chart:</p>
+<pre><code>
+Name, A, B
+Apple, 965, 387
+Orange, 2944, 3053
+Banana, 4170, 1117
+</code></pre>
+<p><code>(@bar {isStacked:true})</code></p>
+
+<p>DViz automatically changes color scheme according to number of columns:</p>
+<pre><code>
+Name, A, B, C
+Apple, 965, 387, 100
+Orange, 2944, 3053, 200
+Banana, 4170, 1117, 500
+</code></pre>
+<p><code>(@bar {isStacked:true})</code></p>
+
+<h2>Line chart</h2>
+<pre><code>
+Name, A, B, C
+Apple, 965, 387, 100
+Orange, 2944, 3053, 200
+Banana, 4170, 1117, 500
+</code></pre>
+<p><code>(@line)</code></p>
+
+<h2>Area chart</h2>
+<pre><code>
+Name, A, B, C
+Apple, 965, 387, 100
+Orange, 2944, 3053, 200
+Banana, 4170, 1117, 500
+</code></pre>
+<p><code>(@area)</code></p>
+
+<h2>Scatter plot</h2>
+<pre><code>
+A, B
+8, 12
+4, 5.5
+11, 14
+4, 5
+3, 3.5
+6.5, 7
+</code></pre>
+<p><code>(@scatter)</code></p>
+
+<p>Scatter plot with multiple columns:</p>
+<pre><code>
+A, B, C, D
+8, 12, 10, 5
+4, 5.5, 6, 3
+11, 14, 15, 7.5
+4, 5, 7, 3.5
+3, 3.5, 5, 2.5
+6.5, 7, 10, 5
+</code></pre>
+<p><code>(@scatter)</code></p>
+
+<h2>Scatter plot matrix</h2>
+<pre><code>
+A, B, C, D
+8, 12, 10, 5
+4, 5.5, 6, 3
+11, 14, 15, 7.5
+4, 5, 7, 3.5
+3, 3.5, 5, 2.5
+6.5, 7, 10, 5
+</code></pre>
+<p><code>(@scattermatrix)</code></p>
+
+<h2>Table chart (from csv data element)</h2>
+<pre><code>
+Name, A, B, C
+Apple, 965, 387, 100
+Orange, 2944, 3053, 200
+Banana, 4170, 1117, 500
+</code></pre>
+<p><code>(@table)</code></p>
+
+<h2>Table chart (from table element)</h2>
+<table>
+    <tr>
+        <td>Name</td>
+        <td>A</td>
+        <td>B</td>
+        <td>C</td>
+    </tr>
+    <tr>
+        <td>Apple</td>
+        <td>965</td>
+        <td>387</td>
+        <td>100</td>
+    </tr>
+    <tr>
+        <td>Orange</td>
+        <td>2944</td>
+        <td>3053</td>
+        <td>200</td>
+    </tr>
+    <tr>
+        <td>Banana</td>
+        <td>4170</td>
+        <td>1117</td>
+        <td>500</td>
+    </tr>
+</table>
+<p><code>(@table)</code></p>
+
+<h2>Javascript expression</h2>
+<p>You can use javascript expression instead of explicit data</p>
+<pre><code>
+#!javascript
+[
+	['Name', 'A', 'B'],
+	['Apple', 965, 387],
+	['Orange', 2944, 3053],
+	['Banana', 4170, 1117]
+]
+</code></pre>
+<p><code>(@bar)</code></p>
+
+</div>
+</body>
+</html>

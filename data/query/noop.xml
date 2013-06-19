@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<query xmlns="http://www.vpac.org/namespaces/rsaquery-0.1">
+
+	<input id="infile" href="rsa:GA_LS7_NBAR/25m" />
+
+	<output id="outfile">
+		<grid ref="#infile" bounds="935175.00 -3675500.0 1050975.0 -3582900.0" />
+
+		<dimension ref="#infile/x" />
+		<dimension ref="#infile/y" />
+		<dimension ref="#infile/time" />
+
+		<variable ref="#infile/B10" />
+		<variable ref="#infile/B20" />
+		<variable ref="#infile/B30" />
+		<variable ref="#infile/B40" />
+		<variable ref="#infile/B50" />
+		<variable ref="#infile/B70" />
+	</output>
+
+
+	<filter id="noop" cls="org.vpac.ndg.query.PassThrough">
+		<sampler name="input">
+			<sampler ref="#infile/B10"  />
+			<sampler ref="#infile/B20"  />
+			<sampler ref="#infile/B30"  />
+			<sampler ref="#infile/B40"  />
+			<sampler ref="#infile/B50"  />
+			<sampler ref="#infile/B70"  />
+		</sampler>
+
+		<cell name="output">
+			<cell ref="#outfile/B10" />
+			<cell ref="#outfile/B20" />
+			<cell ref="#outfile/B30" />
+			<cell ref="#outfile/B40" />
+			<cell ref="#outfile/B50" />
+			<cell ref="#outfile/B70" />
+		</cell>
+	</filter>
+
+</query>
+

@@ -1,0 +1,43 @@
+<benchmark-results tstamp="2013-06-06T10:14:57.682+1000">
+
+	<testname classname="org.vpac.ndg.cli.QueryTest" name="testWetNdviReduced"
+		 benchmark-rounds="4" warmup-rounds="1"
+		 round-avg="4.058" round-stddev="0.007"
+		 gc-avg="0" gc-stddev="0"
+		 gc-invocations="23" gc-time="0.121"
+		 benchmark-time-total="16.231" warmup-time-total="8.129"
+		 threads="1"/>
+
+	<testname classname="org.vpac.ndg.cli.QueryTest" name="testThreshold"
+		 benchmark-rounds="4" warmup-rounds="1"
+		 round-avg="2.028" round-stddev="0.001"
+		 gc-avg="0" gc-stddev="0"
+		 gc-invocations="2" gc-time="0.006"
+		 benchmark-time-total="8.112" warmup-time-total="2.037"
+		 threads="1"/>
+
+	<testname classname="org.vpac.ndg.cli.QueryTest" name="testAddUnary"
+		 benchmark-rounds="4" warmup-rounds="1"
+		 round-avg="2.032" round-stddev="0.01"
+		 gc-avg="0" gc-stddev="0"
+		 gc-invocations="4" gc-time="0.014"
+		 benchmark-time-total="8.127" warmup-time-total="2.03"
+		 threads="1"/>
+
+	<testname classname="org.vpac.ndg.cli.QueryTest" name="testAddBinary"
+		 benchmark-rounds="4" warmup-rounds="1"
+		 round-avg="2.028" round-stddev="0.008"
+		 gc-avg="0" gc-stddev="0"
+		 gc-invocations="3" gc-time="0.012"
+		 benchmark-time-total="8.111" warmup-time-total="2.031"
+		 threads="1"/>
+
+	<testname classname="org.vpac.ndg.cli.QueryTest" name="testWetNdvi"
+		 benchmark-rounds="4" warmup-rounds="1"
+		 round-avg="4.032" round-stddev="0.006"
+		 gc-avg="0" gc-stddev="0"
+		 gc-invocations="15" gc-time="0.068"
+		 benchmark-time-total="16.128" warmup-time-total="4.027"
+		 threads="1"/>
+
+</benchmark-results>

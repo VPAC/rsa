@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<query xmlns="http://www.vpac.org/namespaces/rsaquery-0.1">
+
+	<input id="infile" href="rsa:missing/25m" />
+	<output id="outfile">
+		<grid ref="#infile" bounds="685000.0 -2125000.0 810000.0 -2000000.0" />
+
+		<dimension ref="#infile/x" />
+		<dimension ref="#infile/y" />
+		<dimension ref="#infile/time" />
+
+		<variable ref="#infile/B10" />
+	</output>
+
+
+	<filter id="noop" cls="org.vpac.ndg.query.PassThrough">
+		<sampler name="input">
+			<sampler ref="#infile/B10"  />
+		</sampler>
+
+		<cell name="output">
+			<cell ref="#outfile/B10" />
+		</cell>
+	</filter>
+
+</query>
+
