@@ -221,10 +221,14 @@
 		<!-- copy config. Because this combines the contents of several
 		     directories, the readme files are concatenated. -->
 		<copy todir="${dist}/${dist.name}/config" flatten="false" verbose="true">
-			<fileset dir="${storagemanagerConfig}" />
+			<fileset dir="${storagemanagerConfig}">
+				<exclude name="datasource.xml"/>
+				<exclude name="README.txt"/>
+			</fileset>
 			<!-- Override some of the storagemanager's default config -->
 			<fileset dir="${config}">
 				<exclude name="README_HIDDEN.txt" />
+				<exclude name="datasource.xml"/>
 			</fileset>
 		</copy>
 		<concat destfile="${dist}/${dist.name}/config/README.txt">

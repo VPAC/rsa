@@ -169,6 +169,7 @@
 		<mkdir dir="${dist}/config" />
 		<copy todir="${dist}/config" verbose="true">
 			<fileset dir="${config}">
+				<exclude name="datasource.xml"/>
 			</fileset>
 		</copy>
 

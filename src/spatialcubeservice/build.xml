@@ -99,10 +99,12 @@
 			<!-- Default configuration -->
 			<fileset dir="${storagemanagerConfig}">
 				<exclude name="README.txt" />
+				<exclude name="datasource.xml"/>
 			</fileset>
 			<!-- Configuration overrides for web services -->
 			<fileset dir="${config}">
 				<exclude name="README.txt" />
+				<exclude name="datasource.xml"/>
 			</fileset>
 		</copy>
 		<!-- Libraries; ignore directory structure of source -->

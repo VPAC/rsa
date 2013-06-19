@@ -37,3 +37,8 @@ The [Spatial Cube Service](spatialcubeservice) provides web services to interact
 with the RSA. Its functionality is similar to that of the command line client.
 It also has a Web-based user interface for querying data.
 
+## Building
+
+To compile the RSA, simply run `ant` from this directory. Build artefacts will
+be placed in the [dist](dist) directory.
+
