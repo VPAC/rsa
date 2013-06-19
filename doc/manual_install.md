@@ -2,12 +2,12 @@
 
 This section details about:
 
-1. [Dependencies - What is the RSA  requirements?](#dependencies)
-2. [Setup Database - How to set up and configure RSA database](#setup-database)
-3. [Setup Filesystem - How to configuring RSA filesystem](#setup-filesystem) 
-4. [Build - How to build RSA from source](#build-rsa-from-source)
+1. [Dependencies - What is the RSA  requirements?](#1-dependencies)
+2. [Setup Database - How to set up and configure RSA database](#2-setup-database)
+3. [Setup Filesystem - How to configuring RSA filesystem](#3-setup-filesystem) 
+4. [Build RSA - How to build RSA from source](#4-build-rsa-from-source)
 
-## Dependencies
+## 1. Dependencies
 
 The RSA requires: 
 
