@@ -2,12 +2,12 @@
 
 This section details about:
 
-1. Dependencies
-2. Configuring RSA database
-3. Configuring RSA filesystem
-4. Building RSA from source
+1. [Dependencies - What is the RSA  requirements?](#dependencies)
+2. [Setup Database - How to set up and configure RSA database](#setup-database)
+3. [Setup Filesystem - How to configuring RSA filesystem](#setup-filesystem) 
+4. [Build - How to build RSA from source](#build-rsa-from-source)
 
-## 1. Dependencies
+## Dependencies
 
 The RSA requires: 
 
@@ -236,7 +236,7 @@ You should also do a dynamic library update to be safe:
 
 	$ sudo ldconfig
 
-## 2. Configuring RSA database
+## 2. Setup Database
 
 ### Configuring PostgreSQL
 
@@ -303,7 +303,7 @@ roles?*, answer *n*.
 
 **Note:** It is possible to set up the database graphically using [pgAdmin](http://www.pgadmin.org/) - but you may need to change the database access rules in *postgresql.conf* to allow it to connect.
 
-## 3. Configuring RSA filesystem
+## 3. Setup Filesystem
 
 The RSA requires four directories on the filesystem:
 
@@ -338,7 +338,7 @@ At this stage, for a production server you may wish to mount NFS locations
 within the storagepool directory if you intend to store large contiguous
 datasets there.
 
-## 4. Building RSA from source
+## 4. Build RSA from source
 
 RSA consists of these main components:
 
@@ -347,7 +347,7 @@ RSA consists of these main components:
 * cmdclient - the command line client component
 * spatialcubeservice - the web application and web services component
 
-Building all RSA components from source using [ant](http://ant.apache.org/):
+To build RSA from source using [ant](http://ant.apache.org/):
 
 	$ git clone https://github.com/VPAC/rsa.git
 	$ cd rsa/src
