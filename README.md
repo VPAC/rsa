@@ -69,7 +69,7 @@ from the rsacli directory.
 
 ## Configuration
 
-Open [rsa.xml](rsa.xml) to see how RSA can be configured.
+Open a sample of [rsa.xml](src/storagemanager/config/rsa.xml.SAMPLE) to see how RSA can be configured.
 
 ## Documentation
 
