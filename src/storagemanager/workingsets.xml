@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<workingSetManager>
+<workingSet editPageId="org.eclipse.ui.resourceWorkingSetPage" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1370478010718_16" label="RSA Sources" name="RSA Sources">
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/CmdClient/build.xml" type="1"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/CmdClient/config" type="2"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/CmdClient/data/metadata" type="2"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/CmdClient/data/query/add_binary_rsa.xml" type="1"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/CmdClient/data/query/add_unary_rsa.xml" type="1"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/CmdClient/data/query/blur_rsa.xml" type="1"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/CmdClient/data/query/noop-missing.xml" type="1"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/CmdClient/data/query/noop.xml" type="1"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/CmdClient/data/query/threshold_rsa.xml" type="1"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/CmdClient/data/query/wetting_ndvi.xml" type="1"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/CmdClient/data/query/wetting_ndvi_reduced.xml" type="1"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/CmdClient/data/small_landsat/README.md" type="1"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/CmdClient/filter-src" type="2"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/CmdClient/resources" type="2"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/CmdClient/script" type="2"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/CmdClient/src" type="2"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/CmdClient/test-src" type="2"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/Common/build.xml" type="1"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/Common/src" type="2"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/SpatialCubeService/build.xml" type="1"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/SpatialCubeService/config" type="2"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/SpatialCubeService/scripts" type="2"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/SpatialCubeService/src/main/java" type="2"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/SpatialCubeService/src/main/resources" type="2"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/SpatialCubeService/src/main/test" type="2"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/SpatialCubeService/src/main/webapp/WEB-INF" type="2"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/SpatialCubeService/src/main/webapp/app/css" type="2"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/SpatialCubeService/src/main/webapp/app/images" type="2"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/SpatialCubeService/src/main/webapp/app/index.html" type="1"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/SpatialCubeService/src/main/webapp/app/js" type="2"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/SpatialCubeService/src/main/webapp/app/mockdata" type="2"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/SpatialCubeService/src/main/webapp/app/template" type="2"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/SpatialCubeService/src/main/webapp/resources" type="2"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/SpatialCubeService/src/test" type="2"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/StorageManager/build.xml" type="1"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/StorageManager/config" type="2"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/StorageManager/resources" type="2"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/StorageManager/src" type="2"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/StorageManager/test" type="2"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/rsaquery/README.txt" type="1"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/rsaquery/build.xml" type="1"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/rsaquery/config" type="2"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/rsaquery/data" type="2"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/rsaquery/doc/diagrams" type="2"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/rsaquery/filter-src" type="2"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/rsaquery/resources" type="2"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/rsaquery/script" type="2"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/rsaquery/src" type="2"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/rsaquery/test-src" type="2"/>
+</workingSet>
+<workingSet aggregate="true" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1339996393427_0" label="Window Working Set" name="Aggregate for window 1339996393425"/>
+<workingSet aggregate="true" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1364186113065_1" label="Window Working Set" name="Aggregate for window 1364186113065"/>
+<workingSet aggregate="true" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1364187543626_2" label="Window Working Set" name="Aggregate for window 1364187543626"/>
+<workingSet aggregate="true" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1366248996022_3" label="Window Working Set" name="Aggregate for window 1366248996022"/>
+<workingSet aggregate="true" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1367384180181_4" label="Window Working Set" name="Aggregate for window 1367384180181"/>
+<workingSet aggregate="true" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1368658705932_5" label="Window Working Set" name="Aggregate for window 1368658705932"/>
+<workingSet aggregate="true" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1368673978427_6" label="Window Working Set" name="Aggregate for window 1368673978426"/>
+<workingSet aggregate="true" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1368677632911_7" label="Window Working Set" name="Aggregate for window 1368677632910"/>
+<workingSet aggregate="true" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1369784164612_8" label="Window Working Set" name="Aggregate for window 1369784164611"/>
+<workingSet aggregate="true" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1369877920361_9" label="Window Working Set" name="Aggregate for window 1369877920361"/>
+<workingSet aggregate="true" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1370228497949_10" label="Window Working Set" name="Aggregate for window 1370228497948"/>
+<workingSet aggregate="true" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1370389803370_11" label="Window Working Set" name="Aggregate for window 1370389803370"/>
+<workingSet aggregate="true" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1370390378066_12" label="Window Working Set" name="Aggregate for window 1370390378065"/>
+<workingSet aggregate="true" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1370390497853_13" label="Window Working Set" name="Aggregate for window 1370390497852"/>
+<workingSet aggregate="true" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1370408012911_14" label="Window Working Set" name="Aggregate for window 1370408012911"/>
+<workingSet aggregate="true" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1370477680164_15" label="Window Working Set" name="Aggregate for window 1370477680164"/>
+<workingSet aggregate="true" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1370490589698_17" label="Window Working Set" name="Aggregate for window 1370490589698"/>
+<workingSet aggregate="true" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1370907477103_18" label="Window Working Set" name="Aggregate for window 1370907477103"/>
+<workingSet aggregate="true" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1370910304365_19" label="Window Working Set" name="Aggregate for window 1370910304364"/>
+<workingSet aggregate="true" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1370912636266_20" label="Window Working Set" name="Aggregate for window 1370912636266"/>
+<workingSet aggregate="true" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1370930289998_21" label="Window Working Set" name="Aggregate for window 1370930289998"/>
+<workingSet aggregate="true" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1371082626183_22" label="Window Working Set" name="Aggregate for window 1371082626183"/>
+<workingSet aggregate="true" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1371082749634_23" label="Window Working Set" name="Aggregate for window 1371082749634"/>
+<workingSet aggregate="true" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1371087969607_24" label="Window Working Set" name="Aggregate for window 1371087969607"/>
+<workingSet aggregate="true" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1371428292099_25" label="Window Working Set" name="Aggregate for window 1371428292099"/>
+<workingSet aggregate="true" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1371597875095_26" label="Window Working Set" name="Aggregate for window 1371597875095"/>
+<mruList name="RSA Sources"/>
+</workingSetManager>

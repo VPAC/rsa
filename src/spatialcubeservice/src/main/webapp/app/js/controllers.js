@@ -1,5 +1,36 @@
 'use strict';
 
+// TODO: Move these common functions into an Angular service.
+if (vpac.socket === undefined)
+	vpac.socket = {};
+vpac.socket.fromRef = function(ref, nodeMap, direction) {
+	var re = /^#([^\/]+)(\/(.+))?$/;
+	var match = re.exec(ref);
+	if (match == null)
+		return null;
+	var nodeId = match[1];
+	var socketName = match[3];
+	var node = nodeMap[nodeId];
+	if (node === undefined)
+		return null;
+	var sockets;
+	if (direction == 'input')
+		sockets = node.inputs;
+	else if (direction == 'output')
+		sockets = node.outputs;
+	else
+		sockets = node.inputs.concat(node.outputs);
+	for (var i = 0; i < sockets.length; i++) {
+		var socket = sockets[i];
+		if (socket.name == socketName)
+			return [node, socket];
+	}
+	return [node, null];
+};
+vpac.socket.toRef = function(node, socket) {
+	return '#' + node.id + '/' + socket.name;
+};
+
 angular.module('graphEditor').controller('GraphEditor', function GraphEditor($scope, datasets, filters, $http) {
 	console.log('init graph editor');
 
@@ -48,8 +79,40 @@ angular.module('graphEditor').controller('GraphEditor', function GraphEditor($sc
 						socket.value = '';
 				}
 			}
+			for (var j = 0; j < node.outputs.length; j++) {
+				var socket = node.outputs[j];
+				if (!vpac.socket.isLiteral(socket)) {
+					socket.value = undefined;
+					if (socket.connections === undefined)
+						socket.connections = [];
+				}
+			}
 		}
 	}, true);
+
+	$scope.$on('socketRefChanged', function(event, isInput, newRef, oldRef) {
+		console.log('Socket ref changed!', newRef, oldRef);
+		for (var i = 0; i < $scope.nodes.length; i++) {
+			var node = $scope.nodes[i];
+			var sockets;
+			if (isInput)
+				sockets = node.outputs;
+			else
+				sockets = node.inputs;
+			for (var j = 0; j < sockets.length; j++) {
+				var socket = sockets[j];
+				if (socket.connections === undefined)
+					continue;
+				for (var k = 0; k < socket.connections.length; k++) {
+					if (socket.connections[k] == oldRef) {
+						console.log('Updating connection for',
+								vpac.socket.toRef(node, socket));
+						socket.connections[k] = newRef;
+					}
+				}
+			}
+		}
+	});
 
 	$scope.toolbox = [ {
 		name: 'Inputs',
@@ -155,8 +218,7 @@ angular.module('graphEditor').controller('GraphEditor', function GraphEditor($sc
 	      {
 	        "name": "grid",
 	        "connections": [],
-	        "type": "meta",
-	        "dimensions": ""
+	        "type": "meta"
 	      },
 	      {
 	        "name": "band",
@@ -164,7 +226,7 @@ angular.module('graphEditor').controller('GraphEditor', function GraphEditor($sc
 	          "#Blur_0/output"
 	        ],
 	        "type": "scalar",
-	        "dimensions": ""
+	        "synthetic": true
 	      }
 	    ],
 	    "outputs": []
@@ -180,31 +242,40 @@ angular.module('graphEditor').controller('GraphEditor', function GraphEditor($sc
 	    "outputs": [
 	      {
 	        "name": "grid",
-	        "type": "meta"
+	        "type": "meta",
+	        "connections": []
 	      },
 	      {
 	        "name": "time",
-	        "type": "scalar,axis"
+	        "type": "scalar,axis",
+	        "connections": []
 	      },
 	      {
 	        "name": "y",
-	        "type": "scalar,axis"
+	        "type": "scalar,axis",
+	        "connections": []
 	      },
 	      {
 	        "name": "x",
-	        "type": "scalar,axis"
+	        "type": "scalar,axis",
+	        "connections": []
 	      },
 	      {
 	        "name": "B30",
-	        "type": "scalar"
+	        "type": "scalar",
+	        "connections": [
+                "#Blur_0/input"
+	        ]
 	      },
 	      {
 	        "name": "B40",
-	        "type": "scalar"
+	        "type": "scalar",
+	        "connections": []
 	      },
 	      {
 	        "name": "B50",
-	        "type": "scalar"
+	        "type": "scalar",
+	        "connections": []
 	      }
 	    ],
 	    "qualname": "rsa:small_landsat/100m",
@@ -224,7 +295,8 @@ angular.module('graphEditor').controller('GraphEditor', function GraphEditor($sc
 	    "outputs": [
 	      {
 	        "name": "output",
-	        "type": "Cell"
+	        "type": "Cell",
+	        "connections": ["#output/band"]
 	      }
 	    ],
 	    "qualname": "org.vpac.ndg.query.Blur",
@@ -287,27 +359,77 @@ angular.module('graphEditor').controller('node', function($scope, $element, $dia
 	};
 
 	$scope.canAddSocket = function(direction) {
-		return $scope.node.type == 'output' && direction == 'input';
+		if ($scope.node.type == 'output' && direction == 'input')
+			return true;
+		else if ($scope.node.type == 'input' && direction == 'output')
+			return true;
+		return false;
 	};
 
 	$scope.canRemoveSocket = function(socket) {
-		return $scope.node.type == 'output';
+		return socket.synthetic === true;
 	};
 
 	$scope.addSocket = function(direction) {
 		var socket = {
-			name: 'Band',
-			type: 'scalar'
+			type: 'synthetic',
+			connections: [],
+			synthetic: true
 		};
 		if (direction == 'input') {
-			socket.connections = [];
+			// Find unique name.
+			var socketSet = {};
+			for (var i = 0; i < $scope.node.inputs.length; i++) {
+				var otherSocket = $scope.node.inputs[i];
+				socketSet[otherSocket.name] = true;
+			}
+			var j = 0;
+			var name;
+			while (true) {
+				name = "Band" + j;
+				if (!(name in socketSet))
+					break;
+				j++;
+			}
+			socket.name = name;
 			$scope.node.inputs.push(socket);
 		} else {
+			// Use a name that is a regular expression matching any other socket
+			// that starts with a B (e.g. B20, B30, Band1, etc.)
+			socket.name = "B.*";
 			$scope.node.outputs.push(socket);
 		}
 	};
 
-	var editOutputInputSocket = function(socket) {
+	var editInputNodeSocket = function(socket) {
+		var d = $dialog.dialog({
+			controller: 'editSocketDialog',
+			resolve: {
+				socket: function() {
+					return angular.copy(socket);
+				},
+				node: function() {
+					return angular.copy($scope.node);
+				}
+			},
+			templateUrl: 'template/inputSocketDialog.html'
+		});
+		d.open().then(function(result) {
+			console.log('Dialog result:', result, $scope);
+			if (!result)
+				return;
+
+			var oldRef = vpac.socket.toRef($scope.node, socket);
+			socket.name = result.name;
+			// Update references to this socket.
+			$scope.$emit('socketRefChanged', false,
+					vpac.socket.toRef($scope.node, socket),
+					oldRef);
+			// The width may have changed, so queue a redraw.
+			$scope.dirty = true;
+		});
+	};
+	var editOutputNodeSocket = function(socket) {
 		var d = $dialog.dialog({
 			controller: 'editSocketDialog',
 			resolve: {
@@ -324,11 +446,13 @@ angular.module('graphEditor').controller('node', function($scope, $element, $dia
 			console.log('Dialog result:', result, $scope);
 			if (!result)
 				return;
-			// For now, we don't need to update references because only
-			// sockets of the output node can be edited, and it only has
-			// input sockets.
+
+			var oldRef = vpac.socket.toRef($scope.node, socket);
 			socket.name = result.name;
-			socket.dimensions = result.dimensions;
+			// Update references to this socket.
+			$scope.$emit('socketRefChanged', true,
+					vpac.socket.toRef($scope.node, socket),
+					oldRef);
 			// The width may have changed, so queue a redraw.
 			$scope.dirty = true;
 		});
@@ -357,8 +481,10 @@ angular.module('graphEditor').controller('node', function($scope, $element, $dia
 	};
 	$scope.editSocket = function(socket) {
 		console.log('editSocket', socket);
-		if ($scope.node.type == 'output')
-			editOutputInputSocket(socket);
+		if ($scope.node.type == 'output' && socket.synthetic)
+			editOutputNodeSocket(socket);
+		else if ($scope.node.type == 'input' && socket.synthetic)
+			editInputNodeSocket(socket);
 		else if ($scope.node.type == 'filter' && vpac.socket.isLiteral(socket))
 			editFilterLiteralInputSocket(socket);
 		else
