@@ -334,6 +334,22 @@ angular.module('graphEditor').directive('socket', function($timeout) {
 			radius: 6
 		} ],
 	};
+	var specialParams = {
+			connectorStyle: {
+				strokeStyle: '#ddd',
+				lineWidth: 4,
+				outlineWidth: 1,
+				outlineColor: '#777'
+			},
+			paintStyle: {
+				fillStyle: '#88d',
+				outlineColor: '#447',
+				outlineWidth: 1
+			},
+			endpoint: [ 'Dot', {
+				radius: 6
+			} ],
+		};
 	var metaParams = {
 		connectorStyle: {
 			strokeStyle: '#6b6',
@@ -408,7 +424,9 @@ angular.module('graphEditor').directive('socket', function($timeout) {
 					// input or output.
 					var baseParams;
 					var types = scope.socket.type.split(',');
-					if (vpac.contains(types, 'meta'))
+					if (scope.socket.synthetic)
+						baseParams = specialParams;
+					else if (vpac.contains(types, 'meta'))
 						baseParams = metaParams;
 					else if (vpac.contains(types, 'axis'))
 						baseParams = axisParams;

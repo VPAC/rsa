@@ -1,5 +1,6 @@
 'use strict';
 
+// TODO: Move these common functions into an Angular service.
 if (vpac.socket === undefined)
 	vpac.socket = {};
 vpac.socket.fromRef = function(ref, nodeMap, direction) {
@@ -224,7 +225,8 @@ angular.module('graphEditor').controller('GraphEditor', function GraphEditor($sc
 	        "connections": [
 	          "#Blur_0/output"
 	        ],
-	        "type": "scalar"
+	        "type": "scalar",
+	        "synthetic": true
 	      }
 	    ],
 	    "outputs": []
@@ -365,23 +367,41 @@ angular.module('graphEditor').controller('node', function($scope, $element, $dia
 	};
 
 	$scope.canRemoveSocket = function(socket) {
-		return $scope.node.type == 'output';
+		return socket.synthetic === true;
 	};
 
 	$scope.addSocket = function(direction) {
 		var socket = {
-			name: 'Band',
-			type: 'scalar',
-			connections: []
+			type: 'synthetic',
+			connections: [],
+			synthetic: true
 		};
 		if (direction == 'input') {
+			// Find unique name.
+			var socketSet = {};
+			for (var i = 0; i < $scope.node.inputs.length; i++) {
+				var otherSocket = $scope.node.inputs[i];
+				socketSet[otherSocket.name] = true;
+			}
+			var j = 0;
+			var name;
+			while (true) {
+				name = "Band" + j;
+				if (!(name in socketSet))
+					break;
+				j++;
+			}
+			socket.name = name;
 			$scope.node.inputs.push(socket);
 		} else {
+			// Use a name that is a regular expression matching any other socket
+			// that starts with a B (e.g. B20, B30, Band1, etc.)
+			socket.name = "B.*";
 			$scope.node.outputs.push(socket);
 		}
 	};
 
-	var editInputOutputSocket = function(socket) {
+	var editInputNodeSocket = function(socket) {
 		var d = $dialog.dialog({
 			controller: 'editSocketDialog',
 			resolve: {
@@ -409,7 +429,7 @@ angular.module('graphEditor').controller('node', function($scope, $element, $dia
 			$scope.dirty = true;
 		});
 	};
-	var editOutputInputSocket = function(socket) {
+	var editOutputNodeSocket = function(socket) {
 		var d = $dialog.dialog({
 			controller: 'editSocketDialog',
 			resolve: {
@@ -461,10 +481,10 @@ angular.module('graphEditor').controller('node', function($scope, $element, $dia
 	};
 	$scope.editSocket = function(socket) {
 		console.log('editSocket', socket);
-		if ($scope.node.type == 'output')
-			editOutputInputSocket(socket);
-		else if ($scope.node.type == 'input')
-			editInputOutputSocket(socket);
+		if ($scope.node.type == 'output' && socket.synthetic)
+			editOutputNodeSocket(socket);
+		else if ($scope.node.type == 'input' && socket.synthetic)
+			editInputNodeSocket(socket);
 		else if ($scope.node.type == 'filter' && vpac.socket.isLiteral(socket))
 			editFilterLiteralInputSocket(socket);
 		else
