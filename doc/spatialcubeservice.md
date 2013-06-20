@@ -3,8 +3,8 @@
 This section details out all available web services on spatialcubeservice:
 
 1. [Dataset web services - for listing, creating, retrieving, and deleting dataset](#dataset)
-2. [Timeslice web services - for listing, creating, retrieving, and deleting timeslice for a dataset](#dataset)
-3. [Band web services - for listing, creating, retrieving, and deleting band for a dataset](#dataset)
+2. [Timeslice web services - for listing, creating, retrieving, and deleting timeslice for a dataset](#timeslice)
+3. [Band web services - for listing, creating, retrieving, and deleting band for a dataset](#band)
 4. [Data web services - for importing, exporting, uploading, downloading data and also performing a query](#data)
 
 ## Dataset
