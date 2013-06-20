@@ -238,7 +238,7 @@ h1 span {
     text-align: right;
 }
 .node .output li {
-    padding: 0 2ex 0 1ex;
+    padding: 0 2ex 0 3ex;
 }
 .node .input {
     float: left;
@@ -246,7 +246,7 @@ h1 span {
     text-align: left;
 }
 .node .input li {
-    padding: 0 1ex 0 2ex;
+    padding: 0 3ex 0 2ex;
 }
 
 .input li .actions, .output li .actions {

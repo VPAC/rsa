@@ -67,22 +67,34 @@ angular.module('graphEditor').directive('workspace', function($timeout) {
 
 					// Walk through the connections, as jsPlumb knows them, and
 					// store them in the Angular model.
-					var syncSocketModel = function(tSocketElem) {
-						var tScope = tSocketElem.scope();
-						var tSocket = tScope.socket;
-						var vConnections = jsPlumb.getConnections({
-							target: tSocketElem
-						});
+					var syncSocketModel = function(socketElem, isInput) {
+						var scope = socketElem.scope();
+						var socket = scope.socket;
+						var vConnections;
+						if (isInput) {
+							vConnections = jsPlumb.getConnections({
+								target: socketElem
+							});
+						} else {
+							vConnections = jsPlumb.getConnections({
+								source: socketElem
+							});
+						}
 						var mConnections = [];
 						for (var i = 0; i < vConnections.length; i++) {
 							var conn = vConnections[i];
-							var ref = vpac.socket.elemToRef(conn.source);
+							var ref;
+							if (isInput)
+								ref = vpac.socket.elemToRef(conn.source);
+							else
+								ref = vpac.socket.elemToRef(conn.target);
 							mConnections.push(ref);
 						}
-						tSocket.connections = mConnections;
+						socket.connections = mConnections;
 					};
 					var suppressDetachCb = false;
 					jsPlumb.bind("jsPlumbConnection", function(conn, event) {
+						var sScope = conn.source.scope();
 						var tScope = conn.target.scope();
 						var ref = vpac.socket.elemToRef(conn.source);
 
@@ -98,19 +110,26 @@ angular.module('graphEditor').directive('workspace', function($timeout) {
 								suppressDetachCb = false;
 							}
 						}
-						syncSocketModel(conn.target);
+						syncSocketModel(conn.source, false);
+						syncSocketModel(conn.target, true);
+						if (!sScope.$$phase)
+							sScope.$apply();
 						if (!tScope.$$phase)
 							tScope.$apply();
 					});
 					jsPlumb.bind("jsPlumbConnectionDetached", function(conn, event) {
 						if (suppressDetachCb)
 							return;
+						var sScope = conn.source.scope();
 						var tScope = conn.target.scope();
-						if (tScope === undefined) {
+						if (sScope === undefined || tScope === undefined) {
 							console.log('Ignoring detach event for deleted socket');
 							return;
 						}
-						syncSocketModel(conn.target);
+						syncSocketModel(conn.source, false);
+						syncSocketModel(conn.target, true);
+						if (!sScope.$$phase)
+							sScope.$apply();
 						if (!tScope.$$phase)
 							tScope.$apply();
 					});
@@ -258,34 +277,8 @@ angular.module('graphEditor').directive('node', function($timeout) {
 //  - [node, socket], or
 //  - [node, null] if the node is found but the socket is not, or
 //  - null if the node can't be found.
-vpac.socket = {};
-vpac.socket.fromRef = function(ref, nodeMap, direction) {
-	var re = /^#([^\/]+)(\/(.+))?$/;
-	var match = re.exec(ref);
-	if (match == null)
-		return null;
-	var nodeId = match[1];
-	var socketName = match[3];
-	var node = nodeMap[nodeId];
-	if (node === undefined)
-		return null;
-	var sockets;
-	if (direction == 'input')
-		sockets = node.inputs;
-	else if (direction == 'output')
-		sockets = node.outputs;
-	else
-		sockets = node.inputs.concat(node.outputs);
-	for (var i = 0; i < sockets.length; i++) {
-		var socket = sockets[i];
-		if (socket.name == socketName)
-			return [node, socket];
-	}
-	return [node, null];
-};
-vpac.socket.toRef = function(node, socket) {
-	return '#' + node.id + '/' + socket.name;
-};
+if (vpac.socket === undefined)
+	vpac.socket = {};
 // 
 vpac.socket.elemToRef = function(socket) {
 	var scope = socket.scope();
@@ -341,6 +334,22 @@ angular.module('graphEditor').directive('socket', function($timeout) {
 			radius: 6
 		} ],
 	};
+	var specialParams = {
+			connectorStyle: {
+				strokeStyle: '#ddd',
+				lineWidth: 4,
+				outlineWidth: 1,
+				outlineColor: '#777'
+			},
+			paintStyle: {
+				fillStyle: '#88d',
+				outlineColor: '#447',
+				outlineWidth: 1
+			},
+			endpoint: [ 'Dot', {
+				radius: 6
+			} ],
+		};
 	var metaParams = {
 		connectorStyle: {
 			strokeStyle: '#6b6',
@@ -415,15 +424,20 @@ angular.module('graphEditor').directive('socket', function($timeout) {
 					// input or output.
 					var baseParams;
 					var types = scope.socket.type.split(',');
-					if (vpac.contains(types, 'meta'))
+					if (scope.socket.synthetic)
+						baseParams = specialParams;
+					else if (vpac.contains(types, 'meta'))
 						baseParams = metaParams;
 					else if (vpac.contains(types, 'axis'))
 						baseParams = axisParams;
+					else if (vpac.contains(types, 'vector') || vpac.contains(types, 'any'))
+						baseParams = vectorParams;
 					else
 						baseParams = scalarParams;
 
+					var isInput = iAttrs.isInput == 'true';
 					var params;
-					if (iAttrs.isInput == 'true')
+					if (isInput)
 						params = $.extend(true, {}, baseParams, inParams);
 					else
 						params = $.extend(true, {}, baseParams, outParams);
@@ -434,21 +448,35 @@ angular.module('graphEditor').directive('socket', function($timeout) {
 
 					// Bind from the connection field back to jsPlumb.
 					scope.$watch('socket.connections', function(newValue, oldValue) {
-						console.log('Connection changed', vpac.socket.elemToRef(iElement), oldValue, newValue);
-						// If the socket is an output, it will not list its
-						// connections.
+						console.log('Connection changed',
+								vpac.socket.elemToRef(iElement), oldValue,
+								newValue);
+
+						// Some sockets don't allow connections (e.g. literals).
 						if (scope.socket.connections === undefined)
 							return;
 
 						// Remove existing connections that are no longer listed
 						// in the model.
-						var existingConnections = jsPlumb.getConnections({target: iElement});
-						for (var i = 0; i < existingConnections.length; i++) {
-							var conn = existingConnections[i];
-							var ref = vpac.socket.elemToRef(conn.source);
-							var index = vpac.indexOf(scope.socket.connections, ref);
-							if (index < 0) {
-								jsPlumb.detach(conn);
+						if (isInput) {
+							var existingConnections = jsPlumb.getConnections({target: iElement});
+							for (var i = 0; i < existingConnections.length; i++) {
+								var conn = existingConnections[i];
+								var ref = vpac.socket.elemToRef(conn.source);
+								var index = vpac.indexOf(scope.socket.connections, ref);
+								if (index < 0) {
+									jsPlumb.detach(conn);
+								}
+							}
+						} else {
+							var existingConnections = jsPlumb.getConnections({source: iElement});
+							for (var i = 0; i < existingConnections.length; i++) {
+								var conn = existingConnections[i];
+								var ref = vpac.socket.elemToRef(conn.target);
+								var index = vpac.indexOf(scope.socket.connections, ref);
+								if (index < 0) {
+									jsPlumb.detach(conn);
+								}
 							}
 						}
 						// Create connections that are listed but don't exist
@@ -467,14 +495,23 @@ angular.module('graphEditor').directive('socket', function($timeout) {
 								var index = vpac.indexOf(newValue, ref);
 								if (index < 0)
 									continue;
+
+								var source;
+								var target;
+								if (isInput) {
+									source = sockets.eq(i);
+									target = iElement;
+								} else {
+									source = iElement;
+									target = sockets.eq(i);
+								}
+
 								var existingConnections = jsPlumb.getConnections({
-									source: sockets.eq(i),
-									target: iElement
+									source: source,
+									target: target
 								});
 								if (existingConnections.length > 0)
 									continue;
-								var source = sockets.eq(i);
-								var target = iElement;
 								jsPlumb.connect({
 									source: jsPlumb.getEndpoints(source)[0],
 									target: jsPlumb.getEndpoints(target)[0]
