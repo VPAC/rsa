@@ -11,7 +11,7 @@ One of the fundamental concepts behind RSA is the *data cube*. This is essential
 The RSA has a Java API, and two user interfaces:
  
  * [rsacli](doc/rsacli_tutorial.md) - The command line interface, great for administration and automation.
- * [spatialcubeservice](doc/spatialcubeservice_RESTful_API.pdf) - Web services, and a graphical interface for the query engine.
+ * [spatialcubeservice](doc/spatialcubeservice.md) - Web services, and a graphical interface for the query engine.
 
 ![Screenshot](doc/screenshot.png)
 
