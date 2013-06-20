@@ -6,7 +6,7 @@ The Raster Storage Archive (RSA) is a storage and distribution platform for larg
 
 Datasets are imported into the RSA via the command line interface or the Web services. The RSA processes the data into manageable files sharing a common projection and alignment. It also merges incoming data with existing datasets as required. RSA simply manages the uploaded data; third party tools can always access the stored images from the file system and read meta-data from the database directly.
 
-One of the fundamental concepts behind RSA is the *data cube*. This is essentially a multi-dimensional image, with *x* and *y* axes for spatially-varying data an a *time* axis for temporally-varying data. The data cube can contain any number of bands, which are analogous to colour channels in common image formats. The RSA can export sections of the data cube, and can perform spatio-temporal queries on the data with its programmable query engine.
+One of the fundamental concepts behind RSA is the *data cube*, which is essentially a multi-dimensional image. The RSA supports data cubes with *x* and *y* axes for spatially-varying data and a *time* axis for temporally-varying data. The data cube can contain any number of bands, which are analogous to colour channels in common image formats. The RSA can export sections of the data cube, and can perform spatio-temporal queries on the data with its programmable query engine.
 
 The RSA has a Java API, and two user interfaces:
  
@@ -23,8 +23,14 @@ The RSA has a Java API, and two user interfaces:
 
 ## License & Acknowledgements
 
-Copyright (c) 2013 CRCSI - Cooperative Research Centre for Spatial Information.
+Copyright 2013 [CRCSI][1] - Cooperative Research Centre for Spatial Information.
 
-The RSA is licensed under the GPL v3, please see [LICENSE.txt](LICENSE.txt).
+The RSA is free software: you can redistribute it and/or modify it under the terms of the GNU General Public Licence as published by the Free Software Foundation, either version 3 of the Licence, or (at your option) any later version. See [LICENCE.txt](LICENSE.txt).
 
-The RSA was developed by VPAC under the Unlocking the Landsat Archive (ULA) project as funded by the Australian Space Research Program (ASRP).
+The RSA is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+The RSA was developed by VPAC under the [Unlocking the Landsat Archive (ULA)][2] project as funded by the Australian Space Research Program (ASRP).
+
+[1]: http://www.crcsi.com.au/
+[2]: http://www.space.gov.au/AustralianSpaceResearchProgram/ProjectFactsheetspage/Pages/UnlockingtheLANDSATArchiveforFutureChallenges.aspx
+
