@@ -2,24 +2,14 @@ package org.vpac.ndg.task;
 
 import java.io.IOException;
 import java.nio.file.Path;
-import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.httpclient.Credentials;
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.HttpException;
-import org.apache.commons.httpclient.HttpStatus;
-import org.apache.commons.httpclient.NameValuePair;
-import org.apache.commons.httpclient.UsernamePasswordCredentials;
-import org.apache.commons.httpclient.auth.AuthScope;
-import org.apache.commons.httpclient.methods.PostMethod;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.vpac.ndg.ApplicationContextProvider;
 import org.vpac.ndg.FileUtils;
-import org.vpac.ndg.Utils;
 import org.vpac.ndg.application.Constant;
 import org.vpac.ndg.configuration.NdgConfigManager;
 import org.vpac.ndg.exceptions.TaskException;
@@ -28,7 +18,6 @@ import org.vpac.ndg.rasterservices.FileInformation;
 import org.vpac.ndg.rasterservices.NcmlCreator;
 import org.vpac.ndg.storage.dao.TimeSliceDao;
 import org.vpac.ndg.storage.model.Band;
-import org.vpac.ndg.storage.model.Dataset;
 import org.vpac.ndg.storage.model.TileBand;
 import org.vpac.ndg.storage.model.TimeSlice;
 import org.vpac.ndg.storage.util.TimeSliceUtil;
@@ -126,21 +115,8 @@ public class TileAggregator extends Task {
 			throw new TaskException(msg);
 		}
 
-		String ncWmsAdminUsername = ndgConfigManager.getConfig().getNcWmsAdminUsername();
-		String ncWmsAdminPassword = ndgConfigManager.getConfig().getNcWmsAdminPassword();
-		if (Utils.sendNcwmsRequest()) {
-			if(ncWmsAdminUsername == null || ncWmsAdminUsername.isEmpty()) {
-				throw new TaskException("ncWmsAdminUsername is not specified.");
-			}
-
-			if(ncWmsAdminPassword == null || ncWmsAdminPassword.isEmpty()) {
-				throw new TaskException("ncWmsAdminPassword is not specified.");
-			}
-		}
-
 		// Copy file to storage pool.
 		// TODO: This should be done in the Committer!!
-		DateFormat formatter = Utils.getTimestampFormatter();
 		Path from = ncmlFile.getFileLocation();
 		Path to = timeSliceUtil.getFileLocation(timeSlice).resolve(from.getFileName());
 		try {
@@ -154,100 +130,6 @@ public class TileAggregator extends Task {
 			throw new TaskException(String.format(Constant.ERR_COPY_FILE_FAILED, from, to));
 		}
 
-		if (Utils.sendNcwmsRequest()) {
-			// At the moment use the same info for dataset id and dataset title
-			String creationTime = formatter.format(timeSlice.getCreated());
-			Dataset ds = timeSliceDao.getParentDataset(timeSlice.getId());
-			String ncmlId = String.format("%s:%s:%s", 
-					ds.getName(),
-					ds.getResolution(),
-					creationTime);
-
-			updateNcWmsConfig(ncWmsAdminUsername, ncWmsAdminPassword, ncmlId, ncmlId, ncmlFile.getFileLocation());
-		}
-	}
-
-	/**
-	 * Make a HTTP POST request to ncWMS to update config.xml with the new
-	 * dataset.
-	 * 
-	 * @param ncWmsAdminUsername
-	 *            The ncWMS admin username
-	 * @param ncWmsAdminPassword
-	 *            The ncWMS admin password
-	 * @param datasetId
-	 *            The dataset to be added
-	 * @param datasetTitle
-	 *            The dataset title to be added
-	 * @param to
-	 *            The dataset location
-	 * @throws Exception
-	 */
-	private void updateNcWmsConfig(String ncWmsAdminUsername,
-			String ncWmsAdminPassword, String datasetId, String datasetTitle,
-			Path to) throws TaskException {
-
-		log.debug("ncWMS dataset: {}", datasetId);
-		log.debug("ncWMS file location: {}", to);
-
-		// String url =
-		// "http://uladev.in.vpac.org:8080/ncWMS/admin/addDatasetIntoConfig";
-		String host = "localhost";
-		int port = 8080;
-		String url = "http://" + host + ":" + port
-				+ "/ncWMS/admin/addDatasetIntoConfig";
-
-		PostMethod method = new PostMethod(url);
-		NameValuePair[] data = {
-				new NameValuePair("dataset.new.id", datasetId),
-				new NameValuePair("dataset.new.title", datasetId),
-				new NameValuePair("dataset.new.location", to.toString()) };
-		// Set the dataset to be added into ncWMS config.xml.
-		method.setRequestBody(data);
-
-		// // Provide custom retry handler is necessary
-		// method.getParams().setParameter(HttpMethodParams.RETRY_HANDLER,
-		// new DefaultHttpMethodRetryHandler(1, false));
-
-		HttpClient client = new HttpClient();
-		try {
-			client.getParams().setAuthenticationPreemptive(true);
-			Credentials defaultcreds = new UsernamePasswordCredentials(
-					ncWmsAdminUsername, ncWmsAdminPassword);
-			client.getState().setCredentials(
-					new AuthScope(host, port, AuthScope.ANY_REALM),
-					defaultcreds);
-
-			// // To be avoided unless in debug mode
-			// Credentials defaultcreds = new
-			// UsernamePasswordCredentials(ncWmsAdminUsername,
-			// ncWmsAdminPassword);
-			// client.getState().setCredentials(AuthScope.ANY, defaultcreds);
-			log.debug("Sent request to ncWMS: {}", url);
-
-			// Execute the method.
-			int statusCode = client.executeMethod(method);
-
-			// Check if redirect to index.jsp
-			if (statusCode != HttpStatus.SC_MOVED_TEMPORARILY) {
-				String error = "Failed sending request to ncWMS, request status code "
-						+ statusCode;
-				log.error("Method failed: {}", method.getStatusLine());
-				log.error(error);
-				throw new TaskException(error);
-			}
-		} catch (HttpException e) {
-			String error = "Fatal protocol violation";
-			String msg = String.format(Constant.ERR_GENERIC_EXCEPTION, error, e.getMessage());
-			throw new TaskException(msg);
-		} catch (IOException e) {
-			String error = "Fatal I/O error";
-			String msg = String.format(Constant.ERR_GENERIC_EXCEPTION, error, e.getMessage());
-			throw new TaskException(msg);
-		} finally {
-			// Release the connection.
-			method.releaseConnection();
-		}
 	}
 
 	@Override

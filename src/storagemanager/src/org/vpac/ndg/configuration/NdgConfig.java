@@ -50,11 +50,6 @@ public class NdgConfig {
 	private String defaultPickupLocation;
 	@XStreamAlias("gdalprefix")
 	private String gdalLocation;
-
-	@XStreamAlias("ncWmsAdminUsername")
-	private String ncWmsAdminUsername;
-	@XStreamAlias("ncWmsAdminPassword")
-	private String ncWmsAdminPassword;	
 	
 	public String getTargetProjection() {
 		return "EPSG:" + targetSrsEpsgId;
@@ -123,22 +118,6 @@ public class NdgConfig {
 
 	public void setGdalLocation(String gdalLocation) {
 		this.gdalLocation = gdalLocation;
-	}
-
-	public String getNcWmsAdminUsername() {
-		return ncWmsAdminUsername;
-	}
-
-	public void setNcWmsAdminUsername(String ncWmsAdminUsername) {
-		this.ncWmsAdminUsername = ncWmsAdminUsername;
-	}
-
-	public String getNcWmsAdminPassword() {
-		return ncWmsAdminPassword;
-	}
-
-	public void setNcWmsAdminPassword(String ncWmsAdminPassword) {
-		this.ncWmsAdminPassword = ncWmsAdminPassword;
 	}
 
 	public boolean isUpPositive() {
