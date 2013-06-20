@@ -1,18 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <workingSetManager>
-<!-- This is an Eclipse working set for the management of RSA source files.
-     To use it:
-
-      1. Exit Eclipse.
-      2. Copy file to WORKSPACE/.metadata/.plugins/org.eclipse.ui.workbench/
-      3. Start Eclipse.
-
-     Now when you browse for files using the Open Resource dialogue
-     (ctrl-shift-R) you can choose to filter only for the files listed in this
-     file by selecting the "RSA Sources" working set.
-
-     http://stackoverflow.com/questions/2369829/share-export-eclipse-working-sets
-      -->
 <workingSet editPageId="org.eclipse.ui.resourceWorkingSetPage" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1370478010718_16" label="RSA Sources" name="RSA Sources">
 <item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/CmdClient/build.xml" type="1"/>
 <item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/CmdClient/config" type="2"/>
@@ -36,7 +23,18 @@
 <item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/SpatialCubeService/build.xml" type="1"/>
 <item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/SpatialCubeService/config" type="2"/>
 <item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/SpatialCubeService/scripts" type="2"/>
-<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/SpatialCubeService/src" type="2"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/SpatialCubeService/src/main/java" type="2"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/SpatialCubeService/src/main/resources" type="2"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/SpatialCubeService/src/main/test" type="2"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/SpatialCubeService/src/main/webapp/WEB-INF" type="2"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/SpatialCubeService/src/main/webapp/app/css" type="2"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/SpatialCubeService/src/main/webapp/app/images" type="2"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/SpatialCubeService/src/main/webapp/app/index.html" type="1"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/SpatialCubeService/src/main/webapp/app/js" type="2"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/SpatialCubeService/src/main/webapp/app/mockdata" type="2"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/SpatialCubeService/src/main/webapp/app/template" type="2"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/SpatialCubeService/src/main/webapp/resources" type="2"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/SpatialCubeService/src/test" type="2"/>
 <item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/StorageManager/build.xml" type="1"/>
 <item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/StorageManager/config" type="2"/>
 <item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/StorageManager/resources" type="2"/>
