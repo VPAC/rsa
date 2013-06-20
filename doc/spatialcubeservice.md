@@ -9,7 +9,7 @@ This section details out all available web services on spatialcubeservice:
 
 ## Dataset
 
-| URL     | Method      | Parameter(Bold:mandatory / normal:optional) | Return |
+| URL     | Method      | Parameter                                   | Return |
 |:--------|:-----------:|:--------------------------------------------|:-------|
 |/Dataset | GET         |name : dataset name<br />resolution : resolution<br /> abstract : dataAbstract<br />page : page number (Default: 0)<br />pageSize : page Size (Default:50)|DatasetCollectionResponse|
 |/Dataset/{id}|GET||DatasetResponse|
@@ -18,7 +18,7 @@ This section details out all available web services on spatialcubeservice:
 
 ## TimeSlice
 
-| URL     | Method      | Parameter(Bold:mandatory / normal:optional) | Return |
+| URL     | Method      | Parameter                                   | Return |
 |:--------|:-----------:|:--------------------------------------------|:-------|
 |/TimeSlice | GET |datasetId : id of dataset which is time slice belongs to<br />creationDate : time of time slice<br />searchBeginDate : search boundary start point<br />searchEndDate : search boundary end point page : page number (Default: 0)<br />pageSize : page Size (Default:50)|TimeSliceCollectionResponse|
 |/TimeSlice/{id}|GET||TimeSliceResponse|
@@ -27,7 +27,7 @@ This section details out all available web services on spatialcubeservice:
 
 ## Band
 
-| URL     | Method      | Parameter(Bold:mandatory / normal:optional) | Return |
+| URL     | Method      | Parameter                                   | Return |
 |:--------|:-----------:|:--------------------------------------------|:-------|
 |/Band|GET|datasetId : id of dataset which is time slice belongs to<br />page : page number<br />(Default: 0)<br />pageSize : page Size (Default:50)|BandCollectionResponse|
 |/Band/{id}|GET||BandResponse|
@@ -36,7 +36,7 @@ This section details out all available web services on spatialcubeservice:
 
 ## Data
 
-| URL     | Method      | Parameter(Bold:mandatory / normal:optional) | Return |
+| URL     | Method      | Parameter                                   | Return |
 |:--------|:-----------:|:--------------------------------------------|:-------|
 |/Data/Import|POST|taskId : id of file which is uploaded<br />bandId : id of band which is going to import|ImportResponse(Okay, fail)|
 |/Data/Export|POST|datasetId : id of dataset which is time slice belongs to<br />bandId : list of bandId s(same name request)<br />searchBeginDate : search boundary start point<br />searchEndDate : search boundary end point<br />projetion : projection type and value (eg.EPSG:123)<br />topLeft : spatial bounds<br />bottomRight : spatial bounds|ExportResponse(taskId)|
