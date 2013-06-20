@@ -21,15 +21,21 @@ After running the above command, you'll will have a fully running Centos VM with
 
 ### Commonly used vagrant commands:
 
-	$ vagrant ssh		# SSH into the VM.
+	$ vagrant ssh		# SSH into the guest VM.
 
-	$ vagrant up		# Install all dependencies and load the VM. 
+	$ vagrant up		# Install all dependencies and load the guest VM.
 
-	$ vagrant provision	# Apply changes to the VM.
+	$ vagrant provision	# Apply changes to the guest VM.
 
-	$ vagrant reload	# Reload the VM.
+	$ vagrant reload	# Reload the guest VM.
 
-	$ vagrant destroy	# Destroy the VM.
+	$ vagrant destroy	# Destroy the guest VM.
+
+	$ vagrant suspend	# Suspend the guest VM rather than fully destroying it.
+
+	$ vagrant resume	# Resume a Vagrant managed VM that was previously suspended.
+
+	$ vagrant status	# Show the state of the VMs Vagrant is managing.
 
 	$ vagrant init centos-63-x64 http://vpac.org/pub/centos-63-x64.box # Create the VM from the specified box
 
