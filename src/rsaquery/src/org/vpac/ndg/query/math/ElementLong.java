@@ -51,6 +51,11 @@ public class ElementLong implements ScalarElement {
 	public void setValid(Element<?> mask) {
 		this.valid = mask.isValid();
 	}
+	@Override
+	public void setValidIfValid(Element<?> mask) {
+		if (mask.isValid())
+			this.valid = true;
+	}
 
 	@Override
 	public Long getValue() {

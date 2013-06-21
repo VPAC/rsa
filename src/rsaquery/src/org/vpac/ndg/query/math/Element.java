@@ -23,6 +23,7 @@ public interface Element<T extends Element<?>> {
 	boolean isValid();
 	void setValid(boolean valid);
 	void setValid(Element<?> mask);
+	void setValidIfValid(Element<?> mask);
 
 	ScalarElement[] getComponents();
 

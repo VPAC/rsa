@@ -121,6 +121,21 @@ public class VectorElement implements Element<VectorElement> {
 		for (int i = 0; i < components.length; i++)
 			components[i].setValid(mask.components[i].isValid());
 	}
+	@Override
+	public void setValidIfValid(Element<?> mask) {
+		if (mask.getClass() == VectorElement.class)
+			setValidIfValid((VectorElement) mask);
+		else
+			setValidIfValid((ScalarElement) mask);
+	}
+	public void setValidIfValid(ScalarElement mask) {
+		for (int i = 0; i < components.length; i++)
+			components[i].setValidIfValid(mask);
+	}
+	public void setValidIfValid(VectorElement mask) {
+		for (int i = 0; i < components.length; i++)
+			components[i].setValidIfValid(mask.components[i]);
+	}
 
 	@Override
 	public ScalarElement[] getComponents() {

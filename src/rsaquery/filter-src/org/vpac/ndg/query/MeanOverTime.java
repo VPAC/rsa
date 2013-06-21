@@ -31,6 +31,7 @@ public class MeanOverTime implements Filter {
 	private Element<?> delta;
 	private Element<?> temp;
 	private Element<?> mean;
+	private Element<?> n;
 
 	Reduction reduction;
 
@@ -42,6 +43,7 @@ public class MeanOverTime implements Filter {
 		delta = val.copy();
 		temp = val.copy();
 		mean = val.copy();
+		n = input.getPrototype().getElement().asInt();
 
 		reduction = new Reduction(input.getBounds());
 	}
@@ -50,33 +52,32 @@ public class MeanOverTime implements Filter {
 	public final void kernel(VectorReal coords) throws IOException {
 		// Use Knuth's single-pass algorithm: assume memory access is slower
 		// than division.
-		int n = 0;
 		mean.set(0);
 		delta.set(0);
+		n.set(0);
+
+		// Start off invalid, and become valid later if a valid pixel is found.
+		mean.setValid(false);
 
 		for (VectorReal co : reduction.getIterator(coords)) {
 			// Coerce the pixel into a float type with the same number of bands.
 			val.set(input.getPixel(co));
-			if (!val.isValid())
-				continue;
+			mean.setValidIfValid(val);
 
-			n++;
+			n.addIfValid(1, val);
 
 			// delta = val - mean
-			delta.subOf(val, mean);
+			delta.subOfIfValid(val, mean);
 
 			// mean += delta / n
-			temp.divOf(delta, n);
-			mean.add(temp);
+			temp.divOfIfValid(delta, n, val);
+			mean.addIfValid(temp, val);
 
 			// M2 += delta * (val - mean)
-			temp.subOf(val, mean).mul(delta);
+			temp.subOfIfValid(val, mean).mulIfValid(delta, val);
 		}
 
-		if (n > 0)
-			output.set(mean);
-		else
-			output.unset();
+		output.set(mean);
 	}
 
 }
