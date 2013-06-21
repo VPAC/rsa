@@ -47,6 +47,10 @@ public class ElementLong implements ScalarElement {
 	public void setValid(boolean valid) {
 		this.valid = valid;
 	}
+	@Override
+	public void setValid(Element<?> mask) {
+		this.valid = mask.isValid();
+	}
 
 	@Override
 	public Long getValue() {
@@ -208,6 +212,54 @@ public class ElementLong implements ScalarElement {
 	}
 
 	@Override
+	public ElementLong addIfValid(long other, Element<?> mask) {
+		if (!mask.isValid())
+			return this;
+		try {
+			value = (long)(value + other);
+		} catch (ArithmeticException e) {
+			this.setValid(false);
+		}
+		return this;
+	}
+	/**
+	 * @throws ClassCastException if mask is a vector.
+	 */
+	@Override
+	public ElementLong addIfValid(double other, Element<?> mask) {
+		if (!mask.isValid())
+			return this;
+		try {
+			value = (long)(value + (long)other);
+		} catch (ArithmeticException e) {
+			this.setValid(false);
+		}
+		return this;
+	}
+	@Override
+	public ElementLong addIfValid(Element<?> other) {
+		if (!other.isValid())
+			return this;
+		try {
+			value = (long)(value + ((ScalarElement)other).longValue());
+		} catch (ArithmeticException e) {
+			// do nothing.
+		}
+		return this;
+	}
+	@Override
+	public ElementLong addIfValid(Element<?> other, Element<?> mask) {
+		if (!other.isValid() || !mask.isValid())
+			return this;
+		try {
+			value = (long)(value + ((ScalarElement)other).longValue());
+		} catch (ArithmeticException e) {
+			// do nothing.
+		}
+		return this;
+	}
+
+	@Override
 	public ElementLong addNew(long other) {
 		ElementLong res = copy();
 		return res.add(other);
@@ -221,6 +273,27 @@ public class ElementLong implements ScalarElement {
 	public ElementLong addNew(Element<?> other) {
 		ElementLong res = copy();
 		return res.add(other);
+	}
+
+	@Override
+	public ElementLong addNewIfValid(long other, Element<?> mask) {
+		ElementLong res = copy();
+		return res.addIfValid(other, mask);
+	}
+	@Override
+	public ElementLong addNewIfValid(double other, Element<?> mask) {
+		ElementLong res = copy();
+		return res.addIfValid(other, mask);
+	}
+	@Override
+	public ElementLong addNewIfValid(Element<?> other) {
+		ElementLong res = copy();
+		return res.addIfValid(other);
+	}
+	@Override
+	public ElementLong addNewIfValid(Element<?> other, Element<?> mask) {
+		ElementLong res = copy();
+		return res.addIfValid(other, mask);
 	}
 
 	@Override
@@ -342,6 +415,91 @@ public class ElementLong implements ScalarElement {
 	}
 
 	@Override
+	public ElementLong addOfIfValid(long a, long b, Element<?> mask) {
+		if (mask.isValid())
+			addOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementLong addOfIfValid(double a, long b, Element<?> mask) {
+		if (mask.isValid())
+			addOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementLong addOfIfValid(long a, double b, Element<?> mask) {
+		if (mask.isValid())
+			addOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementLong addOfIfValid(double a, double b, Element<?> mask) {
+		if (mask.isValid())
+			addOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementLong addOfIfValid(Element<?> a, long b) {
+		if (a.isValid())
+			addOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementLong addOfIfValid(Element<?> a, long b, Element<?> mask) {
+		if (a.isValid() && mask.isValid())
+			addOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementLong addOfIfValid(long a, Element<?> b) {
+		if (b.isValid())
+			addOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementLong addOfIfValid(long a, Element<?> b, Element<?> mask) {
+		if (b.isValid() && mask.isValid())
+			addOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementLong addOfIfValid(Element<?> a, double b) {
+		if (a.isValid())
+			addOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementLong addOfIfValid(Element<?> a, double b, Element<?> mask) {
+		if (a.isValid() && mask.isValid())
+			addOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementLong addOfIfValid(double a, Element<?> b) {
+		if (b.isValid())
+			addOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementLong addOfIfValid(double a, Element<?> b, Element<?> mask) {
+		if (b.isValid() && mask.isValid())
+			addOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementLong addOfIfValid(Element<?> a, Element<?> b) {
+		if (a.isValid() && b.isValid())
+			addOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementLong addOfIfValid(Element<?> a, Element<?> b, Element<?> mask) {
+		if (a.isValid() && b.isValid() && mask.isValid())
+			addOf(a, b);
+		return this;
+	}
+
+	@Override
 	public ElementLong sub(long other) {
 		try {
 			value = (long)(value - other);
@@ -377,6 +535,54 @@ public class ElementLong implements ScalarElement {
 	}
 
 	@Override
+	public ElementLong subIfValid(long other, Element<?> mask) {
+		if (!mask.isValid())
+			return this;
+		try {
+			value = (long)(value - other);
+		} catch (ArithmeticException e) {
+			this.setValid(false);
+		}
+		return this;
+	}
+	/**
+	 * @throws ClassCastException if mask is a vector.
+	 */
+	@Override
+	public ElementLong subIfValid(double other, Element<?> mask) {
+		if (!mask.isValid())
+			return this;
+		try {
+			value = (long)(value - (long)other);
+		} catch (ArithmeticException e) {
+			this.setValid(false);
+		}
+		return this;
+	}
+	@Override
+	public ElementLong subIfValid(Element<?> other) {
+		if (!other.isValid())
+			return this;
+		try {
+			value = (long)(value - ((ScalarElement)other).longValue());
+		} catch (ArithmeticException e) {
+			// do nothing.
+		}
+		return this;
+	}
+	@Override
+	public ElementLong subIfValid(Element<?> other, Element<?> mask) {
+		if (!other.isValid() || !mask.isValid())
+			return this;
+		try {
+			value = (long)(value - ((ScalarElement)other).longValue());
+		} catch (ArithmeticException e) {
+			// do nothing.
+		}
+		return this;
+	}
+
+	@Override
 	public ElementLong subNew(long other) {
 		ElementLong res = copy();
 		return res.sub(other);
@@ -390,6 +596,27 @@ public class ElementLong implements ScalarElement {
 	public ElementLong subNew(Element<?> other) {
 		ElementLong res = copy();
 		return res.sub(other);
+	}
+
+	@Override
+	public ElementLong subNewIfValid(long other, Element<?> mask) {
+		ElementLong res = copy();
+		return res.subIfValid(other, mask);
+	}
+	@Override
+	public ElementLong subNewIfValid(double other, Element<?> mask) {
+		ElementLong res = copy();
+		return res.subIfValid(other, mask);
+	}
+	@Override
+	public ElementLong subNewIfValid(Element<?> other) {
+		ElementLong res = copy();
+		return res.subIfValid(other);
+	}
+	@Override
+	public ElementLong subNewIfValid(Element<?> other, Element<?> mask) {
+		ElementLong res = copy();
+		return res.subIfValid(other, mask);
 	}
 
 	@Override
@@ -511,6 +738,91 @@ public class ElementLong implements ScalarElement {
 	}
 
 	@Override
+	public ElementLong subOfIfValid(long a, long b, Element<?> mask) {
+		if (mask.isValid())
+			subOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementLong subOfIfValid(double a, long b, Element<?> mask) {
+		if (mask.isValid())
+			subOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementLong subOfIfValid(long a, double b, Element<?> mask) {
+		if (mask.isValid())
+			subOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementLong subOfIfValid(double a, double b, Element<?> mask) {
+		if (mask.isValid())
+			subOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementLong subOfIfValid(Element<?> a, long b) {
+		if (a.isValid())
+			subOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementLong subOfIfValid(Element<?> a, long b, Element<?> mask) {
+		if (a.isValid() && mask.isValid())
+			subOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementLong subOfIfValid(long a, Element<?> b) {
+		if (b.isValid())
+			subOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementLong subOfIfValid(long a, Element<?> b, Element<?> mask) {
+		if (b.isValid() && mask.isValid())
+			subOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementLong subOfIfValid(Element<?> a, double b) {
+		if (a.isValid())
+			subOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementLong subOfIfValid(Element<?> a, double b, Element<?> mask) {
+		if (a.isValid() && mask.isValid())
+			subOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementLong subOfIfValid(double a, Element<?> b) {
+		if (b.isValid())
+			subOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementLong subOfIfValid(double a, Element<?> b, Element<?> mask) {
+		if (b.isValid() && mask.isValid())
+			subOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementLong subOfIfValid(Element<?> a, Element<?> b) {
+		if (a.isValid() && b.isValid())
+			subOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementLong subOfIfValid(Element<?> a, Element<?> b, Element<?> mask) {
+		if (a.isValid() && b.isValid() && mask.isValid())
+			subOf(a, b);
+		return this;
+	}
+
+	@Override
 	public ElementLong mul(long other) {
 		try {
 			value = (long)(value * other);
@@ -546,6 +858,54 @@ public class ElementLong implements ScalarElement {
 	}
 
 	@Override
+	public ElementLong mulIfValid(long other, Element<?> mask) {
+		if (!mask.isValid())
+			return this;
+		try {
+			value = (long)(value * other);
+		} catch (ArithmeticException e) {
+			this.setValid(false);
+		}
+		return this;
+	}
+	/**
+	 * @throws ClassCastException if mask is a vector.
+	 */
+	@Override
+	public ElementLong mulIfValid(double other, Element<?> mask) {
+		if (!mask.isValid())
+			return this;
+		try {
+			value = (long)(value * (long)other);
+		} catch (ArithmeticException e) {
+			this.setValid(false);
+		}
+		return this;
+	}
+	@Override
+	public ElementLong mulIfValid(Element<?> other) {
+		if (!other.isValid())
+			return this;
+		try {
+			value = (long)(value * ((ScalarElement)other).longValue());
+		} catch (ArithmeticException e) {
+			// do nothing.
+		}
+		return this;
+	}
+	@Override
+	public ElementLong mulIfValid(Element<?> other, Element<?> mask) {
+		if (!other.isValid() || !mask.isValid())
+			return this;
+		try {
+			value = (long)(value * ((ScalarElement)other).longValue());
+		} catch (ArithmeticException e) {
+			// do nothing.
+		}
+		return this;
+	}
+
+	@Override
 	public ElementLong mulNew(long other) {
 		ElementLong res = copy();
 		return res.mul(other);
@@ -559,6 +919,27 @@ public class ElementLong implements ScalarElement {
 	public ElementLong mulNew(Element<?> other) {
 		ElementLong res = copy();
 		return res.mul(other);
+	}
+
+	@Override
+	public ElementLong mulNewIfValid(long other, Element<?> mask) {
+		ElementLong res = copy();
+		return res.mulIfValid(other, mask);
+	}
+	@Override
+	public ElementLong mulNewIfValid(double other, Element<?> mask) {
+		ElementLong res = copy();
+		return res.mulIfValid(other, mask);
+	}
+	@Override
+	public ElementLong mulNewIfValid(Element<?> other) {
+		ElementLong res = copy();
+		return res.mulIfValid(other);
+	}
+	@Override
+	public ElementLong mulNewIfValid(Element<?> other, Element<?> mask) {
+		ElementLong res = copy();
+		return res.mulIfValid(other, mask);
 	}
 
 	@Override
@@ -680,6 +1061,91 @@ public class ElementLong implements ScalarElement {
 	}
 
 	@Override
+	public ElementLong mulOfIfValid(long a, long b, Element<?> mask) {
+		if (mask.isValid())
+			mulOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementLong mulOfIfValid(double a, long b, Element<?> mask) {
+		if (mask.isValid())
+			mulOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementLong mulOfIfValid(long a, double b, Element<?> mask) {
+		if (mask.isValid())
+			mulOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementLong mulOfIfValid(double a, double b, Element<?> mask) {
+		if (mask.isValid())
+			mulOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementLong mulOfIfValid(Element<?> a, long b) {
+		if (a.isValid())
+			mulOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementLong mulOfIfValid(Element<?> a, long b, Element<?> mask) {
+		if (a.isValid() && mask.isValid())
+			mulOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementLong mulOfIfValid(long a, Element<?> b) {
+		if (b.isValid())
+			mulOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementLong mulOfIfValid(long a, Element<?> b, Element<?> mask) {
+		if (b.isValid() && mask.isValid())
+			mulOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementLong mulOfIfValid(Element<?> a, double b) {
+		if (a.isValid())
+			mulOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementLong mulOfIfValid(Element<?> a, double b, Element<?> mask) {
+		if (a.isValid() && mask.isValid())
+			mulOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementLong mulOfIfValid(double a, Element<?> b) {
+		if (b.isValid())
+			mulOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementLong mulOfIfValid(double a, Element<?> b, Element<?> mask) {
+		if (b.isValid() && mask.isValid())
+			mulOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementLong mulOfIfValid(Element<?> a, Element<?> b) {
+		if (a.isValid() && b.isValid())
+			mulOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementLong mulOfIfValid(Element<?> a, Element<?> b, Element<?> mask) {
+		if (a.isValid() && b.isValid() && mask.isValid())
+			mulOf(a, b);
+		return this;
+	}
+
+	@Override
 	public ElementLong div(long other) {
 		try {
 			value = (long)(value / other);
@@ -715,6 +1181,54 @@ public class ElementLong implements ScalarElement {
 	}
 
 	@Override
+	public ElementLong divIfValid(long other, Element<?> mask) {
+		if (!mask.isValid())
+			return this;
+		try {
+			value = (long)(value / other);
+		} catch (ArithmeticException e) {
+			this.setValid(false);
+		}
+		return this;
+	}
+	/**
+	 * @throws ClassCastException if mask is a vector.
+	 */
+	@Override
+	public ElementLong divIfValid(double other, Element<?> mask) {
+		if (!mask.isValid())
+			return this;
+		try {
+			value = (long)(value / (long)other);
+		} catch (ArithmeticException e) {
+			this.setValid(false);
+		}
+		return this;
+	}
+	@Override
+	public ElementLong divIfValid(Element<?> other) {
+		if (!other.isValid())
+			return this;
+		try {
+			value = (long)(value / ((ScalarElement)other).longValue());
+		} catch (ArithmeticException e) {
+			// do nothing.
+		}
+		return this;
+	}
+	@Override
+	public ElementLong divIfValid(Element<?> other, Element<?> mask) {
+		if (!other.isValid() || !mask.isValid())
+			return this;
+		try {
+			value = (long)(value / ((ScalarElement)other).longValue());
+		} catch (ArithmeticException e) {
+			// do nothing.
+		}
+		return this;
+	}
+
+	@Override
 	public ElementLong divNew(long other) {
 		ElementLong res = copy();
 		return res.div(other);
@@ -728,6 +1242,27 @@ public class ElementLong implements ScalarElement {
 	public ElementLong divNew(Element<?> other) {
 		ElementLong res = copy();
 		return res.div(other);
+	}
+
+	@Override
+	public ElementLong divNewIfValid(long other, Element<?> mask) {
+		ElementLong res = copy();
+		return res.divIfValid(other, mask);
+	}
+	@Override
+	public ElementLong divNewIfValid(double other, Element<?> mask) {
+		ElementLong res = copy();
+		return res.divIfValid(other, mask);
+	}
+	@Override
+	public ElementLong divNewIfValid(Element<?> other) {
+		ElementLong res = copy();
+		return res.divIfValid(other);
+	}
+	@Override
+	public ElementLong divNewIfValid(Element<?> other, Element<?> mask) {
+		ElementLong res = copy();
+		return res.divIfValid(other, mask);
 	}
 
 	@Override
@@ -849,6 +1384,91 @@ public class ElementLong implements ScalarElement {
 	}
 
 	@Override
+	public ElementLong divOfIfValid(long a, long b, Element<?> mask) {
+		if (mask.isValid())
+			divOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementLong divOfIfValid(double a, long b, Element<?> mask) {
+		if (mask.isValid())
+			divOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementLong divOfIfValid(long a, double b, Element<?> mask) {
+		if (mask.isValid())
+			divOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementLong divOfIfValid(double a, double b, Element<?> mask) {
+		if (mask.isValid())
+			divOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementLong divOfIfValid(Element<?> a, long b) {
+		if (a.isValid())
+			divOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementLong divOfIfValid(Element<?> a, long b, Element<?> mask) {
+		if (a.isValid() && mask.isValid())
+			divOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementLong divOfIfValid(long a, Element<?> b) {
+		if (b.isValid())
+			divOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementLong divOfIfValid(long a, Element<?> b, Element<?> mask) {
+		if (b.isValid() && mask.isValid())
+			divOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementLong divOfIfValid(Element<?> a, double b) {
+		if (a.isValid())
+			divOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementLong divOfIfValid(Element<?> a, double b, Element<?> mask) {
+		if (a.isValid() && mask.isValid())
+			divOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementLong divOfIfValid(double a, Element<?> b) {
+		if (b.isValid())
+			divOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementLong divOfIfValid(double a, Element<?> b, Element<?> mask) {
+		if (b.isValid() && mask.isValid())
+			divOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementLong divOfIfValid(Element<?> a, Element<?> b) {
+		if (a.isValid() && b.isValid())
+			divOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementLong divOfIfValid(Element<?> a, Element<?> b, Element<?> mask) {
+		if (a.isValid() && b.isValid() && mask.isValid())
+			divOf(a, b);
+		return this;
+	}
+
+	@Override
 	public ElementLong mod(long other) {
 		try {
 			value = (long)(value % other);
@@ -884,6 +1504,54 @@ public class ElementLong implements ScalarElement {
 	}
 
 	@Override
+	public ElementLong modIfValid(long other, Element<?> mask) {
+		if (!mask.isValid())
+			return this;
+		try {
+			value = (long)(value % other);
+		} catch (ArithmeticException e) {
+			this.setValid(false);
+		}
+		return this;
+	}
+	/**
+	 * @throws ClassCastException if mask is a vector.
+	 */
+	@Override
+	public ElementLong modIfValid(double other, Element<?> mask) {
+		if (!mask.isValid())
+			return this;
+		try {
+			value = (long)(value % (long)other);
+		} catch (ArithmeticException e) {
+			this.setValid(false);
+		}
+		return this;
+	}
+	@Override
+	public ElementLong modIfValid(Element<?> other) {
+		if (!other.isValid())
+			return this;
+		try {
+			value = (long)(value % ((ScalarElement)other).longValue());
+		} catch (ArithmeticException e) {
+			// do nothing.
+		}
+		return this;
+	}
+	@Override
+	public ElementLong modIfValid(Element<?> other, Element<?> mask) {
+		if (!other.isValid() || !mask.isValid())
+			return this;
+		try {
+			value = (long)(value % ((ScalarElement)other).longValue());
+		} catch (ArithmeticException e) {
+			// do nothing.
+		}
+		return this;
+	}
+
+	@Override
 	public ElementLong modNew(long other) {
 		ElementLong res = copy();
 		return res.mod(other);
@@ -897,6 +1565,27 @@ public class ElementLong implements ScalarElement {
 	public ElementLong modNew(Element<?> other) {
 		ElementLong res = copy();
 		return res.mod(other);
+	}
+
+	@Override
+	public ElementLong modNewIfValid(long other, Element<?> mask) {
+		ElementLong res = copy();
+		return res.modIfValid(other, mask);
+	}
+	@Override
+	public ElementLong modNewIfValid(double other, Element<?> mask) {
+		ElementLong res = copy();
+		return res.modIfValid(other, mask);
+	}
+	@Override
+	public ElementLong modNewIfValid(Element<?> other) {
+		ElementLong res = copy();
+		return res.modIfValid(other);
+	}
+	@Override
+	public ElementLong modNewIfValid(Element<?> other, Element<?> mask) {
+		ElementLong res = copy();
+		return res.modIfValid(other, mask);
 	}
 
 	@Override
@@ -1017,6 +1706,91 @@ public class ElementLong implements ScalarElement {
 		return this;
 	}
 
+	@Override
+	public ElementLong modOfIfValid(long a, long b, Element<?> mask) {
+		if (mask.isValid())
+			modOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementLong modOfIfValid(double a, long b, Element<?> mask) {
+		if (mask.isValid())
+			modOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementLong modOfIfValid(long a, double b, Element<?> mask) {
+		if (mask.isValid())
+			modOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementLong modOfIfValid(double a, double b, Element<?> mask) {
+		if (mask.isValid())
+			modOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementLong modOfIfValid(Element<?> a, long b) {
+		if (a.isValid())
+			modOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementLong modOfIfValid(Element<?> a, long b, Element<?> mask) {
+		if (a.isValid() && mask.isValid())
+			modOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementLong modOfIfValid(long a, Element<?> b) {
+		if (b.isValid())
+			modOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementLong modOfIfValid(long a, Element<?> b, Element<?> mask) {
+		if (b.isValid() && mask.isValid())
+			modOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementLong modOfIfValid(Element<?> a, double b) {
+		if (a.isValid())
+			modOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementLong modOfIfValid(Element<?> a, double b, Element<?> mask) {
+		if (a.isValid() && mask.isValid())
+			modOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementLong modOfIfValid(double a, Element<?> b) {
+		if (b.isValid())
+			modOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementLong modOfIfValid(double a, Element<?> b, Element<?> mask) {
+		if (b.isValid() && mask.isValid())
+			modOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementLong modOfIfValid(Element<?> a, Element<?> b) {
+		if (a.isValid() && b.isValid())
+			modOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementLong modOfIfValid(Element<?> a, Element<?> b, Element<?> mask) {
+		if (a.isValid() && b.isValid() && mask.isValid())
+			modOf(a, b);
+		return this;
+	}
+
 	// BOUNDING
 
 	@Override
@@ -1043,6 +1817,39 @@ public class ElementLong implements ScalarElement {
 	}
 
 	@Override
+	public ElementLong minIfValid(long other, Element<?> mask) {
+		if (!mask.isValid())
+			return this;
+		if (other < value)
+			value = other;
+		return this;
+	}
+	@Override
+	public ElementLong minIfValid(double other, Element<?> mask) {
+		if (!mask.isValid())
+			return this;
+		if (other < value)
+			value = (long)other;
+		return this;
+	}
+	@Override
+	public ElementLong minIfValid(Element<?> other) {
+		if (!other.isValid())
+			return this;
+		if (((ScalarElement)other).longValue() < value)
+			value = ((ScalarElement)other).longValue();
+		return this;
+	}
+	@Override
+	public ElementLong minIfValid(Element<?> other, Element<?> mask) {
+		if (!other.isValid() || !mask.isValid())
+			return this;
+		if (((ScalarElement)other).longValue() < value)
+			value = ((ScalarElement)other).longValue();
+		return this;
+	}
+
+	@Override
 	public ElementLong minNew(long other) {
 		ElementLong res = copy();
 		return res.min(other);
@@ -1056,6 +1863,27 @@ public class ElementLong implements ScalarElement {
 	public ElementLong minNew(Element<?> other) {
 		ElementLong res = copy();
 		return res.min(other);
+	}
+
+	@Override
+	public ElementLong minNewIfValid(long other, Element<?> mask) {
+		ElementLong res = copy();
+		return res.minIfValid(other, mask);
+	}
+	@Override
+	public ElementLong minNewIfValid(double other, Element<?> mask) {
+		ElementLong res = copy();
+		return res.minIfValid(other, mask);
+	}
+	@Override
+	public ElementLong minNewIfValid(Element<?> other) {
+		ElementLong res = copy();
+		return res.minIfValid(other);
+	}
+	@Override
+	public ElementLong minNewIfValid(Element<?> other, Element<?> mask) {
+		ElementLong res = copy();
+		return res.minIfValid(other, mask);
 	}
 
 	@Override
@@ -1168,6 +1996,91 @@ public class ElementLong implements ScalarElement {
 	}
 
 	@Override
+	public ElementLong minOfIfValid(long a, long b, Element<?> mask) {
+		if (mask.isValid())
+			minOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementLong minOfIfValid(double a, long b, Element<?> mask) {
+		if (mask.isValid())
+			minOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementLong minOfIfValid(long a, double b, Element<?> mask) {
+		if (mask.isValid())
+			minOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementLong minOfIfValid(double a, double b, Element<?> mask) {
+		if (mask.isValid())
+			minOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementLong minOfIfValid(Element<?> a, long b) {
+		if (a.isValid())
+			minOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementLong minOfIfValid(Element<?> a, long b, Element<?> mask) {
+		if (a.isValid() && mask.isValid())
+			minOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementLong minOfIfValid(long a, Element<?> b) {
+		if (b.isValid())
+			minOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementLong minOfIfValid(long a, Element<?> b, Element<?> mask) {
+		if (b.isValid() && mask.isValid())
+			minOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementLong minOfIfValid(Element<?> a, double b) {
+		if (a.isValid())
+			minOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementLong minOfIfValid(Element<?> a, double b, Element<?> mask) {
+		if (a.isValid() && mask.isValid())
+			minOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementLong minOfIfValid(double a, Element<?> b) {
+		if (b.isValid())
+			minOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementLong minOfIfValid(double a, Element<?> b, Element<?> mask) {
+		if (b.isValid() && mask.isValid())
+			minOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementLong minOfIfValid(Element<?> a, Element<?> b) {
+		if (a.isValid() && b.isValid())
+			minOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementLong minOfIfValid(Element<?> a, Element<?> b, Element<?> mask) {
+		if (a.isValid() && b.isValid() && mask.isValid())
+			minOf(a, b);
+		return this;
+	}
+
+	@Override
 	public ElementLong max(long other) {
 		if (other > value)
 			value = other;
@@ -1191,6 +2104,39 @@ public class ElementLong implements ScalarElement {
 	}
 
 	@Override
+	public ElementLong maxIfValid(long other, Element<?> mask) {
+		if (!mask.isValid())
+			return this;
+		if (other > value)
+			value = other;
+		return this;
+	}
+	@Override
+	public ElementLong maxIfValid(double other, Element<?> mask) {
+		if (!mask.isValid())
+			return this;
+		if (other > value)
+			value = (long)other;
+		return this;
+	}
+	@Override
+	public ElementLong maxIfValid(Element<?> other) {
+		if (!other.isValid())
+			return this;
+		if (((ScalarElement)other).longValue() > value)
+			value = ((ScalarElement)other).longValue();
+		return this;
+	}
+	@Override
+	public ElementLong maxIfValid(Element<?> other, Element<?> mask) {
+		if (!other.isValid() || !mask.isValid())
+			return this;
+		if (((ScalarElement)other).longValue() > value)
+			value = ((ScalarElement)other).longValue();
+		return this;
+	}
+
+	@Override
 	public ElementLong maxNew(long other) {
 		ElementLong res = copy();
 		return res.max(other);
@@ -1204,6 +2150,27 @@ public class ElementLong implements ScalarElement {
 	public ElementLong maxNew(Element<?> other) {
 		ElementLong res = copy();
 		return res.max(other);
+	}
+
+	@Override
+	public ElementLong maxNewIfValid(long other, Element<?> mask) {
+		ElementLong res = copy();
+		return res.maxIfValid(other, mask);
+	}
+	@Override
+	public ElementLong maxNewIfValid(double other, Element<?> mask) {
+		ElementLong res = copy();
+		return res.maxIfValid(other, mask);
+	}
+	@Override
+	public ElementLong maxNewIfValid(Element<?> other) {
+		ElementLong res = copy();
+		return res.maxIfValid(other);
+	}
+	@Override
+	public ElementLong maxNewIfValid(Element<?> other, Element<?> mask) {
+		ElementLong res = copy();
+		return res.maxIfValid(other, mask);
 	}
 
 	@Override
@@ -1312,6 +2279,91 @@ public class ElementLong implements ScalarElement {
 		else
 			value = (long)bv;
 		valid = a.isValid() && b.isValid();
+		return this;
+	}
+
+	@Override
+	public ElementLong maxOfIfValid(long a, long b, Element<?> mask) {
+		if (mask.isValid())
+			maxOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementLong maxOfIfValid(double a, long b, Element<?> mask) {
+		if (mask.isValid())
+			maxOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementLong maxOfIfValid(long a, double b, Element<?> mask) {
+		if (mask.isValid())
+			maxOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementLong maxOfIfValid(double a, double b, Element<?> mask) {
+		if (mask.isValid())
+			maxOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementLong maxOfIfValid(Element<?> a, long b) {
+		if (a.isValid())
+			maxOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementLong maxOfIfValid(Element<?> a, long b, Element<?> mask) {
+		if (a.isValid() && mask.isValid())
+			maxOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementLong maxOfIfValid(long a, Element<?> b) {
+		if (b.isValid())
+			maxOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementLong maxOfIfValid(long a, Element<?> b, Element<?> mask) {
+		if (b.isValid() && mask.isValid())
+			maxOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementLong maxOfIfValid(Element<?> a, double b) {
+		if (a.isValid())
+			maxOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementLong maxOfIfValid(Element<?> a, double b, Element<?> mask) {
+		if (a.isValid() && mask.isValid())
+			maxOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementLong maxOfIfValid(double a, Element<?> b) {
+		if (b.isValid())
+			maxOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementLong maxOfIfValid(double a, Element<?> b, Element<?> mask) {
+		if (b.isValid() && mask.isValid())
+			maxOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementLong maxOfIfValid(Element<?> a, Element<?> b) {
+		if (a.isValid() && b.isValid())
+			maxOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementLong maxOfIfValid(Element<?> a, Element<?> b, Element<?> mask) {
+		if (a.isValid() && b.isValid() && mask.isValid())
+			maxOf(a, b);
 		return this;
 	}
 
@@ -1478,6 +2530,9 @@ public class ElementLong implements ScalarElement {
 
 	@Override
 	public String toString() {
-		return String.format("%d", value);
+		if (!isValid())
+			return String.format("!%d", value);
+		else
+			return String.format("%d", value);
 	}
 }

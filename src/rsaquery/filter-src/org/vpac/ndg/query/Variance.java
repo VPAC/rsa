@@ -27,7 +27,7 @@ public class Variance implements Filter {
 	public PixelSource input;
 
 	// Output fields.
-	@CellType("input")
+	@CellType(value = "input", as = "float")
 	public Cell output;
 
 	// Internal variables.
@@ -37,6 +37,7 @@ public class Variance implements Filter {
 	Element<?> temp;
 	Element<?> mean;
 	Element<?> M2;
+	Element<?> n;
 
 	@Override
 	public void initialise(BoxReal bounds) throws QueryConfigurationException {
@@ -55,51 +56,41 @@ public class Variance implements Filter {
 		temp = val.copy();
 		mean = val.copy();
 		M2 = val.copy();
+		n = input.getPrototype().getElement().asInt();
 	}
 
 	@Override
 	public final void kernel(VectorReal coords) throws IOException {
 		// Use Knuth's single-pass algorithm: assume memory access is slower
 		// than division.
-		int n = 0;
 		mean.set(0);
 		M2.set(0);
 		delta.set(0);
+		n.set(0);
 
 		// Prevent dilation
-		if (!input.getPixel(coords).isValid()) {
-			output.unset();
-			return;
-		}
+		M2.setValid(input.getPixel(coords));
 
 		for (CoordinatePair co : rect.setCentre(coords)) {
 			// Coerce the pixel into a float type with the same number of bands.
 			val.set(input.getPixel(co.coordinates));
 
-			// Prevent erosion
-			if (!val.isValid())
-				continue;
-
-			n++;
+			n.addIfValid(1, val);
 
 			// delta = val - mean
-			delta.subOf(val, mean);
+			delta.subOfIfValid(val, mean);
 
 			// mean += delta / n
-			temp.divOf(delta, n);
-			mean.add(temp);
+			temp.divOfIfValid(delta, n, val);
+			mean.addIfValid(temp, val);
 
 			// M2 += delta * (val - mean)
-			temp.subOf(val, mean).mul(delta);
-			M2.add(temp);
+			temp.subOfIfValid(val, mean).mulIfValid(delta, val);
+			M2.addIfValid(temp, val);
 		}
 
-		if (n > 0) {
-			M2.div(n - 1);
-			output.set(M2);
-		} else {
-			output.unset();
-		}
+		M2.div(n.sub(1));
+		output.set(M2);
 	}
 
 }

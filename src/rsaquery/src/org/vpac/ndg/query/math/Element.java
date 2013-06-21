@@ -22,6 +22,7 @@ public interface Element<T extends Element<?>> {
 	 */
 	boolean isValid();
 	void setValid(boolean valid);
+	void setValid(Element<?> mask);
 
 	ScalarElement[] getComponents();
 
@@ -138,7 +139,7 @@ public interface Element<T extends Element<?>> {
 	// ARITHMETIC
 
 	/**
-	 * Add this object to a value.
+	 * Add a value to this one.
 	 *
 	 * @param other The value to add.
 	 * @return A reference to this object. Note that this method does not create
@@ -146,7 +147,7 @@ public interface Element<T extends Element<?>> {
 	 */
 	T add(long other);
 	/**
-	 * Add this object to a value.
+	 * Add a value to this one.
 	 *
 	 * @param other The value to add.
 	 * @return A reference to this object. Note that this method does not create
@@ -154,41 +155,127 @@ public interface Element<T extends Element<?>> {
 	 */
 	T add(double other);
 	/**
-	 * Add this object to a value.
+	 * Add a value to this one.
 	 *
-	 * @param other The value to add.
+	 * @param other The value to add. If this value is invalid, this
+	 *        element will also be marked as invalid (for vectors, this is done
+	 *        on a component-by-component basis).
 	 * @return A reference to this object. Note that this method does not create
 	 *         a new instance.
 	 */
 	T add(Element<?> other);
 
 	/**
-	 * Add this object to a value.
+	 * Add a value to this one, unless the mask is invalid.
+	 *
+	 * @param other The value to add.
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T addIfValid(long other, Element<?> mask);
+	/**
+	 * Add a value to this one, unless the mask is invalid.
+	 *
+	 * @param other The value to add.
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T addIfValid(double other, Element<?> mask);
+	/**
+	 * Add a value to this one, unless it is invalid.
+	 *
+	 * @param other The value to add. If this value is invalid, it will be
+	 *        ignored (the operation will not take place).
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T addIfValid(Element<?> other);
+	/**
+	 * Add a value to this one, unless it or the mask is
+	 * invalid.
+	 *
+	 * @param other The value to add. If this value is invalid, it will be
+	 *        ignored (the operation will not take place).
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T addIfValid(Element<?> other, Element<?> mask);
+
+	/**
+	 * Add a value to this one.
 	 *
 	 * @param other The value to add.
 	 * @return The result as a new object.
 	 */
 	T addNew(long other);
 	/**
-	 * Add this object to a value.
+	 * Add a value to this one.
 	 *
-	 * @param other The value to add.
+	 * @param other The value to add. If this value is invalid, this
+	 *        element will also be marked as invalid (for vectors, this is done
+	 *        on a component-by-component basis).
 	 * @return The result as a new object.
 	 */
 	T addNew(double other);
 	/**
-	 * Add this object to a value.
+	 * Add a value to this one.
 	 *
-	 * @param other The value to add.
+	 * @param other The value to add. If this value is invalid, this
+	 *        element will also be marked as invalid (for vectors, this is done
+	 *        on a component-by-component basis).
 	 * @return The result as a new object.
 	 */
 	T addNew(Element<?> other);
 
 	/**
+	 * Add a value to this one, unless the mask is invalid.
+	 *
+	 * @param other The value to add.
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return The result as a new object.
+	 */
+	T addNewIfValid(long other, Element<?> mask);
+	/**
+	 * Add a value to this one, unless the mask is invalid.
+	 *
+	 * @param other The value to add.
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return The result as a new object.
+	 */
+	T addNewIfValid(double other, Element<?> mask);
+	/**
+	 * Add a value to this one, unless it is invalid.
+	 *
+	 * @param other The value to add. If this value is invalid, it will be
+	 *        ignored (the operation will not take place).
+	 * @return The result as a new object.
+	 */
+	T addNewIfValid(Element<?> other);
+	/**
+	 * Add a value to this one, unless it or the mask is
+	 * invalid.
+	 *
+	 * @param other The value to add. If this value is invalid, it will be
+	 *        ignored (the operation will not take place).
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return The result as a new object.
+	 */
+	T addNewIfValid(Element<?> other, Element<?> mask);
+
+	/**
 	 * Add two values, storing the result in this (third) instance.
 	 *
-	 * @param a The value to add.
-	 * @param b The value to add to.
+	 * @param a The value to add to.
+	 * @param b The value to add.
 	 * @return A reference to this object. Note that this method does not create
 	 *         a new instance.
 	 */
@@ -196,8 +283,8 @@ public interface Element<T extends Element<?>> {
 	/**
 	 * Add two values, storing the result in this (third) instance.
 	 *
-	 * @param a The value to add.
-	 * @param b The value to add to.
+	 * @param a The value to add to.
+	 * @param b The value to add.
 	 * @return A reference to this object. Note that this method does not create
 	 *         a new instance.
 	 */
@@ -205,8 +292,8 @@ public interface Element<T extends Element<?>> {
 	/**
 	 * Add two values, storing the result in this (third) instance.
 	 *
-	 * @param a The value to add.
-	 * @param b The value to add to.
+	 * @param a The value to add to.
+	 * @param b The value to add.
 	 * @return A reference to this object. Note that this method does not create
 	 *         a new instance.
 	 */
@@ -214,8 +301,8 @@ public interface Element<T extends Element<?>> {
 	/**
 	 * Add two values, storing the result in this (third) instance.
 	 *
-	 * @param a The value to add.
-	 * @param b The value to add to.
+	 * @param a The value to add to.
+	 * @param b The value to add.
 	 * @return A reference to this object. Note that this method does not create
 	 *         a new instance.
 	 */
@@ -223,8 +310,8 @@ public interface Element<T extends Element<?>> {
 	/**
 	 * Add two values, storing the result in this (third) instance.
 	 *
-	 * @param a The value to add.
-	 * @param b The value to add to.
+	 * @param a The value to add to.
+	 * @param b The value to add.
 	 * @return A reference to this object. Note that this method does not create
 	 *         a new instance.
 	 */
@@ -232,8 +319,8 @@ public interface Element<T extends Element<?>> {
 	/**
 	 * Add two values, storing the result in this (third) instance.
 	 *
-	 * @param a The value to add.
-	 * @param b The value to add to.
+	 * @param a The value to add to.
+	 * @param b The value to add.
 	 * @return A reference to this object. Note that this method does not create
 	 *         a new instance.
 	 */
@@ -241,8 +328,8 @@ public interface Element<T extends Element<?>> {
 	/**
 	 * Add two values, storing the result in this (third) instance.
 	 *
-	 * @param a The value to add.
-	 * @param b The value to add to.
+	 * @param a The value to add to.
+	 * @param b The value to add.
 	 * @return A reference to this object. Note that this method does not create
 	 *         a new instance.
 	 */
@@ -250,8 +337,8 @@ public interface Element<T extends Element<?>> {
 	/**
 	 * Add two values, storing the result in this (third) instance.
 	 *
-	 * @param a The value to add.
-	 * @param b The value to add to.
+	 * @param a The value to add to.
+	 * @param b The value to add.
 	 * @return A reference to this object. Note that this method does not create
 	 *         a new instance.
 	 */
@@ -259,15 +346,174 @@ public interface Element<T extends Element<?>> {
 	/**
 	 * Add two values, storing the result in this (third) instance.
 	 *
-	 * @param a The value to add.
-	 * @param b The value to add to.
+	 * @param a The value to add to.
+	 * @param b The value to add.
 	 * @return A reference to this object. Note that this method does not create
 	 *         a new instance.
 	 */
 	T addOf(Element<?> a, Element<?> b);
 
 	/**
-	 * Subtract this object from a value.
+	 * Add two values, storing the result in this (third) instance,
+	 * unless the mask is invalid.
+	 *
+	 * @param a The value to add to.
+	 * @param b The value to add.
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T addOfIfValid(long a, long b, Element<?> mask);
+	/**
+	 * Add two values, storing the result in this (third) instance,
+	 * unless the mask is invalid.
+	 *
+	 * @param a The value to add to.
+	 * @param b The value to add.
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T addOfIfValid(double a, long b, Element<?> mask);
+	/**
+	 * Add two values, storing the result in this (third) instance,
+	 * unless the mask is invalid.
+	 *
+	 * @param a The value to add to.
+	 * @param b The value to add.
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T addOfIfValid(long a, double b, Element<?> mask);
+	/**
+	 * Add two values, storing the result in this (third) instance,
+	 * unless the mask is invalid.
+	 *
+	 * @param a The value to add to.
+	 * @param b The value to add.
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T addOfIfValid(double a, double b, Element<?> mask);
+	/**
+	 * Add two values, storing the result in this (third) instance,
+	 * unless any of the values are invalid.
+	 *
+	 * @param a The value to add to.
+	 * @param b The value to add.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T addOfIfValid(Element<?> a, long b);
+	/**
+	 * Add two values, storing the result in this (third) instance,
+	 * unless any of the values or the mask are invalid.
+	 *
+	 * @param a The value to add to.
+	 * @param b The value to add.
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T addOfIfValid(Element<?> a, long b, Element<?> mask);
+	/**
+	 * Add two values, storing the result in this (third) instance,
+	 * unless any of the values are invalid.
+	 *
+	 * @param a The value to add to.
+	 * @param b The value to add.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T addOfIfValid(long a, Element<?> b);
+	/**
+	 * Add two values, storing the result in this (third) instance,
+	 * unless any of the values or the mask are invalid.
+	 *
+	 * @param a The value to add to.
+	 * @param b The value to add.
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T addOfIfValid(long a, Element<?> b, Element<?> mask);
+	/**
+	 * Add two values, storing the result in this (third) instance,
+	 * unless any of the values are invalid.
+	 *
+	 * @param a The value to add to.
+	 * @param b The value to add.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T addOfIfValid(Element<?> a, double b);
+	/**
+	 * Add two values, storing the result in this (third) instance,
+	 * unless any of the values or the mask are invalid.
+	 *
+	 * @param a The value to add to.
+	 * @param b The value to add.
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T addOfIfValid(Element<?> a, double b, Element<?> mask);
+	/**
+	 * Add two values, storing the result in this (third) instance,
+	 * unless any of the values are invalid.
+	 *
+	 * @param a The value to add to.
+	 * @param b The value to add.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T addOfIfValid(double a, Element<?> b);
+	/**
+	 * Add two values, storing the result in this (third) instance,
+	 * unless any of the values or the mask are invalid.
+	 *
+	 * @param a The value to add to.
+	 * @param b The value to add.
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T addOfIfValid(double a, Element<?> b, Element<?> mask);
+	/**
+	 * Add two values, storing the result in this (third) instance,
+	 * unless any of the values are invalid.
+	 *
+	 * @param a The value to add to.
+	 * @param b The value to add.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T addOfIfValid(Element<?> a, Element<?> b);
+	/**
+	 * Add two values, storing the result in this (third) instance,
+	 * unless any of the values or the mask are invalid.
+	 *
+	 * @param a The value to add to.
+	 * @param b The value to add.
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T addOfIfValid(Element<?> a, Element<?> b, Element<?> mask);
+
+	/**
+	 * Subtract a value from this one.
 	 *
 	 * @param other The value to subtract.
 	 * @return A reference to this object. Note that this method does not create
@@ -275,7 +521,7 @@ public interface Element<T extends Element<?>> {
 	 */
 	T sub(long other);
 	/**
-	 * Subtract this object from a value.
+	 * Subtract a value from this one.
 	 *
 	 * @param other The value to subtract.
 	 * @return A reference to this object. Note that this method does not create
@@ -283,41 +529,127 @@ public interface Element<T extends Element<?>> {
 	 */
 	T sub(double other);
 	/**
-	 * Subtract this object from a value.
+	 * Subtract a value from this one.
 	 *
-	 * @param other The value to subtract.
+	 * @param other The value to subtract. If this value is invalid, this
+	 *        element will also be marked as invalid (for vectors, this is done
+	 *        on a component-by-component basis).
 	 * @return A reference to this object. Note that this method does not create
 	 *         a new instance.
 	 */
 	T sub(Element<?> other);
 
 	/**
-	 * Subtract this object from a value.
+	 * Subtract a value from this one, unless the mask is invalid.
+	 *
+	 * @param other The value to subtract.
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T subIfValid(long other, Element<?> mask);
+	/**
+	 * Subtract a value from this one, unless the mask is invalid.
+	 *
+	 * @param other The value to subtract.
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T subIfValid(double other, Element<?> mask);
+	/**
+	 * Subtract a value from this one, unless it is invalid.
+	 *
+	 * @param other The value to subtract. If this value is invalid, it will be
+	 *        ignored (the operation will not take place).
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T subIfValid(Element<?> other);
+	/**
+	 * Subtract a value from this one, unless it or the mask is
+	 * invalid.
+	 *
+	 * @param other The value to subtract. If this value is invalid, it will be
+	 *        ignored (the operation will not take place).
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T subIfValid(Element<?> other, Element<?> mask);
+
+	/**
+	 * Subtract a value from this one.
 	 *
 	 * @param other The value to subtract.
 	 * @return The result as a new object.
 	 */
 	T subNew(long other);
 	/**
-	 * Subtract this object from a value.
+	 * Subtract a value from this one.
 	 *
-	 * @param other The value to subtract.
+	 * @param other The value to subtract. If this value is invalid, this
+	 *        element will also be marked as invalid (for vectors, this is done
+	 *        on a component-by-component basis).
 	 * @return The result as a new object.
 	 */
 	T subNew(double other);
 	/**
-	 * Subtract this object from a value.
+	 * Subtract a value from this one.
 	 *
-	 * @param other The value to subtract.
+	 * @param other The value to subtract. If this value is invalid, this
+	 *        element will also be marked as invalid (for vectors, this is done
+	 *        on a component-by-component basis).
 	 * @return The result as a new object.
 	 */
 	T subNew(Element<?> other);
 
 	/**
+	 * Subtract a value from this one, unless the mask is invalid.
+	 *
+	 * @param other The value to subtract.
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return The result as a new object.
+	 */
+	T subNewIfValid(long other, Element<?> mask);
+	/**
+	 * Subtract a value from this one, unless the mask is invalid.
+	 *
+	 * @param other The value to subtract.
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return The result as a new object.
+	 */
+	T subNewIfValid(double other, Element<?> mask);
+	/**
+	 * Subtract a value from this one, unless it is invalid.
+	 *
+	 * @param other The value to subtract. If this value is invalid, it will be
+	 *        ignored (the operation will not take place).
+	 * @return The result as a new object.
+	 */
+	T subNewIfValid(Element<?> other);
+	/**
+	 * Subtract a value from this one, unless it or the mask is
+	 * invalid.
+	 *
+	 * @param other The value to subtract. If this value is invalid, it will be
+	 *        ignored (the operation will not take place).
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return The result as a new object.
+	 */
+	T subNewIfValid(Element<?> other, Element<?> mask);
+
+	/**
 	 * Subtract two values, storing the result in this (third) instance.
 	 *
-	 * @param a The value to subtract.
-	 * @param b The value to subtract from.
+	 * @param a The value to subtract from.
+	 * @param b The value to subtract.
 	 * @return A reference to this object. Note that this method does not create
 	 *         a new instance.
 	 */
@@ -325,8 +657,8 @@ public interface Element<T extends Element<?>> {
 	/**
 	 * Subtract two values, storing the result in this (third) instance.
 	 *
-	 * @param a The value to subtract.
-	 * @param b The value to subtract from.
+	 * @param a The value to subtract from.
+	 * @param b The value to subtract.
 	 * @return A reference to this object. Note that this method does not create
 	 *         a new instance.
 	 */
@@ -334,8 +666,8 @@ public interface Element<T extends Element<?>> {
 	/**
 	 * Subtract two values, storing the result in this (third) instance.
 	 *
-	 * @param a The value to subtract.
-	 * @param b The value to subtract from.
+	 * @param a The value to subtract from.
+	 * @param b The value to subtract.
 	 * @return A reference to this object. Note that this method does not create
 	 *         a new instance.
 	 */
@@ -343,8 +675,8 @@ public interface Element<T extends Element<?>> {
 	/**
 	 * Subtract two values, storing the result in this (third) instance.
 	 *
-	 * @param a The value to subtract.
-	 * @param b The value to subtract from.
+	 * @param a The value to subtract from.
+	 * @param b The value to subtract.
 	 * @return A reference to this object. Note that this method does not create
 	 *         a new instance.
 	 */
@@ -352,8 +684,8 @@ public interface Element<T extends Element<?>> {
 	/**
 	 * Subtract two values, storing the result in this (third) instance.
 	 *
-	 * @param a The value to subtract.
-	 * @param b The value to subtract from.
+	 * @param a The value to subtract from.
+	 * @param b The value to subtract.
 	 * @return A reference to this object. Note that this method does not create
 	 *         a new instance.
 	 */
@@ -361,8 +693,8 @@ public interface Element<T extends Element<?>> {
 	/**
 	 * Subtract two values, storing the result in this (third) instance.
 	 *
-	 * @param a The value to subtract.
-	 * @param b The value to subtract from.
+	 * @param a The value to subtract from.
+	 * @param b The value to subtract.
 	 * @return A reference to this object. Note that this method does not create
 	 *         a new instance.
 	 */
@@ -370,8 +702,8 @@ public interface Element<T extends Element<?>> {
 	/**
 	 * Subtract two values, storing the result in this (third) instance.
 	 *
-	 * @param a The value to subtract.
-	 * @param b The value to subtract from.
+	 * @param a The value to subtract from.
+	 * @param b The value to subtract.
 	 * @return A reference to this object. Note that this method does not create
 	 *         a new instance.
 	 */
@@ -379,8 +711,8 @@ public interface Element<T extends Element<?>> {
 	/**
 	 * Subtract two values, storing the result in this (third) instance.
 	 *
-	 * @param a The value to subtract.
-	 * @param b The value to subtract from.
+	 * @param a The value to subtract from.
+	 * @param b The value to subtract.
 	 * @return A reference to this object. Note that this method does not create
 	 *         a new instance.
 	 */
@@ -388,15 +720,174 @@ public interface Element<T extends Element<?>> {
 	/**
 	 * Subtract two values, storing the result in this (third) instance.
 	 *
-	 * @param a The value to subtract.
-	 * @param b The value to subtract from.
+	 * @param a The value to subtract from.
+	 * @param b The value to subtract.
 	 * @return A reference to this object. Note that this method does not create
 	 *         a new instance.
 	 */
 	T subOf(Element<?> a, Element<?> b);
 
 	/**
-	 * Multiply this object with a value.
+	 * Subtract two values, storing the result in this (third) instance,
+	 * unless the mask is invalid.
+	 *
+	 * @param a The value to subtract from.
+	 * @param b The value to subtract.
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T subOfIfValid(long a, long b, Element<?> mask);
+	/**
+	 * Subtract two values, storing the result in this (third) instance,
+	 * unless the mask is invalid.
+	 *
+	 * @param a The value to subtract from.
+	 * @param b The value to subtract.
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T subOfIfValid(double a, long b, Element<?> mask);
+	/**
+	 * Subtract two values, storing the result in this (third) instance,
+	 * unless the mask is invalid.
+	 *
+	 * @param a The value to subtract from.
+	 * @param b The value to subtract.
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T subOfIfValid(long a, double b, Element<?> mask);
+	/**
+	 * Subtract two values, storing the result in this (third) instance,
+	 * unless the mask is invalid.
+	 *
+	 * @param a The value to subtract from.
+	 * @param b The value to subtract.
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T subOfIfValid(double a, double b, Element<?> mask);
+	/**
+	 * Subtract two values, storing the result in this (third) instance,
+	 * unless any of the values are invalid.
+	 *
+	 * @param a The value to subtract from.
+	 * @param b The value to subtract.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T subOfIfValid(Element<?> a, long b);
+	/**
+	 * Subtract two values, storing the result in this (third) instance,
+	 * unless any of the values or the mask are invalid.
+	 *
+	 * @param a The value to subtract from.
+	 * @param b The value to subtract.
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T subOfIfValid(Element<?> a, long b, Element<?> mask);
+	/**
+	 * Subtract two values, storing the result in this (third) instance,
+	 * unless any of the values are invalid.
+	 *
+	 * @param a The value to subtract from.
+	 * @param b The value to subtract.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T subOfIfValid(long a, Element<?> b);
+	/**
+	 * Subtract two values, storing the result in this (third) instance,
+	 * unless any of the values or the mask are invalid.
+	 *
+	 * @param a The value to subtract from.
+	 * @param b The value to subtract.
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T subOfIfValid(long a, Element<?> b, Element<?> mask);
+	/**
+	 * Subtract two values, storing the result in this (third) instance,
+	 * unless any of the values are invalid.
+	 *
+	 * @param a The value to subtract from.
+	 * @param b The value to subtract.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T subOfIfValid(Element<?> a, double b);
+	/**
+	 * Subtract two values, storing the result in this (third) instance,
+	 * unless any of the values or the mask are invalid.
+	 *
+	 * @param a The value to subtract from.
+	 * @param b The value to subtract.
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T subOfIfValid(Element<?> a, double b, Element<?> mask);
+	/**
+	 * Subtract two values, storing the result in this (third) instance,
+	 * unless any of the values are invalid.
+	 *
+	 * @param a The value to subtract from.
+	 * @param b The value to subtract.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T subOfIfValid(double a, Element<?> b);
+	/**
+	 * Subtract two values, storing the result in this (third) instance,
+	 * unless any of the values or the mask are invalid.
+	 *
+	 * @param a The value to subtract from.
+	 * @param b The value to subtract.
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T subOfIfValid(double a, Element<?> b, Element<?> mask);
+	/**
+	 * Subtract two values, storing the result in this (third) instance,
+	 * unless any of the values are invalid.
+	 *
+	 * @param a The value to subtract from.
+	 * @param b The value to subtract.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T subOfIfValid(Element<?> a, Element<?> b);
+	/**
+	 * Subtract two values, storing the result in this (third) instance,
+	 * unless any of the values or the mask are invalid.
+	 *
+	 * @param a The value to subtract from.
+	 * @param b The value to subtract.
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T subOfIfValid(Element<?> a, Element<?> b, Element<?> mask);
+
+	/**
+	 * Multiply a value with this one.
 	 *
 	 * @param other The value to multiply.
 	 * @return A reference to this object. Note that this method does not create
@@ -404,7 +895,7 @@ public interface Element<T extends Element<?>> {
 	 */
 	T mul(long other);
 	/**
-	 * Multiply this object with a value.
+	 * Multiply a value with this one.
 	 *
 	 * @param other The value to multiply.
 	 * @return A reference to this object. Note that this method does not create
@@ -412,41 +903,127 @@ public interface Element<T extends Element<?>> {
 	 */
 	T mul(double other);
 	/**
-	 * Multiply this object with a value.
+	 * Multiply a value with this one.
 	 *
-	 * @param other The value to multiply.
+	 * @param other The value to multiply. If this value is invalid, this
+	 *        element will also be marked as invalid (for vectors, this is done
+	 *        on a component-by-component basis).
 	 * @return A reference to this object. Note that this method does not create
 	 *         a new instance.
 	 */
 	T mul(Element<?> other);
 
 	/**
-	 * Multiply this object with a value.
+	 * Multiply a value with this one, unless the mask is invalid.
+	 *
+	 * @param other The value to multiply.
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T mulIfValid(long other, Element<?> mask);
+	/**
+	 * Multiply a value with this one, unless the mask is invalid.
+	 *
+	 * @param other The value to multiply.
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T mulIfValid(double other, Element<?> mask);
+	/**
+	 * Multiply a value with this one, unless it is invalid.
+	 *
+	 * @param other The value to multiply. If this value is invalid, it will be
+	 *        ignored (the operation will not take place).
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T mulIfValid(Element<?> other);
+	/**
+	 * Multiply a value with this one, unless it or the mask is
+	 * invalid.
+	 *
+	 * @param other The value to multiply. If this value is invalid, it will be
+	 *        ignored (the operation will not take place).
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T mulIfValid(Element<?> other, Element<?> mask);
+
+	/**
+	 * Multiply a value with this one.
 	 *
 	 * @param other The value to multiply.
 	 * @return The result as a new object.
 	 */
 	T mulNew(long other);
 	/**
-	 * Multiply this object with a value.
+	 * Multiply a value with this one.
 	 *
-	 * @param other The value to multiply.
+	 * @param other The value to multiply. If this value is invalid, this
+	 *        element will also be marked as invalid (for vectors, this is done
+	 *        on a component-by-component basis).
 	 * @return The result as a new object.
 	 */
 	T mulNew(double other);
 	/**
-	 * Multiply this object with a value.
+	 * Multiply a value with this one.
 	 *
-	 * @param other The value to multiply.
+	 * @param other The value to multiply. If this value is invalid, this
+	 *        element will also be marked as invalid (for vectors, this is done
+	 *        on a component-by-component basis).
 	 * @return The result as a new object.
 	 */
 	T mulNew(Element<?> other);
 
 	/**
+	 * Multiply a value with this one, unless the mask is invalid.
+	 *
+	 * @param other The value to multiply.
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return The result as a new object.
+	 */
+	T mulNewIfValid(long other, Element<?> mask);
+	/**
+	 * Multiply a value with this one, unless the mask is invalid.
+	 *
+	 * @param other The value to multiply.
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return The result as a new object.
+	 */
+	T mulNewIfValid(double other, Element<?> mask);
+	/**
+	 * Multiply a value with this one, unless it is invalid.
+	 *
+	 * @param other The value to multiply. If this value is invalid, it will be
+	 *        ignored (the operation will not take place).
+	 * @return The result as a new object.
+	 */
+	T mulNewIfValid(Element<?> other);
+	/**
+	 * Multiply a value with this one, unless it or the mask is
+	 * invalid.
+	 *
+	 * @param other The value to multiply. If this value is invalid, it will be
+	 *        ignored (the operation will not take place).
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return The result as a new object.
+	 */
+	T mulNewIfValid(Element<?> other, Element<?> mask);
+
+	/**
 	 * Multiply two values, storing the result in this (third) instance.
 	 *
-	 * @param a The value to multiply.
-	 * @param b The value to multiply with.
+	 * @param a The value to multiply with.
+	 * @param b The value to multiply.
 	 * @return A reference to this object. Note that this method does not create
 	 *         a new instance.
 	 */
@@ -454,8 +1031,8 @@ public interface Element<T extends Element<?>> {
 	/**
 	 * Multiply two values, storing the result in this (third) instance.
 	 *
-	 * @param a The value to multiply.
-	 * @param b The value to multiply with.
+	 * @param a The value to multiply with.
+	 * @param b The value to multiply.
 	 * @return A reference to this object. Note that this method does not create
 	 *         a new instance.
 	 */
@@ -463,8 +1040,8 @@ public interface Element<T extends Element<?>> {
 	/**
 	 * Multiply two values, storing the result in this (third) instance.
 	 *
-	 * @param a The value to multiply.
-	 * @param b The value to multiply with.
+	 * @param a The value to multiply with.
+	 * @param b The value to multiply.
 	 * @return A reference to this object. Note that this method does not create
 	 *         a new instance.
 	 */
@@ -472,8 +1049,8 @@ public interface Element<T extends Element<?>> {
 	/**
 	 * Multiply two values, storing the result in this (third) instance.
 	 *
-	 * @param a The value to multiply.
-	 * @param b The value to multiply with.
+	 * @param a The value to multiply with.
+	 * @param b The value to multiply.
 	 * @return A reference to this object. Note that this method does not create
 	 *         a new instance.
 	 */
@@ -481,8 +1058,8 @@ public interface Element<T extends Element<?>> {
 	/**
 	 * Multiply two values, storing the result in this (third) instance.
 	 *
-	 * @param a The value to multiply.
-	 * @param b The value to multiply with.
+	 * @param a The value to multiply with.
+	 * @param b The value to multiply.
 	 * @return A reference to this object. Note that this method does not create
 	 *         a new instance.
 	 */
@@ -490,8 +1067,8 @@ public interface Element<T extends Element<?>> {
 	/**
 	 * Multiply two values, storing the result in this (third) instance.
 	 *
-	 * @param a The value to multiply.
-	 * @param b The value to multiply with.
+	 * @param a The value to multiply with.
+	 * @param b The value to multiply.
 	 * @return A reference to this object. Note that this method does not create
 	 *         a new instance.
 	 */
@@ -499,8 +1076,8 @@ public interface Element<T extends Element<?>> {
 	/**
 	 * Multiply two values, storing the result in this (third) instance.
 	 *
-	 * @param a The value to multiply.
-	 * @param b The value to multiply with.
+	 * @param a The value to multiply with.
+	 * @param b The value to multiply.
 	 * @return A reference to this object. Note that this method does not create
 	 *         a new instance.
 	 */
@@ -508,8 +1085,8 @@ public interface Element<T extends Element<?>> {
 	/**
 	 * Multiply two values, storing the result in this (third) instance.
 	 *
-	 * @param a The value to multiply.
-	 * @param b The value to multiply with.
+	 * @param a The value to multiply with.
+	 * @param b The value to multiply.
 	 * @return A reference to this object. Note that this method does not create
 	 *         a new instance.
 	 */
@@ -517,15 +1094,174 @@ public interface Element<T extends Element<?>> {
 	/**
 	 * Multiply two values, storing the result in this (third) instance.
 	 *
-	 * @param a The value to multiply.
-	 * @param b The value to multiply with.
+	 * @param a The value to multiply with.
+	 * @param b The value to multiply.
 	 * @return A reference to this object. Note that this method does not create
 	 *         a new instance.
 	 */
 	T mulOf(Element<?> a, Element<?> b);
 
 	/**
-	 * Divide this object by a value.
+	 * Multiply two values, storing the result in this (third) instance,
+	 * unless the mask is invalid.
+	 *
+	 * @param a The value to multiply with.
+	 * @param b The value to multiply.
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T mulOfIfValid(long a, long b, Element<?> mask);
+	/**
+	 * Multiply two values, storing the result in this (third) instance,
+	 * unless the mask is invalid.
+	 *
+	 * @param a The value to multiply with.
+	 * @param b The value to multiply.
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T mulOfIfValid(double a, long b, Element<?> mask);
+	/**
+	 * Multiply two values, storing the result in this (third) instance,
+	 * unless the mask is invalid.
+	 *
+	 * @param a The value to multiply with.
+	 * @param b The value to multiply.
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T mulOfIfValid(long a, double b, Element<?> mask);
+	/**
+	 * Multiply two values, storing the result in this (third) instance,
+	 * unless the mask is invalid.
+	 *
+	 * @param a The value to multiply with.
+	 * @param b The value to multiply.
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T mulOfIfValid(double a, double b, Element<?> mask);
+	/**
+	 * Multiply two values, storing the result in this (third) instance,
+	 * unless any of the values are invalid.
+	 *
+	 * @param a The value to multiply with.
+	 * @param b The value to multiply.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T mulOfIfValid(Element<?> a, long b);
+	/**
+	 * Multiply two values, storing the result in this (third) instance,
+	 * unless any of the values or the mask are invalid.
+	 *
+	 * @param a The value to multiply with.
+	 * @param b The value to multiply.
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T mulOfIfValid(Element<?> a, long b, Element<?> mask);
+	/**
+	 * Multiply two values, storing the result in this (third) instance,
+	 * unless any of the values are invalid.
+	 *
+	 * @param a The value to multiply with.
+	 * @param b The value to multiply.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T mulOfIfValid(long a, Element<?> b);
+	/**
+	 * Multiply two values, storing the result in this (third) instance,
+	 * unless any of the values or the mask are invalid.
+	 *
+	 * @param a The value to multiply with.
+	 * @param b The value to multiply.
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T mulOfIfValid(long a, Element<?> b, Element<?> mask);
+	/**
+	 * Multiply two values, storing the result in this (third) instance,
+	 * unless any of the values are invalid.
+	 *
+	 * @param a The value to multiply with.
+	 * @param b The value to multiply.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T mulOfIfValid(Element<?> a, double b);
+	/**
+	 * Multiply two values, storing the result in this (third) instance,
+	 * unless any of the values or the mask are invalid.
+	 *
+	 * @param a The value to multiply with.
+	 * @param b The value to multiply.
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T mulOfIfValid(Element<?> a, double b, Element<?> mask);
+	/**
+	 * Multiply two values, storing the result in this (third) instance,
+	 * unless any of the values are invalid.
+	 *
+	 * @param a The value to multiply with.
+	 * @param b The value to multiply.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T mulOfIfValid(double a, Element<?> b);
+	/**
+	 * Multiply two values, storing the result in this (third) instance,
+	 * unless any of the values or the mask are invalid.
+	 *
+	 * @param a The value to multiply with.
+	 * @param b The value to multiply.
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T mulOfIfValid(double a, Element<?> b, Element<?> mask);
+	/**
+	 * Multiply two values, storing the result in this (third) instance,
+	 * unless any of the values are invalid.
+	 *
+	 * @param a The value to multiply with.
+	 * @param b The value to multiply.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T mulOfIfValid(Element<?> a, Element<?> b);
+	/**
+	 * Multiply two values, storing the result in this (third) instance,
+	 * unless any of the values or the mask are invalid.
+	 *
+	 * @param a The value to multiply with.
+	 * @param b The value to multiply.
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T mulOfIfValid(Element<?> a, Element<?> b, Element<?> mask);
+
+	/**
+	 * Divide a value by this one.
 	 *
 	 * @param other The value to divide.
 	 * @return A reference to this object. Note that this method does not create
@@ -533,7 +1269,7 @@ public interface Element<T extends Element<?>> {
 	 */
 	T div(long other);
 	/**
-	 * Divide this object by a value.
+	 * Divide a value by this one.
 	 *
 	 * @param other The value to divide.
 	 * @return A reference to this object. Note that this method does not create
@@ -541,41 +1277,127 @@ public interface Element<T extends Element<?>> {
 	 */
 	T div(double other);
 	/**
-	 * Divide this object by a value.
+	 * Divide a value by this one.
 	 *
-	 * @param other The value to divide.
+	 * @param other The value to divide. If this value is invalid, this
+	 *        element will also be marked as invalid (for vectors, this is done
+	 *        on a component-by-component basis).
 	 * @return A reference to this object. Note that this method does not create
 	 *         a new instance.
 	 */
 	T div(Element<?> other);
 
 	/**
-	 * Divide this object by a value.
+	 * Divide a value by this one, unless the mask is invalid.
+	 *
+	 * @param other The value to divide.
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T divIfValid(long other, Element<?> mask);
+	/**
+	 * Divide a value by this one, unless the mask is invalid.
+	 *
+	 * @param other The value to divide.
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T divIfValid(double other, Element<?> mask);
+	/**
+	 * Divide a value by this one, unless it is invalid.
+	 *
+	 * @param other The value to divide. If this value is invalid, it will be
+	 *        ignored (the operation will not take place).
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T divIfValid(Element<?> other);
+	/**
+	 * Divide a value by this one, unless it or the mask is
+	 * invalid.
+	 *
+	 * @param other The value to divide. If this value is invalid, it will be
+	 *        ignored (the operation will not take place).
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T divIfValid(Element<?> other, Element<?> mask);
+
+	/**
+	 * Divide a value by this one.
 	 *
 	 * @param other The value to divide.
 	 * @return The result as a new object.
 	 */
 	T divNew(long other);
 	/**
-	 * Divide this object by a value.
+	 * Divide a value by this one.
 	 *
-	 * @param other The value to divide.
+	 * @param other The value to divide. If this value is invalid, this
+	 *        element will also be marked as invalid (for vectors, this is done
+	 *        on a component-by-component basis).
 	 * @return The result as a new object.
 	 */
 	T divNew(double other);
 	/**
-	 * Divide this object by a value.
+	 * Divide a value by this one.
 	 *
-	 * @param other The value to divide.
+	 * @param other The value to divide. If this value is invalid, this
+	 *        element will also be marked as invalid (for vectors, this is done
+	 *        on a component-by-component basis).
 	 * @return The result as a new object.
 	 */
 	T divNew(Element<?> other);
 
 	/**
+	 * Divide a value by this one, unless the mask is invalid.
+	 *
+	 * @param other The value to divide.
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return The result as a new object.
+	 */
+	T divNewIfValid(long other, Element<?> mask);
+	/**
+	 * Divide a value by this one, unless the mask is invalid.
+	 *
+	 * @param other The value to divide.
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return The result as a new object.
+	 */
+	T divNewIfValid(double other, Element<?> mask);
+	/**
+	 * Divide a value by this one, unless it is invalid.
+	 *
+	 * @param other The value to divide. If this value is invalid, it will be
+	 *        ignored (the operation will not take place).
+	 * @return The result as a new object.
+	 */
+	T divNewIfValid(Element<?> other);
+	/**
+	 * Divide a value by this one, unless it or the mask is
+	 * invalid.
+	 *
+	 * @param other The value to divide. If this value is invalid, it will be
+	 *        ignored (the operation will not take place).
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return The result as a new object.
+	 */
+	T divNewIfValid(Element<?> other, Element<?> mask);
+
+	/**
 	 * Divide two values, storing the result in this (third) instance.
 	 *
-	 * @param a The value to divide.
-	 * @param b The value to divide by.
+	 * @param a The value to divide by.
+	 * @param b The value to divide.
 	 * @return A reference to this object. Note that this method does not create
 	 *         a new instance.
 	 */
@@ -583,8 +1405,8 @@ public interface Element<T extends Element<?>> {
 	/**
 	 * Divide two values, storing the result in this (third) instance.
 	 *
-	 * @param a The value to divide.
-	 * @param b The value to divide by.
+	 * @param a The value to divide by.
+	 * @param b The value to divide.
 	 * @return A reference to this object. Note that this method does not create
 	 *         a new instance.
 	 */
@@ -592,8 +1414,8 @@ public interface Element<T extends Element<?>> {
 	/**
 	 * Divide two values, storing the result in this (third) instance.
 	 *
-	 * @param a The value to divide.
-	 * @param b The value to divide by.
+	 * @param a The value to divide by.
+	 * @param b The value to divide.
 	 * @return A reference to this object. Note that this method does not create
 	 *         a new instance.
 	 */
@@ -601,8 +1423,8 @@ public interface Element<T extends Element<?>> {
 	/**
 	 * Divide two values, storing the result in this (third) instance.
 	 *
-	 * @param a The value to divide.
-	 * @param b The value to divide by.
+	 * @param a The value to divide by.
+	 * @param b The value to divide.
 	 * @return A reference to this object. Note that this method does not create
 	 *         a new instance.
 	 */
@@ -610,8 +1432,8 @@ public interface Element<T extends Element<?>> {
 	/**
 	 * Divide two values, storing the result in this (third) instance.
 	 *
-	 * @param a The value to divide.
-	 * @param b The value to divide by.
+	 * @param a The value to divide by.
+	 * @param b The value to divide.
 	 * @return A reference to this object. Note that this method does not create
 	 *         a new instance.
 	 */
@@ -619,8 +1441,8 @@ public interface Element<T extends Element<?>> {
 	/**
 	 * Divide two values, storing the result in this (third) instance.
 	 *
-	 * @param a The value to divide.
-	 * @param b The value to divide by.
+	 * @param a The value to divide by.
+	 * @param b The value to divide.
 	 * @return A reference to this object. Note that this method does not create
 	 *         a new instance.
 	 */
@@ -628,8 +1450,8 @@ public interface Element<T extends Element<?>> {
 	/**
 	 * Divide two values, storing the result in this (third) instance.
 	 *
-	 * @param a The value to divide.
-	 * @param b The value to divide by.
+	 * @param a The value to divide by.
+	 * @param b The value to divide.
 	 * @return A reference to this object. Note that this method does not create
 	 *         a new instance.
 	 */
@@ -637,8 +1459,8 @@ public interface Element<T extends Element<?>> {
 	/**
 	 * Divide two values, storing the result in this (third) instance.
 	 *
-	 * @param a The value to divide.
-	 * @param b The value to divide by.
+	 * @param a The value to divide by.
+	 * @param b The value to divide.
 	 * @return A reference to this object. Note that this method does not create
 	 *         a new instance.
 	 */
@@ -646,15 +1468,174 @@ public interface Element<T extends Element<?>> {
 	/**
 	 * Divide two values, storing the result in this (third) instance.
 	 *
-	 * @param a The value to divide.
-	 * @param b The value to divide by.
+	 * @param a The value to divide by.
+	 * @param b The value to divide.
 	 * @return A reference to this object. Note that this method does not create
 	 *         a new instance.
 	 */
 	T divOf(Element<?> a, Element<?> b);
 
 	/**
-	 * Modulo this object by a value.
+	 * Divide two values, storing the result in this (third) instance,
+	 * unless the mask is invalid.
+	 *
+	 * @param a The value to divide by.
+	 * @param b The value to divide.
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T divOfIfValid(long a, long b, Element<?> mask);
+	/**
+	 * Divide two values, storing the result in this (third) instance,
+	 * unless the mask is invalid.
+	 *
+	 * @param a The value to divide by.
+	 * @param b The value to divide.
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T divOfIfValid(double a, long b, Element<?> mask);
+	/**
+	 * Divide two values, storing the result in this (third) instance,
+	 * unless the mask is invalid.
+	 *
+	 * @param a The value to divide by.
+	 * @param b The value to divide.
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T divOfIfValid(long a, double b, Element<?> mask);
+	/**
+	 * Divide two values, storing the result in this (third) instance,
+	 * unless the mask is invalid.
+	 *
+	 * @param a The value to divide by.
+	 * @param b The value to divide.
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T divOfIfValid(double a, double b, Element<?> mask);
+	/**
+	 * Divide two values, storing the result in this (third) instance,
+	 * unless any of the values are invalid.
+	 *
+	 * @param a The value to divide by.
+	 * @param b The value to divide.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T divOfIfValid(Element<?> a, long b);
+	/**
+	 * Divide two values, storing the result in this (third) instance,
+	 * unless any of the values or the mask are invalid.
+	 *
+	 * @param a The value to divide by.
+	 * @param b The value to divide.
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T divOfIfValid(Element<?> a, long b, Element<?> mask);
+	/**
+	 * Divide two values, storing the result in this (third) instance,
+	 * unless any of the values are invalid.
+	 *
+	 * @param a The value to divide by.
+	 * @param b The value to divide.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T divOfIfValid(long a, Element<?> b);
+	/**
+	 * Divide two values, storing the result in this (third) instance,
+	 * unless any of the values or the mask are invalid.
+	 *
+	 * @param a The value to divide by.
+	 * @param b The value to divide.
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T divOfIfValid(long a, Element<?> b, Element<?> mask);
+	/**
+	 * Divide two values, storing the result in this (third) instance,
+	 * unless any of the values are invalid.
+	 *
+	 * @param a The value to divide by.
+	 * @param b The value to divide.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T divOfIfValid(Element<?> a, double b);
+	/**
+	 * Divide two values, storing the result in this (third) instance,
+	 * unless any of the values or the mask are invalid.
+	 *
+	 * @param a The value to divide by.
+	 * @param b The value to divide.
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T divOfIfValid(Element<?> a, double b, Element<?> mask);
+	/**
+	 * Divide two values, storing the result in this (third) instance,
+	 * unless any of the values are invalid.
+	 *
+	 * @param a The value to divide by.
+	 * @param b The value to divide.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T divOfIfValid(double a, Element<?> b);
+	/**
+	 * Divide two values, storing the result in this (third) instance,
+	 * unless any of the values or the mask are invalid.
+	 *
+	 * @param a The value to divide by.
+	 * @param b The value to divide.
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T divOfIfValid(double a, Element<?> b, Element<?> mask);
+	/**
+	 * Divide two values, storing the result in this (third) instance,
+	 * unless any of the values are invalid.
+	 *
+	 * @param a The value to divide by.
+	 * @param b The value to divide.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T divOfIfValid(Element<?> a, Element<?> b);
+	/**
+	 * Divide two values, storing the result in this (third) instance,
+	 * unless any of the values or the mask are invalid.
+	 *
+	 * @param a The value to divide by.
+	 * @param b The value to divide.
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T divOfIfValid(Element<?> a, Element<?> b, Element<?> mask);
+
+	/**
+	 * Modulo a value by this one.
 	 *
 	 * @param other The value to modulo.
 	 * @return A reference to this object. Note that this method does not create
@@ -662,7 +1643,7 @@ public interface Element<T extends Element<?>> {
 	 */
 	T mod(long other);
 	/**
-	 * Modulo this object by a value.
+	 * Modulo a value by this one.
 	 *
 	 * @param other The value to modulo.
 	 * @return A reference to this object. Note that this method does not create
@@ -670,41 +1651,127 @@ public interface Element<T extends Element<?>> {
 	 */
 	T mod(double other);
 	/**
-	 * Modulo this object by a value.
+	 * Modulo a value by this one.
 	 *
-	 * @param other The value to modulo.
+	 * @param other The value to modulo. If this value is invalid, this
+	 *        element will also be marked as invalid (for vectors, this is done
+	 *        on a component-by-component basis).
 	 * @return A reference to this object. Note that this method does not create
 	 *         a new instance.
 	 */
 	T mod(Element<?> other);
 
 	/**
-	 * Modulo this object by a value.
+	 * Modulo a value by this one, unless the mask is invalid.
+	 *
+	 * @param other The value to modulo.
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T modIfValid(long other, Element<?> mask);
+	/**
+	 * Modulo a value by this one, unless the mask is invalid.
+	 *
+	 * @param other The value to modulo.
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T modIfValid(double other, Element<?> mask);
+	/**
+	 * Modulo a value by this one, unless it is invalid.
+	 *
+	 * @param other The value to modulo. If this value is invalid, it will be
+	 *        ignored (the operation will not take place).
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T modIfValid(Element<?> other);
+	/**
+	 * Modulo a value by this one, unless it or the mask is
+	 * invalid.
+	 *
+	 * @param other The value to modulo. If this value is invalid, it will be
+	 *        ignored (the operation will not take place).
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T modIfValid(Element<?> other, Element<?> mask);
+
+	/**
+	 * Modulo a value by this one.
 	 *
 	 * @param other The value to modulo.
 	 * @return The result as a new object.
 	 */
 	T modNew(long other);
 	/**
-	 * Modulo this object by a value.
+	 * Modulo a value by this one.
 	 *
-	 * @param other The value to modulo.
+	 * @param other The value to modulo. If this value is invalid, this
+	 *        element will also be marked as invalid (for vectors, this is done
+	 *        on a component-by-component basis).
 	 * @return The result as a new object.
 	 */
 	T modNew(double other);
 	/**
-	 * Modulo this object by a value.
+	 * Modulo a value by this one.
 	 *
-	 * @param other The value to modulo.
+	 * @param other The value to modulo. If this value is invalid, this
+	 *        element will also be marked as invalid (for vectors, this is done
+	 *        on a component-by-component basis).
 	 * @return The result as a new object.
 	 */
 	T modNew(Element<?> other);
 
 	/**
+	 * Modulo a value by this one, unless the mask is invalid.
+	 *
+	 * @param other The value to modulo.
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return The result as a new object.
+	 */
+	T modNewIfValid(long other, Element<?> mask);
+	/**
+	 * Modulo a value by this one, unless the mask is invalid.
+	 *
+	 * @param other The value to modulo.
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return The result as a new object.
+	 */
+	T modNewIfValid(double other, Element<?> mask);
+	/**
+	 * Modulo a value by this one, unless it is invalid.
+	 *
+	 * @param other The value to modulo. If this value is invalid, it will be
+	 *        ignored (the operation will not take place).
+	 * @return The result as a new object.
+	 */
+	T modNewIfValid(Element<?> other);
+	/**
+	 * Modulo a value by this one, unless it or the mask is
+	 * invalid.
+	 *
+	 * @param other The value to modulo. If this value is invalid, it will be
+	 *        ignored (the operation will not take place).
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return The result as a new object.
+	 */
+	T modNewIfValid(Element<?> other, Element<?> mask);
+
+	/**
 	 * Modulo two values, storing the result in this (third) instance.
 	 *
-	 * @param a The value to modulo.
-	 * @param b The value to modulo by.
+	 * @param a The value to modulo by.
+	 * @param b The value to modulo.
 	 * @return A reference to this object. Note that this method does not create
 	 *         a new instance.
 	 */
@@ -712,8 +1779,8 @@ public interface Element<T extends Element<?>> {
 	/**
 	 * Modulo two values, storing the result in this (third) instance.
 	 *
-	 * @param a The value to modulo.
-	 * @param b The value to modulo by.
+	 * @param a The value to modulo by.
+	 * @param b The value to modulo.
 	 * @return A reference to this object. Note that this method does not create
 	 *         a new instance.
 	 */
@@ -721,8 +1788,8 @@ public interface Element<T extends Element<?>> {
 	/**
 	 * Modulo two values, storing the result in this (third) instance.
 	 *
-	 * @param a The value to modulo.
-	 * @param b The value to modulo by.
+	 * @param a The value to modulo by.
+	 * @param b The value to modulo.
 	 * @return A reference to this object. Note that this method does not create
 	 *         a new instance.
 	 */
@@ -730,8 +1797,8 @@ public interface Element<T extends Element<?>> {
 	/**
 	 * Modulo two values, storing the result in this (third) instance.
 	 *
-	 * @param a The value to modulo.
-	 * @param b The value to modulo by.
+	 * @param a The value to modulo by.
+	 * @param b The value to modulo.
 	 * @return A reference to this object. Note that this method does not create
 	 *         a new instance.
 	 */
@@ -739,8 +1806,8 @@ public interface Element<T extends Element<?>> {
 	/**
 	 * Modulo two values, storing the result in this (third) instance.
 	 *
-	 * @param a The value to modulo.
-	 * @param b The value to modulo by.
+	 * @param a The value to modulo by.
+	 * @param b The value to modulo.
 	 * @return A reference to this object. Note that this method does not create
 	 *         a new instance.
 	 */
@@ -748,8 +1815,8 @@ public interface Element<T extends Element<?>> {
 	/**
 	 * Modulo two values, storing the result in this (third) instance.
 	 *
-	 * @param a The value to modulo.
-	 * @param b The value to modulo by.
+	 * @param a The value to modulo by.
+	 * @param b The value to modulo.
 	 * @return A reference to this object. Note that this method does not create
 	 *         a new instance.
 	 */
@@ -757,8 +1824,8 @@ public interface Element<T extends Element<?>> {
 	/**
 	 * Modulo two values, storing the result in this (third) instance.
 	 *
-	 * @param a The value to modulo.
-	 * @param b The value to modulo by.
+	 * @param a The value to modulo by.
+	 * @param b The value to modulo.
 	 * @return A reference to this object. Note that this method does not create
 	 *         a new instance.
 	 */
@@ -766,8 +1833,8 @@ public interface Element<T extends Element<?>> {
 	/**
 	 * Modulo two values, storing the result in this (third) instance.
 	 *
-	 * @param a The value to modulo.
-	 * @param b The value to modulo by.
+	 * @param a The value to modulo by.
+	 * @param b The value to modulo.
 	 * @return A reference to this object. Note that this method does not create
 	 *         a new instance.
 	 */
@@ -775,12 +1842,171 @@ public interface Element<T extends Element<?>> {
 	/**
 	 * Modulo two values, storing the result in this (third) instance.
 	 *
-	 * @param a The value to modulo.
-	 * @param b The value to modulo by.
+	 * @param a The value to modulo by.
+	 * @param b The value to modulo.
 	 * @return A reference to this object. Note that this method does not create
 	 *         a new instance.
 	 */
 	T modOf(Element<?> a, Element<?> b);
+
+	/**
+	 * Modulo two values, storing the result in this (third) instance,
+	 * unless the mask is invalid.
+	 *
+	 * @param a The value to modulo by.
+	 * @param b The value to modulo.
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T modOfIfValid(long a, long b, Element<?> mask);
+	/**
+	 * Modulo two values, storing the result in this (third) instance,
+	 * unless the mask is invalid.
+	 *
+	 * @param a The value to modulo by.
+	 * @param b The value to modulo.
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T modOfIfValid(double a, long b, Element<?> mask);
+	/**
+	 * Modulo two values, storing the result in this (third) instance,
+	 * unless the mask is invalid.
+	 *
+	 * @param a The value to modulo by.
+	 * @param b The value to modulo.
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T modOfIfValid(long a, double b, Element<?> mask);
+	/**
+	 * Modulo two values, storing the result in this (third) instance,
+	 * unless the mask is invalid.
+	 *
+	 * @param a The value to modulo by.
+	 * @param b The value to modulo.
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T modOfIfValid(double a, double b, Element<?> mask);
+	/**
+	 * Modulo two values, storing the result in this (third) instance,
+	 * unless any of the values are invalid.
+	 *
+	 * @param a The value to modulo by.
+	 * @param b The value to modulo.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T modOfIfValid(Element<?> a, long b);
+	/**
+	 * Modulo two values, storing the result in this (third) instance,
+	 * unless any of the values or the mask are invalid.
+	 *
+	 * @param a The value to modulo by.
+	 * @param b The value to modulo.
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T modOfIfValid(Element<?> a, long b, Element<?> mask);
+	/**
+	 * Modulo two values, storing the result in this (third) instance,
+	 * unless any of the values are invalid.
+	 *
+	 * @param a The value to modulo by.
+	 * @param b The value to modulo.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T modOfIfValid(long a, Element<?> b);
+	/**
+	 * Modulo two values, storing the result in this (third) instance,
+	 * unless any of the values or the mask are invalid.
+	 *
+	 * @param a The value to modulo by.
+	 * @param b The value to modulo.
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T modOfIfValid(long a, Element<?> b, Element<?> mask);
+	/**
+	 * Modulo two values, storing the result in this (third) instance,
+	 * unless any of the values are invalid.
+	 *
+	 * @param a The value to modulo by.
+	 * @param b The value to modulo.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T modOfIfValid(Element<?> a, double b);
+	/**
+	 * Modulo two values, storing the result in this (third) instance,
+	 * unless any of the values or the mask are invalid.
+	 *
+	 * @param a The value to modulo by.
+	 * @param b The value to modulo.
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T modOfIfValid(Element<?> a, double b, Element<?> mask);
+	/**
+	 * Modulo two values, storing the result in this (third) instance,
+	 * unless any of the values are invalid.
+	 *
+	 * @param a The value to modulo by.
+	 * @param b The value to modulo.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T modOfIfValid(double a, Element<?> b);
+	/**
+	 * Modulo two values, storing the result in this (third) instance,
+	 * unless any of the values or the mask are invalid.
+	 *
+	 * @param a The value to modulo by.
+	 * @param b The value to modulo.
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T modOfIfValid(double a, Element<?> b, Element<?> mask);
+	/**
+	 * Modulo two values, storing the result in this (third) instance,
+	 * unless any of the values are invalid.
+	 *
+	 * @param a The value to modulo by.
+	 * @param b The value to modulo.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T modOfIfValid(Element<?> a, Element<?> b);
+	/**
+	 * Modulo two values, storing the result in this (third) instance,
+	 * unless any of the values or the mask are invalid.
+	 *
+	 * @param a The value to modulo by.
+	 * @param b The value to modulo.
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T modOfIfValid(Element<?> a, Element<?> b, Element<?> mask);
 
 	// BOUNDING
 
@@ -803,11 +2029,55 @@ public interface Element<T extends Element<?>> {
 	/**
 	 * Find the minimum of this and another value.
 	 *
-	 * @param other The value to compare to.
+	 * @param other The value to minimum. If this value is invalid, this
+	 *        element will also be marked as invalid (for vectors, this is done
+	 *        on a component-by-component basis).
 	 * @return A reference to this object. Note that this method does not create
 	 *         a new instance.
 	 */
 	T min(Element<?> other);
+
+	/**
+	 * Find the minimum of this and another value, unless the mask is invalid.
+	 *
+	 * @param other The value to compare to.
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T minIfValid(long other, Element<?> mask);
+	/**
+	 * Find the minimum of this and another value, unless the mask is invalid.
+	 *
+	 * @param other The value to compare to.
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T minIfValid(double other, Element<?> mask);
+	/**
+	 * Find the minimum of this and another value, unless it is invalid.
+	 *
+	 * @param other The value to compare to. If this value is invalid, it will
+	 *        be ignored (the operation will not take place).
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T minIfValid(Element<?> other);
+	/**
+	 * Find the minimum of this and another value, unless it or the mask is
+	 * invalid.
+	 *
+	 * @param other The value to compare to. If this value is invalid, it will
+	 *        be ignored (the operation will not take place).
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T minIfValid(Element<?> other, Element<?> mask);
 
 	/**
 	 * Find the minimum of this and another value.
@@ -826,10 +2096,50 @@ public interface Element<T extends Element<?>> {
 	/**
 	 * Find the minimum of this and another value.
 	 *
-	 * @param other The value to compare to.
+	 * @param other The value to minimum. If this value is invalid, this
+	 *        element will also be marked as invalid (for vectors, this is done
+	 *        on a component-by-component basis).
 	 * @return The result as a new object.
 	 */
 	T minNew(Element<?> other);
+
+	/**
+	 * Find the minimum of this and another value, unless the mask is invalid.
+	 *
+	 * @param other The value to compare to.
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return The result as a new object.
+	 */
+	T minNewIfValid(long other, Element<?> mask);
+	/**
+	 * Find the minimum of this and another value, unless the mask is invalid.
+	 *
+	 * @param other The value to compare to.
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return The result as a new object.
+	 */
+	T minNewIfValid(double other, Element<?> mask);
+	/**
+	 * Find the minimum of this and another value, unless it is invalid.
+	 *
+	 * @param other The value to compare to. If this value is invalid, it will
+	 *        be ignored (the operation will not take place).
+	 * @return The result as a new object.
+	 */
+	T minNewIfValid(Element<?> other);
+	/**
+	 * Find the minimum of this and another value, unless it or the mask is
+	 * invalid.
+	 *
+	 * @param other The value to compare to. If this value is invalid, it will
+	 *        be ignored (the operation will not take place).
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return The result as a new object.
+	 */
+	T minNewIfValid(Element<?> other, Element<?> mask);
 
 	/**
 	 * Find the minimum of two values, storing the result in this (third)
@@ -923,6 +2233,165 @@ public interface Element<T extends Element<?>> {
 	T minOf(Element<?> a, Element<?> b);
 
 	/**
+	 * Find the minimum of two values, storing the result in this (third)
+	 * instance).
+	 *
+	 * @param a The first operand.
+	 * @param b The second operand.
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T minOfIfValid(long a, long b, Element<?> mask);
+	/**
+	 * Find the minimum of two values, storing the result in this (third)
+	 * instance).
+	 *
+	 * @param a The first operand.
+	 * @param b The second operand.
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T minOfIfValid(double a, long b, Element<?> mask);
+	/**
+	 * Find the minimum of two values, storing the result in this (third)
+	 * instance).
+	 *
+	 * @param a The first operand.
+	 * @param b The second operand.
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T minOfIfValid(long a, double b, Element<?> mask);
+	/**
+	 * Find the minimum of two values, storing the result in this (third)
+	 * instance).
+	 *
+	 * @param a The first operand.
+	 * @param b The second operand.
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T minOfIfValid(double a, double b, Element<?> mask);
+	/**
+	 * Find the minimum of two values, storing the result in this (third)
+	 * instance).
+	 *
+	 * @param a The first operand.
+	 * @param b The second operand.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T minOfIfValid(Element<?> a, long b);
+	/**
+	 * Find the minimum of two values, storing the result in this (third)
+	 * instance).
+	 *
+	 * @param a The first operand.
+	 * @param b The second operand.
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T minOfIfValid(Element<?> a, long b, Element<?> mask);
+	/**
+	 * Find the minimum of two values, storing the result in this (third)
+	 * instance).
+	 *
+	 * @param a The first operand.
+	 * @param b The second operand.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T minOfIfValid(long a, Element<?> b);
+	/**
+	 * Find the minimum of two values, storing the result in this (third)
+	 * instance).
+	 *
+	 * @param a The first operand.
+	 * @param b The second operand.
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T minOfIfValid(long a, Element<?> b, Element<?> mask);
+	/**
+	 * Find the minimum of two values, storing the result in this (third)
+	 * instance).
+	 *
+	 * @param a The first operand.
+	 * @param b The second operand.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T minOfIfValid(Element<?> a, double b);
+	/**
+	 * Find the minimum of two values, storing the result in this (third)
+	 * instance).
+	 *
+	 * @param a The first operand.
+	 * @param b The second operand.
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T minOfIfValid(Element<?> a, double b, Element<?> mask);
+	/**
+	 * Find the minimum of two values, storing the result in this (third)
+	 * instance).
+	 *
+	 * @param a The first operand.
+	 * @param b The second operand.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T minOfIfValid(double a, Element<?> b);
+	/**
+	 * Find the minimum of two values, storing the result in this (third)
+	 * instance).
+	 *
+	 * @param a The first operand.
+	 * @param b The second operand.
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T minOfIfValid(double a, Element<?> b, Element<?> mask);
+	/**
+	 * Find the minimum of two values, storing the result in this (third)
+	 * instance).
+	 *
+	 * @param a The first operand.
+	 * @param b The second operand.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T minOfIfValid(Element<?> a, Element<?> b);
+	/**
+	 * Find the minimum of two values, storing the result in this (third)
+	 * instance).
+	 *
+	 * @param a The first operand.
+	 * @param b The second operand.
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T minOfIfValid(Element<?> a, Element<?> b, Element<?> mask);
+
+	/**
 	 * Find the maximum of this and another value.
 	 *
 	 * @param other The value to compare to.
@@ -941,11 +2410,55 @@ public interface Element<T extends Element<?>> {
 	/**
 	 * Find the maximum of this and another value.
 	 *
-	 * @param other The value to compare to.
+	 * @param other The value to maximum. If this value is invalid, this
+	 *        element will also be marked as invalid (for vectors, this is done
+	 *        on a component-by-component basis).
 	 * @return A reference to this object. Note that this method does not create
 	 *         a new instance.
 	 */
 	T max(Element<?> other);
+
+	/**
+	 * Find the maximum of this and another value, unless the mask is invalid.
+	 *
+	 * @param other The value to compare to.
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T maxIfValid(long other, Element<?> mask);
+	/**
+	 * Find the maximum of this and another value, unless the mask is invalid.
+	 *
+	 * @param other The value to compare to.
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T maxIfValid(double other, Element<?> mask);
+	/**
+	 * Find the maximum of this and another value, unless it is invalid.
+	 *
+	 * @param other The value to compare to. If this value is invalid, it will
+	 *        be ignored (the operation will not take place).
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T maxIfValid(Element<?> other);
+	/**
+	 * Find the maximum of this and another value, unless it or the mask is
+	 * invalid.
+	 *
+	 * @param other The value to compare to. If this value is invalid, it will
+	 *        be ignored (the operation will not take place).
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T maxIfValid(Element<?> other, Element<?> mask);
 
 	/**
 	 * Find the maximum of this and another value.
@@ -964,10 +2477,50 @@ public interface Element<T extends Element<?>> {
 	/**
 	 * Find the maximum of this and another value.
 	 *
-	 * @param other The value to compare to.
+	 * @param other The value to maximum. If this value is invalid, this
+	 *        element will also be marked as invalid (for vectors, this is done
+	 *        on a component-by-component basis).
 	 * @return The result as a new object.
 	 */
 	T maxNew(Element<?> other);
+
+	/**
+	 * Find the maximum of this and another value, unless the mask is invalid.
+	 *
+	 * @param other The value to compare to.
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return The result as a new object.
+	 */
+	T maxNewIfValid(long other, Element<?> mask);
+	/**
+	 * Find the maximum of this and another value, unless the mask is invalid.
+	 *
+	 * @param other The value to compare to.
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return The result as a new object.
+	 */
+	T maxNewIfValid(double other, Element<?> mask);
+	/**
+	 * Find the maximum of this and another value, unless it is invalid.
+	 *
+	 * @param other The value to compare to. If this value is invalid, it will
+	 *        be ignored (the operation will not take place).
+	 * @return The result as a new object.
+	 */
+	T maxNewIfValid(Element<?> other);
+	/**
+	 * Find the maximum of this and another value, unless it or the mask is
+	 * invalid.
+	 *
+	 * @param other The value to compare to. If this value is invalid, it will
+	 *        be ignored (the operation will not take place).
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return The result as a new object.
+	 */
+	T maxNewIfValid(Element<?> other, Element<?> mask);
 
 	/**
 	 * Find the maximum of two values, storing the result in this (third)
@@ -1059,6 +2612,165 @@ public interface Element<T extends Element<?>> {
 	 *         a new instance.
 	 */
 	T maxOf(Element<?> a, Element<?> b);
+
+	/**
+	 * Find the maximum of two values, storing the result in this (third)
+	 * instance).
+	 *
+	 * @param a The first operand.
+	 * @param b The second operand.
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T maxOfIfValid(long a, long b, Element<?> mask);
+	/**
+	 * Find the maximum of two values, storing the result in this (third)
+	 * instance).
+	 *
+	 * @param a The first operand.
+	 * @param b The second operand.
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T maxOfIfValid(double a, long b, Element<?> mask);
+	/**
+	 * Find the maximum of two values, storing the result in this (third)
+	 * instance).
+	 *
+	 * @param a The first operand.
+	 * @param b The second operand.
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T maxOfIfValid(long a, double b, Element<?> mask);
+	/**
+	 * Find the maximum of two values, storing the result in this (third)
+	 * instance).
+	 *
+	 * @param a The first operand.
+	 * @param b The second operand.
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T maxOfIfValid(double a, double b, Element<?> mask);
+	/**
+	 * Find the maximum of two values, storing the result in this (third)
+	 * instance).
+	 *
+	 * @param a The first operand.
+	 * @param b The second operand.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T maxOfIfValid(Element<?> a, long b);
+	/**
+	 * Find the maximum of two values, storing the result in this (third)
+	 * instance).
+	 *
+	 * @param a The first operand.
+	 * @param b The second operand.
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T maxOfIfValid(Element<?> a, long b, Element<?> mask);
+	/**
+	 * Find the maximum of two values, storing the result in this (third)
+	 * instance).
+	 *
+	 * @param a The first operand.
+	 * @param b The second operand.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T maxOfIfValid(long a, Element<?> b);
+	/**
+	 * Find the maximum of two values, storing the result in this (third)
+	 * instance).
+	 *
+	 * @param a The first operand.
+	 * @param b The second operand.
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T maxOfIfValid(long a, Element<?> b, Element<?> mask);
+	/**
+	 * Find the maximum of two values, storing the result in this (third)
+	 * instance).
+	 *
+	 * @param a The first operand.
+	 * @param b The second operand.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T maxOfIfValid(Element<?> a, double b);
+	/**
+	 * Find the maximum of two values, storing the result in this (third)
+	 * instance).
+	 *
+	 * @param a The first operand.
+	 * @param b The second operand.
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T maxOfIfValid(Element<?> a, double b, Element<?> mask);
+	/**
+	 * Find the maximum of two values, storing the result in this (third)
+	 * instance).
+	 *
+	 * @param a The first operand.
+	 * @param b The second operand.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T maxOfIfValid(double a, Element<?> b);
+	/**
+	 * Find the maximum of two values, storing the result in this (third)
+	 * instance).
+	 *
+	 * @param a The first operand.
+	 * @param b The second operand.
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T maxOfIfValid(double a, Element<?> b, Element<?> mask);
+	/**
+	 * Find the maximum of two values, storing the result in this (third)
+	 * instance).
+	 *
+	 * @param a The first operand.
+	 * @param b The second operand.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T maxOfIfValid(Element<?> a, Element<?> b);
+	/**
+	 * Find the maximum of two values, storing the result in this (third)
+	 * instance).
+	 *
+	 * @param a The first operand.
+	 * @param b The second operand.
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T maxOfIfValid(Element<?> a, Element<?> b, Element<?> mask);
 
 	/**
 	 * Constrain this value in a pair of bounds.

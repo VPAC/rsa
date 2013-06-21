@@ -6,7 +6,7 @@ import org.vpac.ndg.query.iteration.Reduction;
 import org.vpac.ndg.query.math.BoxReal;
 import org.vpac.ndg.query.math.Element;
 import org.vpac.ndg.query.math.VectorReal;
-import org.vpac.ndg.query.sampling.CellScalar;
+import org.vpac.ndg.query.sampling.Cell;
 import org.vpac.ndg.query.sampling.CellType;
 import org.vpac.ndg.query.sampling.PixelSource;
 
@@ -24,7 +24,7 @@ public class MeanOverTime implements Filter {
 
 	// Output fields.
 	@CellType("input")
-	public CellScalar output;
+	public Cell output;
 
 	// Internal variables.
 	private Element<?> val;

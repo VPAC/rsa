@@ -33,6 +33,7 @@ public interface Element<T extends Element<?>> {
 	 */
 	boolean isValid();
 	void setValid(boolean valid);
+	void setValid(Element<?> mask);
 
 	ScalarElement[] getComponents();
 """)
@@ -153,7 +154,7 @@ CAST_DECLARATION_TEMPLATE = Template("""
 
 ARITHMETIC_DECLARATION_TEMPLATE = Template("""
 	/**
-	 * $longname_upper this object $direction a value.
+	 * $longname_upper a value $direction this one.
 	 *
 	 * @param other The value to $longname.
 	 * @return A reference to this object. Note that this method does not create
@@ -161,7 +162,7 @@ ARITHMETIC_DECLARATION_TEMPLATE = Template("""
 	 */
 	T $opname(long other);
 	/**
-	 * $longname_upper this object $direction a value.
+	 * $longname_upper a value $direction this one.
 	 *
 	 * @param other The value to $longname.
 	 * @return A reference to this object. Note that this method does not create
@@ -169,41 +170,127 @@ ARITHMETIC_DECLARATION_TEMPLATE = Template("""
 	 */
 	T $opname(double other);
 	/**
-	 * $longname_upper this object $direction a value.
+	 * $longname_upper a value $direction this one.
 	 *
-	 * @param other The value to $longname.
+	 * @param other The value to $longname. If this value is invalid, this
+	 *        element will also be marked as invalid (for vectors, this is done
+	 *        on a component-by-component basis).
 	 * @return A reference to this object. Note that this method does not create
 	 *         a new instance.
 	 */
 	T $opname(Element<?> other);
 
 	/**
-	 * $longname_upper this object $direction a value.
+	 * $longname_upper a value $direction this one, unless the mask is invalid.
+	 *
+	 * @param other The value to $longname.
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T ${opname}IfValid(long other, Element<?> mask);
+	/**
+	 * $longname_upper a value $direction this one, unless the mask is invalid.
+	 *
+	 * @param other The value to $longname.
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T ${opname}IfValid(double other, Element<?> mask);
+	/**
+	 * $longname_upper a value $direction this one, unless it is invalid.
+	 *
+	 * @param other The value to $longname. If this value is invalid, it will be
+	 *        ignored (the operation will not take place).
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T ${opname}IfValid(Element<?> other);
+	/**
+	 * $longname_upper a value $direction this one, unless it or the mask is
+	 * invalid.
+	 *
+	 * @param other The value to $longname. If this value is invalid, it will be
+	 *        ignored (the operation will not take place).
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T ${opname}IfValid(Element<?> other, Element<?> mask);
+
+	/**
+	 * $longname_upper a value $direction this one.
 	 *
 	 * @param other The value to $longname.
 	 * @return The result as a new object.
 	 */
 	T ${opname}New(long other);
 	/**
-	 * $longname_upper this object $direction a value.
+	 * $longname_upper a value $direction this one.
 	 *
-	 * @param other The value to $longname.
+	 * @param other The value to $longname. If this value is invalid, this
+	 *        element will also be marked as invalid (for vectors, this is done
+	 *        on a component-by-component basis).
 	 * @return The result as a new object.
 	 */
 	T ${opname}New(double other);
 	/**
-	 * $longname_upper this object $direction a value.
+	 * $longname_upper a value $direction this one.
 	 *
-	 * @param other The value to $longname.
+	 * @param other The value to $longname. If this value is invalid, this
+	 *        element will also be marked as invalid (for vectors, this is done
+	 *        on a component-by-component basis).
 	 * @return The result as a new object.
 	 */
 	T ${opname}New(Element<?> other);
 
 	/**
+	 * $longname_upper a value $direction this one, unless the mask is invalid.
+	 *
+	 * @param other The value to $longname.
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return The result as a new object.
+	 */
+	T ${opname}NewIfValid(long other, Element<?> mask);
+	/**
+	 * $longname_upper a value $direction this one, unless the mask is invalid.
+	 *
+	 * @param other The value to $longname.
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return The result as a new object.
+	 */
+	T ${opname}NewIfValid(double other, Element<?> mask);
+	/**
+	 * $longname_upper a value $direction this one, unless it is invalid.
+	 *
+	 * @param other The value to $longname. If this value is invalid, it will be
+	 *        ignored (the operation will not take place).
+	 * @return The result as a new object.
+	 */
+	T ${opname}NewIfValid(Element<?> other);
+	/**
+	 * $longname_upper a value $direction this one, unless it or the mask is
+	 * invalid.
+	 *
+	 * @param other The value to $longname. If this value is invalid, it will be
+	 *        ignored (the operation will not take place).
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return The result as a new object.
+	 */
+	T ${opname}NewIfValid(Element<?> other, Element<?> mask);
+
+	/**
 	 * $longname_upper two values, storing the result in this (third) instance.
 	 *
-	 * @param a The value to $longname.
-	 * @param b The value to $longname $direction.
+	 * @param a The value to $longname $direction.
+	 * @param b The value to $longname.
 	 * @return A reference to this object. Note that this method does not create
 	 *         a new instance.
 	 */
@@ -211,8 +298,8 @@ ARITHMETIC_DECLARATION_TEMPLATE = Template("""
 	/**
 	 * $longname_upper two values, storing the result in this (third) instance.
 	 *
-	 * @param a The value to $longname.
-	 * @param b The value to $longname $direction.
+	 * @param a The value to $longname $direction.
+	 * @param b The value to $longname.
 	 * @return A reference to this object. Note that this method does not create
 	 *         a new instance.
 	 */
@@ -220,8 +307,8 @@ ARITHMETIC_DECLARATION_TEMPLATE = Template("""
 	/**
 	 * $longname_upper two values, storing the result in this (third) instance.
 	 *
-	 * @param a The value to $longname.
-	 * @param b The value to $longname $direction.
+	 * @param a The value to $longname $direction.
+	 * @param b The value to $longname.
 	 * @return A reference to this object. Note that this method does not create
 	 *         a new instance.
 	 */
@@ -229,8 +316,8 @@ ARITHMETIC_DECLARATION_TEMPLATE = Template("""
 	/**
 	 * $longname_upper two values, storing the result in this (third) instance.
 	 *
-	 * @param a The value to $longname.
-	 * @param b The value to $longname $direction.
+	 * @param a The value to $longname $direction.
+	 * @param b The value to $longname.
 	 * @return A reference to this object. Note that this method does not create
 	 *         a new instance.
 	 */
@@ -238,8 +325,8 @@ ARITHMETIC_DECLARATION_TEMPLATE = Template("""
 	/**
 	 * $longname_upper two values, storing the result in this (third) instance.
 	 *
-	 * @param a The value to $longname.
-	 * @param b The value to $longname $direction.
+	 * @param a The value to $longname $direction.
+	 * @param b The value to $longname.
 	 * @return A reference to this object. Note that this method does not create
 	 *         a new instance.
 	 */
@@ -247,8 +334,8 @@ ARITHMETIC_DECLARATION_TEMPLATE = Template("""
 	/**
 	 * $longname_upper two values, storing the result in this (third) instance.
 	 *
-	 * @param a The value to $longname.
-	 * @param b The value to $longname $direction.
+	 * @param a The value to $longname $direction.
+	 * @param b The value to $longname.
 	 * @return A reference to this object. Note that this method does not create
 	 *         a new instance.
 	 */
@@ -256,8 +343,8 @@ ARITHMETIC_DECLARATION_TEMPLATE = Template("""
 	/**
 	 * $longname_upper two values, storing the result in this (third) instance.
 	 *
-	 * @param a The value to $longname.
-	 * @param b The value to $longname $direction.
+	 * @param a The value to $longname $direction.
+	 * @param b The value to $longname.
 	 * @return A reference to this object. Note that this method does not create
 	 *         a new instance.
 	 */
@@ -265,8 +352,8 @@ ARITHMETIC_DECLARATION_TEMPLATE = Template("""
 	/**
 	 * $longname_upper two values, storing the result in this (third) instance.
 	 *
-	 * @param a The value to $longname.
-	 * @param b The value to $longname $direction.
+	 * @param a The value to $longname $direction.
+	 * @param b The value to $longname.
 	 * @return A reference to this object. Note that this method does not create
 	 *         a new instance.
 	 */
@@ -274,12 +361,171 @@ ARITHMETIC_DECLARATION_TEMPLATE = Template("""
 	/**
 	 * $longname_upper two values, storing the result in this (third) instance.
 	 *
-	 * @param a The value to $longname.
-	 * @param b The value to $longname $direction.
+	 * @param a The value to $longname $direction.
+	 * @param b The value to $longname.
 	 * @return A reference to this object. Note that this method does not create
 	 *         a new instance.
 	 */
 	T ${opname}Of(Element<?> a, Element<?> b);
+
+	/**
+	 * $longname_upper two values, storing the result in this (third) instance,
+	 * unless the mask is invalid.
+	 *
+	 * @param a The value to $longname $direction.
+	 * @param b The value to $longname.
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T ${opname}OfIfValid(long a, long b, Element<?> mask);
+	/**
+	 * $longname_upper two values, storing the result in this (third) instance,
+	 * unless the mask is invalid.
+	 *
+	 * @param a The value to $longname $direction.
+	 * @param b The value to $longname.
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T ${opname}OfIfValid(double a, long b, Element<?> mask);
+	/**
+	 * $longname_upper two values, storing the result in this (third) instance,
+	 * unless the mask is invalid.
+	 *
+	 * @param a The value to $longname $direction.
+	 * @param b The value to $longname.
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T ${opname}OfIfValid(long a, double b, Element<?> mask);
+	/**
+	 * $longname_upper two values, storing the result in this (third) instance,
+	 * unless the mask is invalid.
+	 *
+	 * @param a The value to $longname $direction.
+	 * @param b The value to $longname.
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T ${opname}OfIfValid(double a, double b, Element<?> mask);
+	/**
+	 * $longname_upper two values, storing the result in this (third) instance,
+	 * unless any of the values are invalid.
+	 *
+	 * @param a The value to $longname $direction.
+	 * @param b The value to $longname.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T ${opname}OfIfValid(Element<?> a, long b);
+	/**
+	 * $longname_upper two values, storing the result in this (third) instance,
+	 * unless any of the values or the mask are invalid.
+	 *
+	 * @param a The value to $longname $direction.
+	 * @param b The value to $longname.
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T ${opname}OfIfValid(Element<?> a, long b, Element<?> mask);
+	/**
+	 * $longname_upper two values, storing the result in this (third) instance,
+	 * unless any of the values are invalid.
+	 *
+	 * @param a The value to $longname $direction.
+	 * @param b The value to $longname.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T ${opname}OfIfValid(long a, Element<?> b);
+	/**
+	 * $longname_upper two values, storing the result in this (third) instance,
+	 * unless any of the values or the mask are invalid.
+	 *
+	 * @param a The value to $longname $direction.
+	 * @param b The value to $longname.
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T ${opname}OfIfValid(long a, Element<?> b, Element<?> mask);
+	/**
+	 * $longname_upper two values, storing the result in this (third) instance,
+	 * unless any of the values are invalid.
+	 *
+	 * @param a The value to $longname $direction.
+	 * @param b The value to $longname.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T ${opname}OfIfValid(Element<?> a, double b);
+	/**
+	 * $longname_upper two values, storing the result in this (third) instance,
+	 * unless any of the values or the mask are invalid.
+	 *
+	 * @param a The value to $longname $direction.
+	 * @param b The value to $longname.
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T ${opname}OfIfValid(Element<?> a, double b, Element<?> mask);
+	/**
+	 * $longname_upper two values, storing the result in this (third) instance,
+	 * unless any of the values are invalid.
+	 *
+	 * @param a The value to $longname $direction.
+	 * @param b The value to $longname.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T ${opname}OfIfValid(double a, Element<?> b);
+	/**
+	 * $longname_upper two values, storing the result in this (third) instance,
+	 * unless any of the values or the mask are invalid.
+	 *
+	 * @param a The value to $longname $direction.
+	 * @param b The value to $longname.
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T ${opname}OfIfValid(double a, Element<?> b, Element<?> mask);
+	/**
+	 * $longname_upper two values, storing the result in this (third) instance,
+	 * unless any of the values are invalid.
+	 *
+	 * @param a The value to $longname $direction.
+	 * @param b The value to $longname.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T ${opname}OfIfValid(Element<?> a, Element<?> b);
+	/**
+	 * $longname_upper two values, storing the result in this (third) instance,
+	 * unless any of the values or the mask are invalid.
+	 *
+	 * @param a The value to $longname $direction.
+	 * @param b The value to $longname.
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T ${opname}OfIfValid(Element<?> a, Element<?> b, Element<?> mask);
 """)
 
 BOUNDING_DECLARATION_TEMPLATE = Template("""
@@ -302,11 +548,55 @@ BOUNDING_DECLARATION_TEMPLATE = Template("""
 	/**
 	 * Find the $longname of this and another value.
 	 *
-	 * @param other The value to compare to.
+	 * @param other The value to $longname. If this value is invalid, this
+	 *        element will also be marked as invalid (for vectors, this is done
+	 *        on a component-by-component basis).
 	 * @return A reference to this object. Note that this method does not create
 	 *         a new instance.
 	 */
 	T $opname(Element<?> other);
+
+	/**
+	 * Find the $longname of this and another value, unless the mask is invalid.
+	 *
+	 * @param other The value to compare to.
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T ${opname}IfValid(long other, Element<?> mask);
+	/**
+	 * Find the $longname of this and another value, unless the mask is invalid.
+	 *
+	 * @param other The value to compare to.
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T ${opname}IfValid(double other, Element<?> mask);
+	/**
+	 * Find the $longname of this and another value, unless it is invalid.
+	 *
+	 * @param other The value to compare to. If this value is invalid, it will
+	 *        be ignored (the operation will not take place).
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T ${opname}IfValid(Element<?> other);
+	/**
+	 * Find the $longname of this and another value, unless it or the mask is
+	 * invalid.
+	 *
+	 * @param other The value to compare to. If this value is invalid, it will
+	 *        be ignored (the operation will not take place).
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T ${opname}IfValid(Element<?> other, Element<?> mask);
 
 	/**
 	 * Find the $longname of this and another value.
@@ -325,10 +615,50 @@ BOUNDING_DECLARATION_TEMPLATE = Template("""
 	/**
 	 * Find the $longname of this and another value.
 	 *
-	 * @param other The value to compare to.
+	 * @param other The value to $longname. If this value is invalid, this
+	 *        element will also be marked as invalid (for vectors, this is done
+	 *        on a component-by-component basis).
 	 * @return The result as a new object.
 	 */
 	T ${opname}New(Element<?> other);
+
+	/**
+	 * Find the $longname of this and another value, unless the mask is invalid.
+	 *
+	 * @param other The value to compare to.
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return The result as a new object.
+	 */
+	T ${opname}NewIfValid(long other, Element<?> mask);
+	/**
+	 * Find the $longname of this and another value, unless the mask is invalid.
+	 *
+	 * @param other The value to compare to.
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return The result as a new object.
+	 */
+	T ${opname}NewIfValid(double other, Element<?> mask);
+	/**
+	 * Find the $longname of this and another value, unless it is invalid.
+	 *
+	 * @param other The value to compare to. If this value is invalid, it will
+	 *        be ignored (the operation will not take place).
+	 * @return The result as a new object.
+	 */
+	T ${opname}NewIfValid(Element<?> other);
+	/**
+	 * Find the $longname of this and another value, unless it or the mask is
+	 * invalid.
+	 *
+	 * @param other The value to compare to. If this value is invalid, it will
+	 *        be ignored (the operation will not take place).
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return The result as a new object.
+	 */
+	T ${opname}NewIfValid(Element<?> other, Element<?> mask);
 
 	/**
 	 * Find the $longname of two values, storing the result in this (third)
@@ -420,6 +750,165 @@ BOUNDING_DECLARATION_TEMPLATE = Template("""
 	 *         a new instance.
 	 */
 	T ${opname}Of(Element<?> a, Element<?> b);
+
+	/**
+	 * Find the $longname of two values, storing the result in this (third)
+	 * instance).
+	 *
+	 * @param a The first operand.
+	 * @param b The second operand.
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T ${opname}OfIfValid(long a, long b, Element<?> mask);
+	/**
+	 * Find the $longname of two values, storing the result in this (third)
+	 * instance).
+	 *
+	 * @param a The first operand.
+	 * @param b The second operand.
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T ${opname}OfIfValid(double a, long b, Element<?> mask);
+	/**
+	 * Find the $longname of two values, storing the result in this (third)
+	 * instance).
+	 *
+	 * @param a The first operand.
+	 * @param b The second operand.
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T ${opname}OfIfValid(long a, double b, Element<?> mask);
+	/**
+	 * Find the $longname of two values, storing the result in this (third)
+	 * instance).
+	 *
+	 * @param a The first operand.
+	 * @param b The second operand.
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T ${opname}OfIfValid(double a, double b, Element<?> mask);
+	/**
+	 * Find the $longname of two values, storing the result in this (third)
+	 * instance).
+	 *
+	 * @param a The first operand.
+	 * @param b The second operand.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T ${opname}OfIfValid(Element<?> a, long b);
+	/**
+	 * Find the $longname of two values, storing the result in this (third)
+	 * instance).
+	 *
+	 * @param a The first operand.
+	 * @param b The second operand.
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T ${opname}OfIfValid(Element<?> a, long b, Element<?> mask);
+	/**
+	 * Find the $longname of two values, storing the result in this (third)
+	 * instance).
+	 *
+	 * @param a The first operand.
+	 * @param b The second operand.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T ${opname}OfIfValid(long a, Element<?> b);
+	/**
+	 * Find the $longname of two values, storing the result in this (third)
+	 * instance).
+	 *
+	 * @param a The first operand.
+	 * @param b The second operand.
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T ${opname}OfIfValid(long a, Element<?> b, Element<?> mask);
+	/**
+	 * Find the $longname of two values, storing the result in this (third)
+	 * instance).
+	 *
+	 * @param a The first operand.
+	 * @param b The second operand.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T ${opname}OfIfValid(Element<?> a, double b);
+	/**
+	 * Find the $longname of two values, storing the result in this (third)
+	 * instance).
+	 *
+	 * @param a The first operand.
+	 * @param b The second operand.
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T ${opname}OfIfValid(Element<?> a, double b, Element<?> mask);
+	/**
+	 * Find the $longname of two values, storing the result in this (third)
+	 * instance).
+	 *
+	 * @param a The first operand.
+	 * @param b The second operand.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T ${opname}OfIfValid(double a, Element<?> b);
+	/**
+	 * Find the $longname of two values, storing the result in this (third)
+	 * instance).
+	 *
+	 * @param a The first operand.
+	 * @param b The second operand.
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T ${opname}OfIfValid(double a, Element<?> b, Element<?> mask);
+	/**
+	 * Find the $longname of two values, storing the result in this (third)
+	 * instance).
+	 *
+	 * @param a The first operand.
+	 * @param b The second operand.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T ${opname}OfIfValid(Element<?> a, Element<?> b);
+	/**
+	 * Find the $longname of two values, storing the result in this (third)
+	 * instance).
+	 *
+	 * @param a The first operand.
+	 * @param b The second operand.
+	 * @param mask A mask to use for the operation. If this is invalid, the
+	 *        operation will not take place.
+	 * @return A reference to this object. Note that this method does not create
+	 *         a new instance.
+	 */
+	T ${opname}OfIfValid(Element<?> a, Element<?> b, Element<?> mask);
 """)
 
 SPECIAL_DECLARATION_TEMPLATE = Template("""
