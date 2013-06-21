@@ -98,9 +98,11 @@
 			</fileset>
 			<!-- Default configuration -->
 			<fileset dir="${storagemanagerConfig}">
+				<!--
 				<exclude name="datasource.xml"/>
 				<exclude name="logback.xml"/>
 				<exclude name="rsa.xml"/>
+				-->
 			</fileset>
 			<!-- Configuration overrides for web services -->
 			<fileset dir="${config}">
