@@ -97,21 +97,17 @@
 				<include name="**/*.xml" />
 			</fileset>
 		</copy>
-		<copy todir="${build}">
-			<!-- Default configuration -->
-			<fileset dir="${storagemanagerConfig}">
-				<exclude name="datasource.xml"/>
-				<exclude name="logback.xml"/>
-				<exclude name="rsa.xml"/>
-			</fileset>
-			<!-- Configuration overrides for web services -->
-			<fileset dir="${config}">
-				<exclude name="README.txt" />
-				<exclude name="datasource.xml"/>
-				<exclude name="logback.xml"/>
-				<exclude name="rsa.xml"/>
-			</fileset>
+		<copy todir="${build}" flatten="false" verbose="true">
+			<fileset dir="${storagemanagerConfig}" />
+			<!-- Override some of the storagemanager's default config -->
+			<fileset dir="${config}" />
 			<globmapper from="*.SAMPLE" to="*"/>
+		</copy>
+		<copy todir="${build}" flatten="false" verbose="true">
+			<fileset dir="${storagemanagerConfig}">
+				<include name="README.txt"/>
+				<include name="mchange-log.properties"/>
+			</fileset>
 		</copy>
 		<!-- Libraries; ignore directory structure of source -->
 		<copy todir="${webRoot}/WEB-INF/lib" flatten="true" verbose="true">

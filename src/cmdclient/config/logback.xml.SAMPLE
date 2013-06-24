@@ -55,6 +55,6 @@
 	</logger>
 	<logger name="org.hibernate" level="error"/>
 	<logger name="org.springframework" level="error"/>
-	<logger name="com.mchange.v2.c3p0" level="warn"/>
+	<logger name="com.mchange" level="warn"/>
 
 </configuration>
