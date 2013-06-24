@@ -1,4 +1,4 @@
-![Logo](doc/logo.png)
+![Logo](doc/images/logo.png)
 
 # Raster Storage Archive
 
@@ -13,7 +13,7 @@ The RSA has a Java API, and two user interfaces:
  * [rsacli](doc/rsacli_tutorial.md) - The command line interface, great for administration and automation.
  * [spatialcubeservice](doc/spatialcubeservice.md) - Web services, and a graphical interface for the query engine.
 
-![Screenshot](doc/screenshot.png)
+![Screenshot](doc/images/screenshot.png)
 
 ## Installation
 
@@ -23,14 +23,14 @@ The RSA has a Java API, and two user interfaces:
 
 ## License & Acknowledgements
 
-Copyright 2013 [CRCSI][1] - Cooperative Research Centre for Spatial Information.
+Copyright 2013 [CRCSI][cscsi] - Cooperative Research Centre for Spatial Information.
 
 The RSA is free software: you can redistribute it and/or modify it under the terms of the GNU General Public Licence as published by the Free Software Foundation, either version 3 of the Licence, or (at your option) any later version. See [LICENCE.txt](LICENSE.txt).
 
 The RSA is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-The RSA was developed by VPAC under the [Unlocking the Landsat Archive (ULA)][2] project as funded by the Australian Space Research Program (ASRP).
+The RSA was developed by VPAC under the [Unlocking the Landsat Archive (ULA)][asrp] project as funded by the Australian Space Research Program (ASRP).
 
-[1]: http://www.crcsi.com.au/
-[2]: http://www.space.gov.au/AustralianSpaceResearchProgram/ProjectFactsheetspage/Pages/UnlockingtheLANDSATArchiveforFutureChallenges.aspx
+[cscsi]: http://www.crcsi.com.au/
+[asrp]: http://www.space.gov.au/AustralianSpaceResearchProgram/ProjectFactsheetspage/Pages/UnlockingtheLANDSATArchiveforFutureChallenges.aspx
 

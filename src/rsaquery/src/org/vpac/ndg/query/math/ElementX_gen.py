@@ -1,6 +1,25 @@
 #!/usr/bin/env python
 
 #
+# This file is part of the Raster Storage Archive (RSA).
+#
+# The RSA is free software: you can redistribute it and/or modify it under the
+# terms of the GNU General Public License as published by the Free Software
+# Foundation, either version 3 of the License, or (at your option) any later
+# version.
+#
+# The RSA is distributed in the hope that it will be useful, but WITHOUT ANY
+# WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+# A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License along with
+# the RSA.  If not, see <http://www.gnu.org/licenses/>.
+#
+# Copyright 2013 CRCSI - Cooperative Research Centre for Spatial Information
+# http://www.crcsi.com.au/
+#
+
+#
 # This program generates the scalar Element classes.
 #
 
@@ -10,7 +29,27 @@ import Element_types
 
 # Code
 
-CLASS_HEADER_TEMPLATE = Template("""
+CLASS_HEADER_TEMPLATE = Template("""/*
+ * This file is part of the Raster Storage Archive (RSA).
+ *
+ * The RSA is free software: you can redistribute it and/or modify it under the
+ * terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any later
+ * version.
+ *
+ * The RSA is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+ * A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * the RSA.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Copyright 2013 CRCSI - Cooperative Research Centre for Spatial Information
+ * http://www.crcsi.com.au/
+ */
+
+// THIS IS GENERATED CODE. Do not modify this file. See ElementX_gen.py.
+
 package org.vpac.ndg.query.math;
 
 /**
@@ -20,7 +59,6 @@ package org.vpac.ndg.query.math;
  *
  * @author Alex Fraser
  */
-// THIS IS GENERATED CODE. Do not modify this file. See ElementX_gen.py.
 public class $cname implements ScalarElement {
 	private $ptype value;
 	private boolean valid;
@@ -59,6 +97,15 @@ public class $cname implements ScalarElement {
 	public void setValid(boolean valid) {
 		this.valid = valid;
 	}
+	@Override
+	public void setValid(Element<?> mask) {
+		this.valid = mask.isValid();
+	}
+	@Override
+	public void setValidIfValid(Element<?> mask) {
+		if (mask.isValid())
+			this.valid = true;
+	}
 
 	@Override
 	public $boxtype getValue() {
@@ -71,7 +118,10 @@ ${specials}
 
 	@Override
 	public String toString() {
-		return String.format("$formatspec", value);
+		if (!isValid())
+			return String.format("!${formatspec}", value);
+		else
+			return String.format("$formatspec", value);
 	}
 }
 """)
@@ -147,6 +197,54 @@ ARITHMETIC_TEMPLATE = Template("""
 	}
 
 	@Override
+	public $cname ${opname}IfValid(long other, Element<?> mask) {
+		if (!mask.isValid())
+			return this;
+		try {
+			value = ($ptype)(value $opchar ${fromlong}other);
+		} catch (ArithmeticException e) {
+			this.setValid(false);
+		}
+		return this;
+	}
+	/**
+	 * @throws ClassCastException if mask is a vector.
+	 */
+	@Override
+	public $cname ${opname}IfValid(double other, Element<?> mask) {
+		if (!mask.isValid())
+			return this;
+		try {
+			value = ($ptype)(value $opchar ${fromdouble}other);
+		} catch (ArithmeticException e) {
+			this.setValid(false);
+		}
+		return this;
+	}
+	@Override
+	public $cname ${opname}IfValid(Element<?> other) {
+		if (!other.isValid())
+			return this;
+		try {
+			value = ($ptype)(value $opchar ((ScalarElement)other).${ptype}Value());
+		} catch (ArithmeticException e) {
+			// do nothing.
+		}
+		return this;
+	}
+	@Override
+	public $cname ${opname}IfValid(Element<?> other, Element<?> mask) {
+		if (!other.isValid() || !mask.isValid())
+			return this;
+		try {
+			value = ($ptype)(value $opchar ((ScalarElement)other).${ptype}Value());
+		} catch (ArithmeticException e) {
+			// do nothing.
+		}
+		return this;
+	}
+
+	@Override
 	public $cname ${opname}New(long other) {
 		$cname res = copy();
 		return res.${opname}(other);
@@ -160,6 +258,27 @@ ARITHMETIC_TEMPLATE = Template("""
 	public $cname ${opname}New(Element<?> other) {
 		$cname res = copy();
 		return res.${opname}(other);
+	}
+
+	@Override
+	public $cname ${opname}NewIfValid(long other, Element<?> mask) {
+		$cname res = copy();
+		return res.${opname}IfValid(other, mask);
+	}
+	@Override
+	public $cname ${opname}NewIfValid(double other, Element<?> mask) {
+		$cname res = copy();
+		return res.${opname}IfValid(other, mask);
+	}
+	@Override
+	public $cname ${opname}NewIfValid(Element<?> other) {
+		$cname res = copy();
+		return res.${opname}IfValid(other);
+	}
+	@Override
+	public $cname ${opname}NewIfValid(Element<?> other, Element<?> mask) {
+		$cname res = copy();
+		return res.${opname}IfValid(other, mask);
 	}
 
 	@Override
@@ -279,6 +398,91 @@ ARITHMETIC_TEMPLATE = Template("""
 		}
 		return this;
 	}
+
+	@Override
+	public $cname ${opname}OfIfValid(long a, long b, Element<?> mask) {
+		if (mask.isValid())
+			${opname}Of(a, b);
+		return this;
+	}
+	@Override
+	public $cname ${opname}OfIfValid(double a, long b, Element<?> mask) {
+		if (mask.isValid())
+			${opname}Of(a, b);
+		return this;
+	}
+	@Override
+	public $cname ${opname}OfIfValid(long a, double b, Element<?> mask) {
+		if (mask.isValid())
+			${opname}Of(a, b);
+		return this;
+	}
+	@Override
+	public $cname ${opname}OfIfValid(double a, double b, Element<?> mask) {
+		if (mask.isValid())
+			${opname}Of(a, b);
+		return this;
+	}
+	@Override
+	public $cname ${opname}OfIfValid(Element<?> a, long b) {
+		if (a.isValid())
+			${opname}Of(a, b);
+		return this;
+	}
+	@Override
+	public $cname ${opname}OfIfValid(Element<?> a, long b, Element<?> mask) {
+		if (a.isValid() && mask.isValid())
+			${opname}Of(a, b);
+		return this;
+	}
+	@Override
+	public $cname ${opname}OfIfValid(long a, Element<?> b) {
+		if (b.isValid())
+			${opname}Of(a, b);
+		return this;
+	}
+	@Override
+	public $cname ${opname}OfIfValid(long a, Element<?> b, Element<?> mask) {
+		if (b.isValid() && mask.isValid())
+			${opname}Of(a, b);
+		return this;
+	}
+	@Override
+	public $cname ${opname}OfIfValid(Element<?> a, double b) {
+		if (a.isValid())
+			${opname}Of(a, b);
+		return this;
+	}
+	@Override
+	public $cname ${opname}OfIfValid(Element<?> a, double b, Element<?> mask) {
+		if (a.isValid() && mask.isValid())
+			${opname}Of(a, b);
+		return this;
+	}
+	@Override
+	public $cname ${opname}OfIfValid(double a, Element<?> b) {
+		if (b.isValid())
+			${opname}Of(a, b);
+		return this;
+	}
+	@Override
+	public $cname ${opname}OfIfValid(double a, Element<?> b, Element<?> mask) {
+		if (b.isValid() && mask.isValid())
+			${opname}Of(a, b);
+		return this;
+	}
+	@Override
+	public $cname ${opname}OfIfValid(Element<?> a, Element<?> b) {
+		if (a.isValid() && b.isValid())
+			${opname}Of(a, b);
+		return this;
+	}
+	@Override
+	public $cname ${opname}OfIfValid(Element<?> a, Element<?> b, Element<?> mask) {
+		if (a.isValid() && b.isValid() && mask.isValid())
+			${opname}Of(a, b);
+		return this;
+	}
 """)
 
 BOUNDING_TEMPLATE = Template("""
@@ -306,6 +510,39 @@ BOUNDING_TEMPLATE = Template("""
 	}
 
 	@Override
+	public $cname ${opname}IfValid(long other, Element<?> mask) {
+		if (!mask.isValid())
+			return this;
+		if (other $opchar value)
+			value = ${fromlong}other;
+		return this;
+	}
+	@Override
+	public $cname ${opname}IfValid(double other, Element<?> mask) {
+		if (!mask.isValid())
+			return this;
+		if (other $opchar value)
+			value = ${fromdouble}other;
+		return this;
+	}
+	@Override
+	public $cname ${opname}IfValid(Element<?> other) {
+		if (!other.isValid())
+			return this;
+		if (((ScalarElement)other).${ptype}Value() $opchar value)
+			value = ((ScalarElement)other).${ptype}Value();
+		return this;
+	}
+	@Override
+	public $cname ${opname}IfValid(Element<?> other, Element<?> mask) {
+		if (!other.isValid() || !mask.isValid())
+			return this;
+		if (((ScalarElement)other).${ptype}Value() $opchar value)
+			value = ((ScalarElement)other).${ptype}Value();
+		return this;
+	}
+
+	@Override
 	public $cname ${opname}New(long other) {
 		$cname res = copy();
 		return res.${opname}(other);
@@ -319,6 +556,27 @@ BOUNDING_TEMPLATE = Template("""
 	public $cname ${opname}New(Element<?> other) {
 		$cname res = copy();
 		return res.${opname}(other);
+	}
+
+	@Override
+	public $cname ${opname}NewIfValid(long other, Element<?> mask) {
+		$cname res = copy();
+		return res.${opname}IfValid(other, mask);
+	}
+	@Override
+	public $cname ${opname}NewIfValid(double other, Element<?> mask) {
+		$cname res = copy();
+		return res.${opname}IfValid(other, mask);
+	}
+	@Override
+	public $cname ${opname}NewIfValid(Element<?> other) {
+		$cname res = copy();
+		return res.${opname}IfValid(other);
+	}
+	@Override
+	public $cname ${opname}NewIfValid(Element<?> other, Element<?> mask) {
+		$cname res = copy();
+		return res.${opname}IfValid(other, mask);
 	}
 
 	@Override
@@ -427,6 +685,91 @@ BOUNDING_TEMPLATE = Template("""
 		else
 			value = ($ptype)bv;
 		valid = a.isValid() && b.isValid();
+		return this;
+	}
+
+	@Override
+	public $cname ${opname}OfIfValid(long a, long b, Element<?> mask) {
+		if (mask.isValid())
+			${opname}Of(a, b);
+		return this;
+	}
+	@Override
+	public $cname ${opname}OfIfValid(double a, long b, Element<?> mask) {
+		if (mask.isValid())
+			${opname}Of(a, b);
+		return this;
+	}
+	@Override
+	public $cname ${opname}OfIfValid(long a, double b, Element<?> mask) {
+		if (mask.isValid())
+			${opname}Of(a, b);
+		return this;
+	}
+	@Override
+	public $cname ${opname}OfIfValid(double a, double b, Element<?> mask) {
+		if (mask.isValid())
+			${opname}Of(a, b);
+		return this;
+	}
+	@Override
+	public $cname ${opname}OfIfValid(Element<?> a, long b) {
+		if (a.isValid())
+			${opname}Of(a, b);
+		return this;
+	}
+	@Override
+	public $cname ${opname}OfIfValid(Element<?> a, long b, Element<?> mask) {
+		if (a.isValid() && mask.isValid())
+			${opname}Of(a, b);
+		return this;
+	}
+	@Override
+	public $cname ${opname}OfIfValid(long a, Element<?> b) {
+		if (b.isValid())
+			${opname}Of(a, b);
+		return this;
+	}
+	@Override
+	public $cname ${opname}OfIfValid(long a, Element<?> b, Element<?> mask) {
+		if (b.isValid() && mask.isValid())
+			${opname}Of(a, b);
+		return this;
+	}
+	@Override
+	public $cname ${opname}OfIfValid(Element<?> a, double b) {
+		if (a.isValid())
+			${opname}Of(a, b);
+		return this;
+	}
+	@Override
+	public $cname ${opname}OfIfValid(Element<?> a, double b, Element<?> mask) {
+		if (a.isValid() && mask.isValid())
+			${opname}Of(a, b);
+		return this;
+	}
+	@Override
+	public $cname ${opname}OfIfValid(double a, Element<?> b) {
+		if (b.isValid())
+			${opname}Of(a, b);
+		return this;
+	}
+	@Override
+	public $cname ${opname}OfIfValid(double a, Element<?> b, Element<?> mask) {
+		if (b.isValid() && mask.isValid())
+			${opname}Of(a, b);
+		return this;
+	}
+	@Override
+	public $cname ${opname}OfIfValid(Element<?> a, Element<?> b) {
+		if (a.isValid() && b.isValid())
+			${opname}Of(a, b);
+		return this;
+	}
+	@Override
+	public $cname ${opname}OfIfValid(Element<?> a, Element<?> b, Element<?> mask) {
+		if (a.isValid() && b.isValid() && mask.isValid())
+			${opname}Of(a, b);
 		return this;
 	}
 """)

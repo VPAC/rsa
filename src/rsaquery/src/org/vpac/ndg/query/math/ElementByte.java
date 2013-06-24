@@ -1,3 +1,23 @@
+/*
+ * This file is part of the Raster Storage Archive (RSA).
+ *
+ * The RSA is free software: you can redistribute it and/or modify it under the
+ * terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any later
+ * version.
+ *
+ * The RSA is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+ * A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * the RSA.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Copyright 2013 CRCSI - Cooperative Research Centre for Spatial Information
+ * http://www.crcsi.com.au/
+ */
+
+// THIS IS GENERATED CODE. Do not modify this file. See ElementX_gen.py.
 
 package org.vpac.ndg.query.math;
 
@@ -8,7 +28,6 @@ package org.vpac.ndg.query.math;
  *
  * @author Alex Fraser
  */
-// THIS IS GENERATED CODE. Do not modify this file. See ElementX_gen.py.
 public class ElementByte implements ScalarElement {
 	private byte value;
 	private boolean valid;
@@ -46,6 +65,15 @@ public class ElementByte implements ScalarElement {
 	@Override
 	public void setValid(boolean valid) {
 		this.valid = valid;
+	}
+	@Override
+	public void setValid(Element<?> mask) {
+		this.valid = mask.isValid();
+	}
+	@Override
+	public void setValidIfValid(Element<?> mask) {
+		if (mask.isValid())
+			this.valid = true;
 	}
 
 	@Override
@@ -208,6 +236,54 @@ public class ElementByte implements ScalarElement {
 	}
 
 	@Override
+	public ElementByte addIfValid(long other, Element<?> mask) {
+		if (!mask.isValid())
+			return this;
+		try {
+			value = (byte)(value + (byte)other);
+		} catch (ArithmeticException e) {
+			this.setValid(false);
+		}
+		return this;
+	}
+	/**
+	 * @throws ClassCastException if mask is a vector.
+	 */
+	@Override
+	public ElementByte addIfValid(double other, Element<?> mask) {
+		if (!mask.isValid())
+			return this;
+		try {
+			value = (byte)(value + (byte)other);
+		} catch (ArithmeticException e) {
+			this.setValid(false);
+		}
+		return this;
+	}
+	@Override
+	public ElementByte addIfValid(Element<?> other) {
+		if (!other.isValid())
+			return this;
+		try {
+			value = (byte)(value + ((ScalarElement)other).byteValue());
+		} catch (ArithmeticException e) {
+			// do nothing.
+		}
+		return this;
+	}
+	@Override
+	public ElementByte addIfValid(Element<?> other, Element<?> mask) {
+		if (!other.isValid() || !mask.isValid())
+			return this;
+		try {
+			value = (byte)(value + ((ScalarElement)other).byteValue());
+		} catch (ArithmeticException e) {
+			// do nothing.
+		}
+		return this;
+	}
+
+	@Override
 	public ElementByte addNew(long other) {
 		ElementByte res = copy();
 		return res.add(other);
@@ -221,6 +297,27 @@ public class ElementByte implements ScalarElement {
 	public ElementByte addNew(Element<?> other) {
 		ElementByte res = copy();
 		return res.add(other);
+	}
+
+	@Override
+	public ElementByte addNewIfValid(long other, Element<?> mask) {
+		ElementByte res = copy();
+		return res.addIfValid(other, mask);
+	}
+	@Override
+	public ElementByte addNewIfValid(double other, Element<?> mask) {
+		ElementByte res = copy();
+		return res.addIfValid(other, mask);
+	}
+	@Override
+	public ElementByte addNewIfValid(Element<?> other) {
+		ElementByte res = copy();
+		return res.addIfValid(other);
+	}
+	@Override
+	public ElementByte addNewIfValid(Element<?> other, Element<?> mask) {
+		ElementByte res = copy();
+		return res.addIfValid(other, mask);
 	}
 
 	@Override
@@ -342,6 +439,91 @@ public class ElementByte implements ScalarElement {
 	}
 
 	@Override
+	public ElementByte addOfIfValid(long a, long b, Element<?> mask) {
+		if (mask.isValid())
+			addOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementByte addOfIfValid(double a, long b, Element<?> mask) {
+		if (mask.isValid())
+			addOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementByte addOfIfValid(long a, double b, Element<?> mask) {
+		if (mask.isValid())
+			addOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementByte addOfIfValid(double a, double b, Element<?> mask) {
+		if (mask.isValid())
+			addOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementByte addOfIfValid(Element<?> a, long b) {
+		if (a.isValid())
+			addOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementByte addOfIfValid(Element<?> a, long b, Element<?> mask) {
+		if (a.isValid() && mask.isValid())
+			addOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementByte addOfIfValid(long a, Element<?> b) {
+		if (b.isValid())
+			addOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementByte addOfIfValid(long a, Element<?> b, Element<?> mask) {
+		if (b.isValid() && mask.isValid())
+			addOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementByte addOfIfValid(Element<?> a, double b) {
+		if (a.isValid())
+			addOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementByte addOfIfValid(Element<?> a, double b, Element<?> mask) {
+		if (a.isValid() && mask.isValid())
+			addOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementByte addOfIfValid(double a, Element<?> b) {
+		if (b.isValid())
+			addOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementByte addOfIfValid(double a, Element<?> b, Element<?> mask) {
+		if (b.isValid() && mask.isValid())
+			addOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementByte addOfIfValid(Element<?> a, Element<?> b) {
+		if (a.isValid() && b.isValid())
+			addOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementByte addOfIfValid(Element<?> a, Element<?> b, Element<?> mask) {
+		if (a.isValid() && b.isValid() && mask.isValid())
+			addOf(a, b);
+		return this;
+	}
+
+	@Override
 	public ElementByte sub(long other) {
 		try {
 			value = (byte)(value - (byte)other);
@@ -377,6 +559,54 @@ public class ElementByte implements ScalarElement {
 	}
 
 	@Override
+	public ElementByte subIfValid(long other, Element<?> mask) {
+		if (!mask.isValid())
+			return this;
+		try {
+			value = (byte)(value - (byte)other);
+		} catch (ArithmeticException e) {
+			this.setValid(false);
+		}
+		return this;
+	}
+	/**
+	 * @throws ClassCastException if mask is a vector.
+	 */
+	@Override
+	public ElementByte subIfValid(double other, Element<?> mask) {
+		if (!mask.isValid())
+			return this;
+		try {
+			value = (byte)(value - (byte)other);
+		} catch (ArithmeticException e) {
+			this.setValid(false);
+		}
+		return this;
+	}
+	@Override
+	public ElementByte subIfValid(Element<?> other) {
+		if (!other.isValid())
+			return this;
+		try {
+			value = (byte)(value - ((ScalarElement)other).byteValue());
+		} catch (ArithmeticException e) {
+			// do nothing.
+		}
+		return this;
+	}
+	@Override
+	public ElementByte subIfValid(Element<?> other, Element<?> mask) {
+		if (!other.isValid() || !mask.isValid())
+			return this;
+		try {
+			value = (byte)(value - ((ScalarElement)other).byteValue());
+		} catch (ArithmeticException e) {
+			// do nothing.
+		}
+		return this;
+	}
+
+	@Override
 	public ElementByte subNew(long other) {
 		ElementByte res = copy();
 		return res.sub(other);
@@ -390,6 +620,27 @@ public class ElementByte implements ScalarElement {
 	public ElementByte subNew(Element<?> other) {
 		ElementByte res = copy();
 		return res.sub(other);
+	}
+
+	@Override
+	public ElementByte subNewIfValid(long other, Element<?> mask) {
+		ElementByte res = copy();
+		return res.subIfValid(other, mask);
+	}
+	@Override
+	public ElementByte subNewIfValid(double other, Element<?> mask) {
+		ElementByte res = copy();
+		return res.subIfValid(other, mask);
+	}
+	@Override
+	public ElementByte subNewIfValid(Element<?> other) {
+		ElementByte res = copy();
+		return res.subIfValid(other);
+	}
+	@Override
+	public ElementByte subNewIfValid(Element<?> other, Element<?> mask) {
+		ElementByte res = copy();
+		return res.subIfValid(other, mask);
 	}
 
 	@Override
@@ -511,6 +762,91 @@ public class ElementByte implements ScalarElement {
 	}
 
 	@Override
+	public ElementByte subOfIfValid(long a, long b, Element<?> mask) {
+		if (mask.isValid())
+			subOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementByte subOfIfValid(double a, long b, Element<?> mask) {
+		if (mask.isValid())
+			subOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementByte subOfIfValid(long a, double b, Element<?> mask) {
+		if (mask.isValid())
+			subOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementByte subOfIfValid(double a, double b, Element<?> mask) {
+		if (mask.isValid())
+			subOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementByte subOfIfValid(Element<?> a, long b) {
+		if (a.isValid())
+			subOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementByte subOfIfValid(Element<?> a, long b, Element<?> mask) {
+		if (a.isValid() && mask.isValid())
+			subOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementByte subOfIfValid(long a, Element<?> b) {
+		if (b.isValid())
+			subOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementByte subOfIfValid(long a, Element<?> b, Element<?> mask) {
+		if (b.isValid() && mask.isValid())
+			subOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementByte subOfIfValid(Element<?> a, double b) {
+		if (a.isValid())
+			subOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementByte subOfIfValid(Element<?> a, double b, Element<?> mask) {
+		if (a.isValid() && mask.isValid())
+			subOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementByte subOfIfValid(double a, Element<?> b) {
+		if (b.isValid())
+			subOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementByte subOfIfValid(double a, Element<?> b, Element<?> mask) {
+		if (b.isValid() && mask.isValid())
+			subOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementByte subOfIfValid(Element<?> a, Element<?> b) {
+		if (a.isValid() && b.isValid())
+			subOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementByte subOfIfValid(Element<?> a, Element<?> b, Element<?> mask) {
+		if (a.isValid() && b.isValid() && mask.isValid())
+			subOf(a, b);
+		return this;
+	}
+
+	@Override
 	public ElementByte mul(long other) {
 		try {
 			value = (byte)(value * (byte)other);
@@ -546,6 +882,54 @@ public class ElementByte implements ScalarElement {
 	}
 
 	@Override
+	public ElementByte mulIfValid(long other, Element<?> mask) {
+		if (!mask.isValid())
+			return this;
+		try {
+			value = (byte)(value * (byte)other);
+		} catch (ArithmeticException e) {
+			this.setValid(false);
+		}
+		return this;
+	}
+	/**
+	 * @throws ClassCastException if mask is a vector.
+	 */
+	@Override
+	public ElementByte mulIfValid(double other, Element<?> mask) {
+		if (!mask.isValid())
+			return this;
+		try {
+			value = (byte)(value * (byte)other);
+		} catch (ArithmeticException e) {
+			this.setValid(false);
+		}
+		return this;
+	}
+	@Override
+	public ElementByte mulIfValid(Element<?> other) {
+		if (!other.isValid())
+			return this;
+		try {
+			value = (byte)(value * ((ScalarElement)other).byteValue());
+		} catch (ArithmeticException e) {
+			// do nothing.
+		}
+		return this;
+	}
+	@Override
+	public ElementByte mulIfValid(Element<?> other, Element<?> mask) {
+		if (!other.isValid() || !mask.isValid())
+			return this;
+		try {
+			value = (byte)(value * ((ScalarElement)other).byteValue());
+		} catch (ArithmeticException e) {
+			// do nothing.
+		}
+		return this;
+	}
+
+	@Override
 	public ElementByte mulNew(long other) {
 		ElementByte res = copy();
 		return res.mul(other);
@@ -559,6 +943,27 @@ public class ElementByte implements ScalarElement {
 	public ElementByte mulNew(Element<?> other) {
 		ElementByte res = copy();
 		return res.mul(other);
+	}
+
+	@Override
+	public ElementByte mulNewIfValid(long other, Element<?> mask) {
+		ElementByte res = copy();
+		return res.mulIfValid(other, mask);
+	}
+	@Override
+	public ElementByte mulNewIfValid(double other, Element<?> mask) {
+		ElementByte res = copy();
+		return res.mulIfValid(other, mask);
+	}
+	@Override
+	public ElementByte mulNewIfValid(Element<?> other) {
+		ElementByte res = copy();
+		return res.mulIfValid(other);
+	}
+	@Override
+	public ElementByte mulNewIfValid(Element<?> other, Element<?> mask) {
+		ElementByte res = copy();
+		return res.mulIfValid(other, mask);
 	}
 
 	@Override
@@ -680,6 +1085,91 @@ public class ElementByte implements ScalarElement {
 	}
 
 	@Override
+	public ElementByte mulOfIfValid(long a, long b, Element<?> mask) {
+		if (mask.isValid())
+			mulOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementByte mulOfIfValid(double a, long b, Element<?> mask) {
+		if (mask.isValid())
+			mulOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementByte mulOfIfValid(long a, double b, Element<?> mask) {
+		if (mask.isValid())
+			mulOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementByte mulOfIfValid(double a, double b, Element<?> mask) {
+		if (mask.isValid())
+			mulOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementByte mulOfIfValid(Element<?> a, long b) {
+		if (a.isValid())
+			mulOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementByte mulOfIfValid(Element<?> a, long b, Element<?> mask) {
+		if (a.isValid() && mask.isValid())
+			mulOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementByte mulOfIfValid(long a, Element<?> b) {
+		if (b.isValid())
+			mulOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementByte mulOfIfValid(long a, Element<?> b, Element<?> mask) {
+		if (b.isValid() && mask.isValid())
+			mulOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementByte mulOfIfValid(Element<?> a, double b) {
+		if (a.isValid())
+			mulOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementByte mulOfIfValid(Element<?> a, double b, Element<?> mask) {
+		if (a.isValid() && mask.isValid())
+			mulOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementByte mulOfIfValid(double a, Element<?> b) {
+		if (b.isValid())
+			mulOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementByte mulOfIfValid(double a, Element<?> b, Element<?> mask) {
+		if (b.isValid() && mask.isValid())
+			mulOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementByte mulOfIfValid(Element<?> a, Element<?> b) {
+		if (a.isValid() && b.isValid())
+			mulOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementByte mulOfIfValid(Element<?> a, Element<?> b, Element<?> mask) {
+		if (a.isValid() && b.isValid() && mask.isValid())
+			mulOf(a, b);
+		return this;
+	}
+
+	@Override
 	public ElementByte div(long other) {
 		try {
 			value = (byte)(value / (byte)other);
@@ -715,6 +1205,54 @@ public class ElementByte implements ScalarElement {
 	}
 
 	@Override
+	public ElementByte divIfValid(long other, Element<?> mask) {
+		if (!mask.isValid())
+			return this;
+		try {
+			value = (byte)(value / (byte)other);
+		} catch (ArithmeticException e) {
+			this.setValid(false);
+		}
+		return this;
+	}
+	/**
+	 * @throws ClassCastException if mask is a vector.
+	 */
+	@Override
+	public ElementByte divIfValid(double other, Element<?> mask) {
+		if (!mask.isValid())
+			return this;
+		try {
+			value = (byte)(value / (byte)other);
+		} catch (ArithmeticException e) {
+			this.setValid(false);
+		}
+		return this;
+	}
+	@Override
+	public ElementByte divIfValid(Element<?> other) {
+		if (!other.isValid())
+			return this;
+		try {
+			value = (byte)(value / ((ScalarElement)other).byteValue());
+		} catch (ArithmeticException e) {
+			// do nothing.
+		}
+		return this;
+	}
+	@Override
+	public ElementByte divIfValid(Element<?> other, Element<?> mask) {
+		if (!other.isValid() || !mask.isValid())
+			return this;
+		try {
+			value = (byte)(value / ((ScalarElement)other).byteValue());
+		} catch (ArithmeticException e) {
+			// do nothing.
+		}
+		return this;
+	}
+
+	@Override
 	public ElementByte divNew(long other) {
 		ElementByte res = copy();
 		return res.div(other);
@@ -728,6 +1266,27 @@ public class ElementByte implements ScalarElement {
 	public ElementByte divNew(Element<?> other) {
 		ElementByte res = copy();
 		return res.div(other);
+	}
+
+	@Override
+	public ElementByte divNewIfValid(long other, Element<?> mask) {
+		ElementByte res = copy();
+		return res.divIfValid(other, mask);
+	}
+	@Override
+	public ElementByte divNewIfValid(double other, Element<?> mask) {
+		ElementByte res = copy();
+		return res.divIfValid(other, mask);
+	}
+	@Override
+	public ElementByte divNewIfValid(Element<?> other) {
+		ElementByte res = copy();
+		return res.divIfValid(other);
+	}
+	@Override
+	public ElementByte divNewIfValid(Element<?> other, Element<?> mask) {
+		ElementByte res = copy();
+		return res.divIfValid(other, mask);
 	}
 
 	@Override
@@ -849,6 +1408,91 @@ public class ElementByte implements ScalarElement {
 	}
 
 	@Override
+	public ElementByte divOfIfValid(long a, long b, Element<?> mask) {
+		if (mask.isValid())
+			divOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementByte divOfIfValid(double a, long b, Element<?> mask) {
+		if (mask.isValid())
+			divOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementByte divOfIfValid(long a, double b, Element<?> mask) {
+		if (mask.isValid())
+			divOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementByte divOfIfValid(double a, double b, Element<?> mask) {
+		if (mask.isValid())
+			divOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementByte divOfIfValid(Element<?> a, long b) {
+		if (a.isValid())
+			divOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementByte divOfIfValid(Element<?> a, long b, Element<?> mask) {
+		if (a.isValid() && mask.isValid())
+			divOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementByte divOfIfValid(long a, Element<?> b) {
+		if (b.isValid())
+			divOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementByte divOfIfValid(long a, Element<?> b, Element<?> mask) {
+		if (b.isValid() && mask.isValid())
+			divOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementByte divOfIfValid(Element<?> a, double b) {
+		if (a.isValid())
+			divOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementByte divOfIfValid(Element<?> a, double b, Element<?> mask) {
+		if (a.isValid() && mask.isValid())
+			divOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementByte divOfIfValid(double a, Element<?> b) {
+		if (b.isValid())
+			divOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementByte divOfIfValid(double a, Element<?> b, Element<?> mask) {
+		if (b.isValid() && mask.isValid())
+			divOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementByte divOfIfValid(Element<?> a, Element<?> b) {
+		if (a.isValid() && b.isValid())
+			divOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementByte divOfIfValid(Element<?> a, Element<?> b, Element<?> mask) {
+		if (a.isValid() && b.isValid() && mask.isValid())
+			divOf(a, b);
+		return this;
+	}
+
+	@Override
 	public ElementByte mod(long other) {
 		try {
 			value = (byte)(value % (byte)other);
@@ -884,6 +1528,54 @@ public class ElementByte implements ScalarElement {
 	}
 
 	@Override
+	public ElementByte modIfValid(long other, Element<?> mask) {
+		if (!mask.isValid())
+			return this;
+		try {
+			value = (byte)(value % (byte)other);
+		} catch (ArithmeticException e) {
+			this.setValid(false);
+		}
+		return this;
+	}
+	/**
+	 * @throws ClassCastException if mask is a vector.
+	 */
+	@Override
+	public ElementByte modIfValid(double other, Element<?> mask) {
+		if (!mask.isValid())
+			return this;
+		try {
+			value = (byte)(value % (byte)other);
+		} catch (ArithmeticException e) {
+			this.setValid(false);
+		}
+		return this;
+	}
+	@Override
+	public ElementByte modIfValid(Element<?> other) {
+		if (!other.isValid())
+			return this;
+		try {
+			value = (byte)(value % ((ScalarElement)other).byteValue());
+		} catch (ArithmeticException e) {
+			// do nothing.
+		}
+		return this;
+	}
+	@Override
+	public ElementByte modIfValid(Element<?> other, Element<?> mask) {
+		if (!other.isValid() || !mask.isValid())
+			return this;
+		try {
+			value = (byte)(value % ((ScalarElement)other).byteValue());
+		} catch (ArithmeticException e) {
+			// do nothing.
+		}
+		return this;
+	}
+
+	@Override
 	public ElementByte modNew(long other) {
 		ElementByte res = copy();
 		return res.mod(other);
@@ -897,6 +1589,27 @@ public class ElementByte implements ScalarElement {
 	public ElementByte modNew(Element<?> other) {
 		ElementByte res = copy();
 		return res.mod(other);
+	}
+
+	@Override
+	public ElementByte modNewIfValid(long other, Element<?> mask) {
+		ElementByte res = copy();
+		return res.modIfValid(other, mask);
+	}
+	@Override
+	public ElementByte modNewIfValid(double other, Element<?> mask) {
+		ElementByte res = copy();
+		return res.modIfValid(other, mask);
+	}
+	@Override
+	public ElementByte modNewIfValid(Element<?> other) {
+		ElementByte res = copy();
+		return res.modIfValid(other);
+	}
+	@Override
+	public ElementByte modNewIfValid(Element<?> other, Element<?> mask) {
+		ElementByte res = copy();
+		return res.modIfValid(other, mask);
 	}
 
 	@Override
@@ -1017,6 +1730,91 @@ public class ElementByte implements ScalarElement {
 		return this;
 	}
 
+	@Override
+	public ElementByte modOfIfValid(long a, long b, Element<?> mask) {
+		if (mask.isValid())
+			modOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementByte modOfIfValid(double a, long b, Element<?> mask) {
+		if (mask.isValid())
+			modOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementByte modOfIfValid(long a, double b, Element<?> mask) {
+		if (mask.isValid())
+			modOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementByte modOfIfValid(double a, double b, Element<?> mask) {
+		if (mask.isValid())
+			modOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementByte modOfIfValid(Element<?> a, long b) {
+		if (a.isValid())
+			modOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementByte modOfIfValid(Element<?> a, long b, Element<?> mask) {
+		if (a.isValid() && mask.isValid())
+			modOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementByte modOfIfValid(long a, Element<?> b) {
+		if (b.isValid())
+			modOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementByte modOfIfValid(long a, Element<?> b, Element<?> mask) {
+		if (b.isValid() && mask.isValid())
+			modOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementByte modOfIfValid(Element<?> a, double b) {
+		if (a.isValid())
+			modOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementByte modOfIfValid(Element<?> a, double b, Element<?> mask) {
+		if (a.isValid() && mask.isValid())
+			modOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementByte modOfIfValid(double a, Element<?> b) {
+		if (b.isValid())
+			modOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementByte modOfIfValid(double a, Element<?> b, Element<?> mask) {
+		if (b.isValid() && mask.isValid())
+			modOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementByte modOfIfValid(Element<?> a, Element<?> b) {
+		if (a.isValid() && b.isValid())
+			modOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementByte modOfIfValid(Element<?> a, Element<?> b, Element<?> mask) {
+		if (a.isValid() && b.isValid() && mask.isValid())
+			modOf(a, b);
+		return this;
+	}
+
 	// BOUNDING
 
 	@Override
@@ -1043,6 +1841,39 @@ public class ElementByte implements ScalarElement {
 	}
 
 	@Override
+	public ElementByte minIfValid(long other, Element<?> mask) {
+		if (!mask.isValid())
+			return this;
+		if (other < value)
+			value = (byte)other;
+		return this;
+	}
+	@Override
+	public ElementByte minIfValid(double other, Element<?> mask) {
+		if (!mask.isValid())
+			return this;
+		if (other < value)
+			value = (byte)other;
+		return this;
+	}
+	@Override
+	public ElementByte minIfValid(Element<?> other) {
+		if (!other.isValid())
+			return this;
+		if (((ScalarElement)other).byteValue() < value)
+			value = ((ScalarElement)other).byteValue();
+		return this;
+	}
+	@Override
+	public ElementByte minIfValid(Element<?> other, Element<?> mask) {
+		if (!other.isValid() || !mask.isValid())
+			return this;
+		if (((ScalarElement)other).byteValue() < value)
+			value = ((ScalarElement)other).byteValue();
+		return this;
+	}
+
+	@Override
 	public ElementByte minNew(long other) {
 		ElementByte res = copy();
 		return res.min(other);
@@ -1056,6 +1887,27 @@ public class ElementByte implements ScalarElement {
 	public ElementByte minNew(Element<?> other) {
 		ElementByte res = copy();
 		return res.min(other);
+	}
+
+	@Override
+	public ElementByte minNewIfValid(long other, Element<?> mask) {
+		ElementByte res = copy();
+		return res.minIfValid(other, mask);
+	}
+	@Override
+	public ElementByte minNewIfValid(double other, Element<?> mask) {
+		ElementByte res = copy();
+		return res.minIfValid(other, mask);
+	}
+	@Override
+	public ElementByte minNewIfValid(Element<?> other) {
+		ElementByte res = copy();
+		return res.minIfValid(other);
+	}
+	@Override
+	public ElementByte minNewIfValid(Element<?> other, Element<?> mask) {
+		ElementByte res = copy();
+		return res.minIfValid(other, mask);
 	}
 
 	@Override
@@ -1168,6 +2020,91 @@ public class ElementByte implements ScalarElement {
 	}
 
 	@Override
+	public ElementByte minOfIfValid(long a, long b, Element<?> mask) {
+		if (mask.isValid())
+			minOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementByte minOfIfValid(double a, long b, Element<?> mask) {
+		if (mask.isValid())
+			minOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementByte minOfIfValid(long a, double b, Element<?> mask) {
+		if (mask.isValid())
+			minOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementByte minOfIfValid(double a, double b, Element<?> mask) {
+		if (mask.isValid())
+			minOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementByte minOfIfValid(Element<?> a, long b) {
+		if (a.isValid())
+			minOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementByte minOfIfValid(Element<?> a, long b, Element<?> mask) {
+		if (a.isValid() && mask.isValid())
+			minOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementByte minOfIfValid(long a, Element<?> b) {
+		if (b.isValid())
+			minOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementByte minOfIfValid(long a, Element<?> b, Element<?> mask) {
+		if (b.isValid() && mask.isValid())
+			minOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementByte minOfIfValid(Element<?> a, double b) {
+		if (a.isValid())
+			minOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementByte minOfIfValid(Element<?> a, double b, Element<?> mask) {
+		if (a.isValid() && mask.isValid())
+			minOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementByte minOfIfValid(double a, Element<?> b) {
+		if (b.isValid())
+			minOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementByte minOfIfValid(double a, Element<?> b, Element<?> mask) {
+		if (b.isValid() && mask.isValid())
+			minOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementByte minOfIfValid(Element<?> a, Element<?> b) {
+		if (a.isValid() && b.isValid())
+			minOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementByte minOfIfValid(Element<?> a, Element<?> b, Element<?> mask) {
+		if (a.isValid() && b.isValid() && mask.isValid())
+			minOf(a, b);
+		return this;
+	}
+
+	@Override
 	public ElementByte max(long other) {
 		if (other > value)
 			value = (byte)other;
@@ -1191,6 +2128,39 @@ public class ElementByte implements ScalarElement {
 	}
 
 	@Override
+	public ElementByte maxIfValid(long other, Element<?> mask) {
+		if (!mask.isValid())
+			return this;
+		if (other > value)
+			value = (byte)other;
+		return this;
+	}
+	@Override
+	public ElementByte maxIfValid(double other, Element<?> mask) {
+		if (!mask.isValid())
+			return this;
+		if (other > value)
+			value = (byte)other;
+		return this;
+	}
+	@Override
+	public ElementByte maxIfValid(Element<?> other) {
+		if (!other.isValid())
+			return this;
+		if (((ScalarElement)other).byteValue() > value)
+			value = ((ScalarElement)other).byteValue();
+		return this;
+	}
+	@Override
+	public ElementByte maxIfValid(Element<?> other, Element<?> mask) {
+		if (!other.isValid() || !mask.isValid())
+			return this;
+		if (((ScalarElement)other).byteValue() > value)
+			value = ((ScalarElement)other).byteValue();
+		return this;
+	}
+
+	@Override
 	public ElementByte maxNew(long other) {
 		ElementByte res = copy();
 		return res.max(other);
@@ -1204,6 +2174,27 @@ public class ElementByte implements ScalarElement {
 	public ElementByte maxNew(Element<?> other) {
 		ElementByte res = copy();
 		return res.max(other);
+	}
+
+	@Override
+	public ElementByte maxNewIfValid(long other, Element<?> mask) {
+		ElementByte res = copy();
+		return res.maxIfValid(other, mask);
+	}
+	@Override
+	public ElementByte maxNewIfValid(double other, Element<?> mask) {
+		ElementByte res = copy();
+		return res.maxIfValid(other, mask);
+	}
+	@Override
+	public ElementByte maxNewIfValid(Element<?> other) {
+		ElementByte res = copy();
+		return res.maxIfValid(other);
+	}
+	@Override
+	public ElementByte maxNewIfValid(Element<?> other, Element<?> mask) {
+		ElementByte res = copy();
+		return res.maxIfValid(other, mask);
 	}
 
 	@Override
@@ -1312,6 +2303,91 @@ public class ElementByte implements ScalarElement {
 		else
 			value = (byte)bv;
 		valid = a.isValid() && b.isValid();
+		return this;
+	}
+
+	@Override
+	public ElementByte maxOfIfValid(long a, long b, Element<?> mask) {
+		if (mask.isValid())
+			maxOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementByte maxOfIfValid(double a, long b, Element<?> mask) {
+		if (mask.isValid())
+			maxOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementByte maxOfIfValid(long a, double b, Element<?> mask) {
+		if (mask.isValid())
+			maxOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementByte maxOfIfValid(double a, double b, Element<?> mask) {
+		if (mask.isValid())
+			maxOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementByte maxOfIfValid(Element<?> a, long b) {
+		if (a.isValid())
+			maxOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementByte maxOfIfValid(Element<?> a, long b, Element<?> mask) {
+		if (a.isValid() && mask.isValid())
+			maxOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementByte maxOfIfValid(long a, Element<?> b) {
+		if (b.isValid())
+			maxOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementByte maxOfIfValid(long a, Element<?> b, Element<?> mask) {
+		if (b.isValid() && mask.isValid())
+			maxOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementByte maxOfIfValid(Element<?> a, double b) {
+		if (a.isValid())
+			maxOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementByte maxOfIfValid(Element<?> a, double b, Element<?> mask) {
+		if (a.isValid() && mask.isValid())
+			maxOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementByte maxOfIfValid(double a, Element<?> b) {
+		if (b.isValid())
+			maxOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementByte maxOfIfValid(double a, Element<?> b, Element<?> mask) {
+		if (b.isValid() && mask.isValid())
+			maxOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementByte maxOfIfValid(Element<?> a, Element<?> b) {
+		if (a.isValid() && b.isValid())
+			maxOf(a, b);
+		return this;
+	}
+	@Override
+	public ElementByte maxOfIfValid(Element<?> a, Element<?> b, Element<?> mask) {
+		if (a.isValid() && b.isValid() && mask.isValid())
+			maxOf(a, b);
 		return this;
 	}
 
@@ -1478,6 +2554,9 @@ public class ElementByte implements ScalarElement {
 
 	@Override
 	public String toString() {
-		return String.format("%d", value);
+		if (!isValid())
+			return String.format("!%d", value);
+		else
+			return String.format("%d", value);
 	}
 }

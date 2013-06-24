@@ -1,3 +1,23 @@
+/*
+ * This file is part of the Raster Storage Archive (RSA).
+ *
+ * The RSA is free software: you can redistribute it and/or modify it under the
+ * terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any later
+ * version.
+ *
+ * The RSA is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+ * A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * the RSA.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Copyright 2013 CRCSI - Cooperative Research Centre for Spatial Information
+ * http://www.crcsi.com.au/
+ */
+
+// THIS IS GENERATED CODE. Do not modify this file. See VectorElement_gen.py.
 
 package org.vpac.ndg.query.math;
 
@@ -10,7 +30,6 @@ import java.util.Arrays;
  *
  * @author Alex Fraser
  */
-// THIS IS GENERATED CODE. Do not modify this file. See VectorElement_gen.py.
 public class VectorElement implements Element<VectorElement> {
 
 	private ScalarElement[] components;
@@ -95,6 +114,36 @@ public class VectorElement implements Element<VectorElement> {
 	public void setValid(boolean valid) {
 		for (ScalarElement c : components)
 			c.setValid(valid);
+	}
+	@Override
+	public void setValid(Element<?> mask) {
+		if (mask.getClass() == VectorElement.class)
+			setValid((VectorElement) mask);
+		else
+			setValid((ScalarElement) mask);
+	}
+	public void setValid(ScalarElement mask) {
+		for (int i = 0; i < components.length; i++)
+			components[i].setValid(mask.isValid());
+	}
+	public void setValid(VectorElement mask) {
+		for (int i = 0; i < components.length; i++)
+			components[i].setValid(mask.components[i].isValid());
+	}
+	@Override
+	public void setValidIfValid(Element<?> mask) {
+		if (mask.getClass() == VectorElement.class)
+			setValidIfValid((VectorElement) mask);
+		else
+			setValidIfValid((ScalarElement) mask);
+	}
+	public void setValidIfValid(ScalarElement mask) {
+		for (int i = 0; i < components.length; i++)
+			components[i].setValidIfValid(mask);
+	}
+	public void setValidIfValid(VectorElement mask) {
+		for (int i = 0; i < components.length; i++)
+			components[i].setValidIfValid(mask.components[i]);
 	}
 
 	@Override
@@ -211,7 +260,7 @@ public class VectorElement implements Element<VectorElement> {
 		res.components = new ScalarElement[components.length];
 		for (int i = 0; i < components.length; i++)
 			res.components[i] = (ScalarElement) components[i].asByte();
-		return this;
+		return res;
 	}
 
 	@Override
@@ -226,7 +275,7 @@ public class VectorElement implements Element<VectorElement> {
 		res.components = new ScalarElement[components.length];
 		for (int i = 0; i < components.length; i++)
 			res.components[i] = (ScalarElement) components[i].asShort();
-		return this;
+		return res;
 	}
 
 	@Override
@@ -241,7 +290,7 @@ public class VectorElement implements Element<VectorElement> {
 		res.components = new ScalarElement[components.length];
 		for (int i = 0; i < components.length; i++)
 			res.components[i] = (ScalarElement) components[i].asInt();
-		return this;
+		return res;
 	}
 
 	@Override
@@ -256,7 +305,7 @@ public class VectorElement implements Element<VectorElement> {
 		res.components = new ScalarElement[components.length];
 		for (int i = 0; i < components.length; i++)
 			res.components[i] = (ScalarElement) components[i].asLong();
-		return this;
+		return res;
 	}
 
 	@Override
@@ -271,7 +320,7 @@ public class VectorElement implements Element<VectorElement> {
 		res.components = new ScalarElement[components.length];
 		for (int i = 0; i < components.length; i++)
 			res.components[i] = (ScalarElement) components[i].asFloat();
-		return this;
+		return res;
 	}
 
 	@Override
@@ -286,7 +335,7 @@ public class VectorElement implements Element<VectorElement> {
 		res.components = new ScalarElement[components.length];
 		for (int i = 0; i < components.length; i++)
 			res.components[i] = (ScalarElement) components[i].asDouble();
-		return this;
+		return res;
 	}
 
 	private final static int OFFSET_X = 0 + 1;
@@ -627,6 +676,8 @@ public class VectorElement implements Element<VectorElement> {
 
 	// ARITHMETIC
 
+	// add
+
 	@Override
 	public VectorElement add(long other) {
 		for (ScalarElement c : components)
@@ -660,6 +711,98 @@ public class VectorElement implements Element<VectorElement> {
 	}
 
 	@Override
+	public VectorElement addIfValid(long other, Element<?> mask) {
+		if (mask.getClass() == VectorElement.class) {
+			addIfValid(other, (VectorElement) mask);
+		} else {
+			addIfValid(other, (ScalarElement) mask);
+		}
+		return this;
+	}
+	public VectorElement addIfValid(long other, ScalarElement mask) {
+		for (int i = 0; i < components.length; i++)
+			components[i].addIfValid(other, mask);
+		return this;
+	}
+	public VectorElement addIfValid(long other, VectorElement mask) {
+		for (int i = 0; i < components.length; i++)
+			components[i].addIfValid(other, mask.components[i]);
+		return this;
+	}
+	@Override
+	public VectorElement addIfValid(double other, Element<?> mask) {
+		if (mask.getClass() == VectorElement.class) {
+			addIfValid(other, (VectorElement) mask);
+		} else {
+			addIfValid(other, (ScalarElement) mask);
+		}
+		return this;
+	}
+	public VectorElement addIfValid(double other, ScalarElement mask) {
+		for (int i = 0; i < components.length; i++)
+			components[i].addIfValid(other, mask);
+		return this;
+	}
+	public VectorElement addIfValid(double other, VectorElement mask) {
+		for (int i = 0; i < components.length; i++)
+			components[i].addIfValid(other, mask.components[i]);
+		return this;
+	}
+	@Override
+	public VectorElement addIfValid(Element<?> other) {
+		if (other.getClass() == VectorElement.class) {
+			addIfValid((VectorElement) other);
+		} else {
+			addIfValid((ScalarElement) other);
+		}
+		return this;
+	}
+	public VectorElement addIfValid(ScalarElement other) {
+		for (int i = 0; i < components.length; i++)
+			components[i].addIfValid(other);
+		return this;
+	}
+	public VectorElement addIfValid(VectorElement other) {
+		for (int i = 0; i < components.length; i++)
+			components[i].addIfValid(other.components[i]);
+		return this;
+	}
+	@Override
+	public VectorElement addIfValid(Element<?> other, Element<?> mask) {
+		if (other.getClass() == VectorElement.class) {
+			if (mask.getClass() == VectorElement.class)
+				return addIfValid((VectorElement) other, (VectorElement) mask);
+			else
+				return addIfValid((VectorElement) other, (ScalarElement) mask);
+		} else {
+			if (mask.getClass() == VectorElement.class)
+				return addIfValid((ScalarElement) other, (VectorElement) mask);
+			else
+				return addIfValid((ScalarElement) other, (ScalarElement) mask);
+		}
+	}
+	public VectorElement addIfValid(ScalarElement other, ScalarElement mask) {
+		for (int i = 0; i < components.length; i++)
+			components[i].addIfValid(other, mask);
+		return this;
+	}
+	public VectorElement addIfValid(ScalarElement other, VectorElement mask) {
+		for (int i = 0; i < components.length; i++)
+			components[i].addIfValid(other, mask.components[i]);
+		return this;
+	}
+	public VectorElement addIfValid(VectorElement other, ScalarElement mask) {
+		for (int i = 0; i < components.length; i++)
+			components[i].addIfValid(other.components[i], mask);
+		return this;
+	}
+	public VectorElement addIfValid(VectorElement other, VectorElement mask) {
+		for (int i = 0; i < components.length; i++)
+			components[i].addIfValid(other.components[i], mask.components[i]);
+		return this;
+	}
+
+	@Override
 	public VectorElement addNew(long other) {
 		VectorElement res = copy();
 		return res.add(other);
@@ -672,11 +815,10 @@ public class VectorElement implements Element<VectorElement> {
 	@Override
 	public VectorElement addNew(Element<?> other) {
 		if (other.getClass() == VectorElement.class) {
-			addNew((VectorElement) other);
+			return addNew((VectorElement) other);
 		} else {
-			addNew((ScalarElement) other);
+			return addNew((ScalarElement) other);
 		}
-		return this;
 	}
 	public VectorElement addNew(ScalarElement other) {
 		VectorElement res = copy();
@@ -685,6 +827,85 @@ public class VectorElement implements Element<VectorElement> {
 	public VectorElement addNew(VectorElement other) {
 		VectorElement res = copy();
 		return res.add(other);
+	}
+
+	@Override
+	public VectorElement addNewIfValid(long other, Element<?> mask) {
+		if (mask.getClass() == VectorElement.class) {
+			return addNewIfValid(other, (VectorElement) mask);
+		} else {
+			return addNewIfValid(other, (ScalarElement) mask);
+		}
+	}
+	public VectorElement addNewIfValid(long other, ScalarElement mask) {
+		VectorElement res = copy();
+		return res.addIfValid(other, mask);
+	}
+	public VectorElement addNewIfValid(long other, VectorElement mask) {
+		VectorElement res = copy();
+		return res.addIfValid(other, mask);
+	}
+	@Override
+	public VectorElement addNewIfValid(double other, Element<?> mask) {
+		if (mask.getClass() == VectorElement.class) {
+			return addNewIfValid(other, (VectorElement) mask);
+		} else {
+			return addNewIfValid(other, (ScalarElement) mask);
+		}
+	}
+	public VectorElement addNewIfValid(double other, ScalarElement mask) {
+		VectorElement res = copy();
+		return res.addIfValid(other, mask);
+	}
+	public VectorElement addNewIfValid(double other, VectorElement mask) {
+		VectorElement res = copy();
+		return res.addIfValid(other, mask);
+	}
+	@Override
+	public VectorElement addNewIfValid(Element<?> other) {
+		if (other.getClass() == VectorElement.class) {
+			return addNewIfValid((VectorElement) other);
+		} else {
+			return addNewIfValid((ScalarElement) other);
+		}
+	}
+	public VectorElement addNewIfValid(ScalarElement other) {
+		VectorElement res = copy();
+		return res.addIfValid(other);
+	}
+	public VectorElement addNewIfValid(VectorElement other) {
+		VectorElement res = copy();
+		return res.addIfValid(other);
+	}
+	@Override
+	public VectorElement addNewIfValid(Element<?> other, Element<?> mask) {
+		if (other.getClass() == VectorElement.class) {
+			if (mask.getClass() == VectorElement.class)
+				return addNewIfValid((VectorElement) other, (VectorElement) mask);
+			else
+				return addNewIfValid((VectorElement) other, (ScalarElement) mask);
+		} else {
+			if (mask.getClass() == VectorElement.class)
+				return addNewIfValid((ScalarElement) other, (VectorElement) mask);
+			else
+				return addNewIfValid((ScalarElement) other, (ScalarElement) mask);
+		}
+	}
+	public VectorElement addNewIfValid(ScalarElement other, ScalarElement mask) {
+		VectorElement res = copy();
+		return res.addIfValid(other, mask);
+	}
+	public VectorElement addNewIfValid(ScalarElement other, VectorElement mask) {
+		VectorElement res = copy();
+		return res.addIfValid(other, mask);
+	}
+	public VectorElement addNewIfValid(VectorElement other, ScalarElement mask) {
+		VectorElement res = copy();
+		return res.addIfValid(other, mask);
+	}
+	public VectorElement addNewIfValid(VectorElement other, VectorElement mask) {
+		VectorElement res = copy();
+		return res.addIfValid(other, mask);
 	}
 
 	@Override
@@ -782,6 +1003,417 @@ public class VectorElement implements Element<VectorElement> {
 	}
 
 	@Override
+	public VectorElement addOfIfValid(long a, long b, Element<?> mask) {
+		if (mask.getClass() == VectorElement.class) {
+			return addOfIfValid(a, b, (VectorElement) mask);
+		} else {
+			return addOfIfValid(a, b, (ScalarElement) mask);
+		}
+	}
+	public VectorElement addOfIfValid(long a, long b, ScalarElement mask) {
+		if (!mask.isValid())
+			return this;
+		return addOf(a, b);
+	}
+	public VectorElement addOfIfValid(long a, long b, VectorElement mask) {
+		for (int i = 0; i < components.length; i++)
+			components[i].addOfIfValid(a, b, mask.components[i]);
+		return this;
+	}
+	@Override
+	public VectorElement addOfIfValid(double a, long b, Element<?> mask) {
+		if (mask.getClass() == VectorElement.class) {
+			return addOfIfValid(a, b, (VectorElement) mask);
+		} else {
+			return addOfIfValid(a, b, (ScalarElement) mask);
+		}
+	}
+	public VectorElement addOfIfValid(double a, long b, ScalarElement mask) {
+		if (!mask.isValid())
+			return this;
+		return addOf(a, b);
+	}
+	public VectorElement addOfIfValid(double a, long b, VectorElement mask) {
+		for (int i = 0; i < components.length; i++)
+			components[i].addOfIfValid(a, b, mask.components[i]);
+		return this;
+	}
+	@Override
+	public VectorElement addOfIfValid(long a, double b, Element<?> mask) {
+		if (mask.getClass() == VectorElement.class) {
+			return addOfIfValid(a, b, (VectorElement) mask);
+		} else {
+			return addOfIfValid(a, b, (ScalarElement) mask);
+		}
+	}
+	public VectorElement addOfIfValid(long a, double b, ScalarElement mask) {
+		if (!mask.isValid())
+			return this;
+		return addOf(a, b);
+	}
+	public VectorElement addOfIfValid(long a, double b, VectorElement mask) {
+		for (int i = 0; i < components.length; i++)
+			components[i].addOfIfValid(a, b, mask.components[i]);
+		return this;
+	}
+	@Override
+	public VectorElement addOfIfValid(double a, double b, Element<?> mask) {
+		if (mask.getClass() == VectorElement.class) {
+			return addOfIfValid(a, b, (VectorElement) mask);
+		} else {
+			return addOfIfValid(a, b, (ScalarElement) mask);
+		}
+	}
+	public VectorElement addOfIfValid(double a, double b, ScalarElement mask) {
+		if (!mask.isValid())
+			return this;
+		return addOf(a, b);
+	}
+	public VectorElement addOfIfValid(double a, double b, VectorElement mask) {
+		for (int i = 0; i < components.length; i++)
+			components[i].addOfIfValid(a, b, mask.components[i]);
+		return this;
+	}
+	@Override
+	public VectorElement addOfIfValid(Element<?> a, long b) {
+		if (a.getClass() == VectorElement.class) {
+			return addOfIfValid((VectorElement) a, b);
+		} else {
+			return addOfIfValid((ScalarElement) a, b);
+		}
+	}
+	public VectorElement addOfIfValid(ScalarElement a, long b) {
+		if (!a.isValid())
+			return this;
+		return addOf(a, b);
+	}
+	public VectorElement addOfIfValid(VectorElement a, long b) {
+		for (int i = 0; i < components.length; i++)
+			components[i].addOfIfValid(a.components[i], b);
+		return this;
+	}
+	@Override
+	public VectorElement addOfIfValid(Element<?> a, long b, Element<?> mask) {
+		if (a.getClass() == VectorElement.class) {
+			if (mask.getClass() == VectorElement.class)
+				return addOfIfValid((VectorElement) a, b, (VectorElement) mask);
+			else
+				return addOfIfValid((VectorElement) a, b, (ScalarElement) mask);
+		} else {
+			if (mask.getClass() == VectorElement.class)
+				return addOfIfValid((ScalarElement) a, b, (VectorElement) mask);
+			else
+				return addOfIfValid((ScalarElement) a, b, (ScalarElement) mask);
+		}
+	}
+	public VectorElement addOfIfValid(ScalarElement a, long b, ScalarElement mask) {
+		if (!a.isValid() || !mask.isValid())
+			return this;
+		for (int i = 0; i < components.length; i++)
+			components[i].addOf(a, b);
+		return this;
+	}
+	public VectorElement addOfIfValid(ScalarElement a, long b, VectorElement mask) {
+		if (!a.isValid())
+			return this;
+		for (int i = 0; i < components.length; i++)
+			components[i].addOfIfValid(a, b, mask);
+		return this;
+	}
+	public VectorElement addOfIfValid(VectorElement a, long b, ScalarElement mask) {
+		if (!mask.isValid())
+			return this;
+		for (int i = 0; i < components.length; i++)
+			components[i].addOfIfValid(a, b, mask);
+		return this;
+	}
+	public VectorElement addOfIfValid(VectorElement a, long b, VectorElement mask) {
+		for (int i = 0; i < components.length; i++)
+			components[i].addOfIfValid(a.components[i], mask.components[i]);
+		return this;
+	}
+	@Override
+	public VectorElement addOfIfValid(long a, Element<?> b) {
+		if (b.getClass() == VectorElement.class) {
+			return addOfIfValid(a, (VectorElement) b);
+		} else {
+			return addOfIfValid(a, (ScalarElement) b);
+		}
+	}
+	public VectorElement addOfIfValid(long a, ScalarElement b) {
+		if (!b.isValid())
+			return this;
+		return addOf(a, b);
+	}
+	public VectorElement addOfIfValid(long a, VectorElement b) {
+		for (int i = 0; i < components.length; i++)
+			components[i].addOfIfValid(a, b.components[i]);
+		return this;
+	}
+	@Override
+	public VectorElement addOfIfValid(long a, Element<?> b, Element<?> mask) {
+		if (b.getClass() == VectorElement.class) {
+			if (mask.getClass() == VectorElement.class)
+				return addOfIfValid(a, (VectorElement) b, (VectorElement) mask);
+			else
+				return addOfIfValid(a, (VectorElement) b, (ScalarElement) mask);
+		} else {
+			if (mask.getClass() == VectorElement.class)
+				return addOfIfValid(a, (ScalarElement) b, (VectorElement) mask);
+			else
+				return addOfIfValid(a, (ScalarElement) b, (ScalarElement) mask);
+		}
+	}
+	public VectorElement addOfIfValid(long a, ScalarElement b, ScalarElement mask) {
+		if (!b.isValid() || !mask.isValid())
+			return this;
+		return addOf(a, b);
+	}
+	public VectorElement addOfIfValid(long a, ScalarElement b, VectorElement mask) {
+		if (!b.isValid())
+			return this;
+		for (int i = 0; i < components.length; i++)
+			components[i].addOfIfValid(a, b, mask.components[i]);
+		return this;
+	}
+	public VectorElement addOfIfValid(long a, VectorElement b, ScalarElement mask) {
+		if (!mask.isValid())
+			return this;
+		for (int i = 0; i < components.length; i++)
+			components[i].addOfIfValid(a, b.components[i], mask);
+		return this;
+	}
+	public VectorElement addOfIfValid(long a, VectorElement b, VectorElement mask) {
+		for (int i = 0; i < components.length; i++)
+			components[i].addOfIfValid(a, b.components[i], mask.components[i]);
+		return this;
+	}
+	@Override
+	public VectorElement addOfIfValid(Element<?> a, double b) {
+		if (a.getClass() == VectorElement.class) {
+			return addOfIfValid((VectorElement) a, b);
+		} else {
+			return addOfIfValid((ScalarElement) a, b);
+		}
+	}
+	public VectorElement addOfIfValid(ScalarElement a, double b, ScalarElement mask) {
+		if (!a.isValid() || !mask.isValid())
+			return this;
+		return addOf(a, b);
+	}
+	public VectorElement addOfIfValid(ScalarElement a, double b, VectorElement mask) {
+		if (!a.isValid())
+			return this;
+		for (int i = 0; i < components.length; i++)
+			components[i].addOfIfValid(a, b, mask.components[i]);
+		return this;
+	}
+	public VectorElement addOfIfValid(VectorElement a, double b, ScalarElement mask) {
+		if (!mask.isValid())
+			return this;
+		for (int i = 0; i < components.length; i++)
+			components[i].addOfIfValid(a.components[i], b, mask);
+		return this;
+	}
+	public VectorElement addOfIfValid(VectorElement a, double b, VectorElement mask) {
+		for (int i = 0; i < components.length; i++)
+			components[i].addOfIfValid(a.components[i], b, mask.components[i]);
+		return this;
+	}
+	@Override
+	public VectorElement addOfIfValid(Element<?> a, double b, Element<?> mask) {
+		if (a.getClass() == VectorElement.class) {
+			if (mask.getClass() == VectorElement.class)
+				return addOfIfValid((VectorElement) a, b, (VectorElement) mask);
+			else
+				return addOfIfValid((VectorElement) a, b, (ScalarElement) mask);
+		} else {
+			if (mask.getClass() == VectorElement.class)
+				return addOfIfValid((ScalarElement) a, b, (VectorElement) mask);
+			else
+				return addOfIfValid((ScalarElement) a, b, (ScalarElement) mask);
+		}
+	}
+	@Override
+	public VectorElement addOfIfValid(double a, Element<?> b) {
+		if (b.getClass() == VectorElement.class) {
+			return addOfIfValid(a, (VectorElement) b);
+		} else {
+			return addOfIfValid(a, (ScalarElement) b);
+		}
+	}
+	public VectorElement addOfIfValid(double a, ScalarElement b) {
+		if (!b.isValid())
+			return this;
+		return addOf(a, b);
+	}
+	public VectorElement addOfIfValid(double a, VectorElement b) {
+		for (int i = 0; i < components.length; i++)
+			components[i].addOfIfValid(a, b.components[i]);
+		return this;
+	}
+	@Override
+	public VectorElement addOfIfValid(double a, Element<?> b, Element<?> mask) {
+		if (b.getClass() == VectorElement.class) {
+			if (mask.getClass() == VectorElement.class)
+				return addOfIfValid(a, (VectorElement) b, (VectorElement) mask);
+			else
+				return addOfIfValid(a, (VectorElement) b, (ScalarElement) mask);
+		} else {
+			if (mask.getClass() == VectorElement.class)
+				return addOfIfValid(a, (ScalarElement) b, (VectorElement) mask);
+			else
+				return addOfIfValid(a, (ScalarElement) b, (ScalarElement) mask);
+		}
+	}
+	public VectorElement addOfIfValid(double a, ScalarElement b, ScalarElement mask) {
+		if (!b.isValid() || !mask.isValid())
+			return this;
+		return addOf(a, b);
+	}
+	public VectorElement addOfIfValid(double a, ScalarElement b, VectorElement mask) {
+		if (!b.isValid())
+			return this;
+		for (int i = 0; i < components.length; i++)
+			components[i].addOfIfValid(a, b, mask.components[i]);
+		return this;
+	}
+	public VectorElement addOfIfValid(double a, VectorElement b, ScalarElement mask) {
+		if (!mask.isValid())
+			return this;
+		for (int i = 0; i < components.length; i++)
+			components[i].addOfIfValid(a, b.components[i], mask);
+		return this;
+	}
+	public VectorElement addOfIfValid(double a, VectorElement b, VectorElement mask) {
+		for (int i = 0; i < components.length; i++)
+			components[i].addOfIfValid(a, b.components[i], mask.components[i]);
+		return this;
+	}
+	@Override
+	public VectorElement addOfIfValid(Element<?> a, Element<?> b) {
+		if (b.getClass() == VectorElement.class) {
+			if (a.getClass() == VectorElement.class)
+				return addOfIfValid((VectorElement) a, (VectorElement) b);
+			else
+				return addOfIfValid((ScalarElement) a, (VectorElement) b);
+		} else {
+			if (a.getClass() == VectorElement.class)
+				return addOfIfValid((VectorElement) a, (ScalarElement) b);
+			else
+				return addOfIfValid((ScalarElement) a, (ScalarElement) b);
+		}
+	}
+	public VectorElement addOfIfValid(ScalarElement a, ScalarElement b) {
+		if (!a.isValid() || !b.isValid())
+			return this;
+		return addOf(a, b);
+	}
+	public VectorElement addOfIfValid(ScalarElement a, VectorElement b) {
+		if (!b.isValid())
+			return this;
+		for (int i = 0; i < components.length; i++)
+			components[i].addOfIfValid(a, b.components[i]);
+		return this;
+	}
+	public VectorElement addOfIfValid(VectorElement a, ScalarElement b) {
+		if (!b.isValid())
+			return this;
+		for (int i = 0; i < components.length; i++)
+			components[i].addOfIfValid(a.components[i], b);
+		return this;
+	}
+	public VectorElement addOfIfValid(VectorElement a, VectorElement b) {
+		for (int i = 0; i < components.length; i++)
+			components[i].addOfIfValid(a.components[i], b.components[i]);
+		return this;
+	}
+	@Override
+	public VectorElement addOfIfValid(Element<?> a, Element<?> b, Element<?> mask) {
+		if (b.getClass() == VectorElement.class) {
+			if (mask.getClass() == VectorElement.class) {
+				if (a.getClass() == VectorElement.class)
+					return addOfIfValid((VectorElement) a, (VectorElement) b, (VectorElement) mask);
+				else
+					return addOfIfValid((ScalarElement) a, (VectorElement) b, (VectorElement) mask);
+			} else {
+				if (a.getClass() == VectorElement.class)
+					return addOfIfValid((VectorElement) a, (VectorElement) b, (ScalarElement) mask);
+				else
+					return addOfIfValid((ScalarElement) a, (VectorElement) b, (ScalarElement) mask);
+			}
+		} else {
+			if (mask.getClass() == VectorElement.class) {
+				if (a.getClass() == VectorElement.class)
+					return addOfIfValid((VectorElement) a, (ScalarElement) b, (VectorElement) mask);
+				else
+					return addOfIfValid((ScalarElement) a, (ScalarElement) b, (VectorElement) mask);
+			} else {
+				if (a.getClass() == VectorElement.class)
+					return addOfIfValid((VectorElement) a, (ScalarElement) b, (ScalarElement) mask);
+				else
+					return addOfIfValid((ScalarElement) a, (ScalarElement) b, (ScalarElement) mask);
+			}
+		}
+	}
+	public VectorElement addOfIfValid(ScalarElement a, ScalarElement b, ScalarElement mask) {
+		if (!a.isValid() || !b.isValid() || !mask.isValid())
+			return this;
+		for (int i = 0; i < components.length; i++)
+			components[i].addOf(a, b);
+		return this;
+	}
+	public VectorElement addOfIfValid(ScalarElement a, ScalarElement b, VectorElement mask) {
+		if (!a.isValid() || !b.isValid())
+			return this;
+		for (int i = 0; i < components.length; i++)
+			components[i].addOfIfValid(a, b, mask.components[i]);
+		return this;
+	}
+	public VectorElement addOfIfValid(ScalarElement a, VectorElement b, ScalarElement mask) {
+		if (!a.isValid() || !mask.isValid())
+			return this;
+		for (int i = 0; i < components.length; i++)
+			components[i].addOfIfValid(a, b.components[i]);
+		return this;
+	}
+	public VectorElement addOfIfValid(ScalarElement a, VectorElement b, VectorElement mask) {
+		if (!a.isValid())
+			return this;
+		for (int i = 0; i < components.length; i++)
+			components[i].addOfIfValid(a, b.components[i], mask.components[i]);
+		return this;
+	}
+	public VectorElement addOfIfValid(VectorElement a, ScalarElement b, ScalarElement mask) {
+		if (!b.isValid() || !mask.isValid())
+			return this;
+		for (int i = 0; i < components.length; i++)
+			components[i].addOfIfValid(a.components[i], b);
+		return this;
+	}
+	public VectorElement addOfIfValid(VectorElement a, ScalarElement b, VectorElement mask) {
+		if (!b.isValid())
+			return this;
+		for (int i = 0; i < components.length; i++)
+			components[i].addOfIfValid(a.components[i], b, mask.components[i]);
+		return this;
+	}
+	public VectorElement addOfIfValid(VectorElement a, VectorElement b, ScalarElement mask) {
+		if (!mask.isValid())
+			return this;
+		for (int i = 0; i < components.length; i++)
+			components[i].addOfIfValid(a.components[i], b.components[i]);
+		return this;
+	}
+	public VectorElement addOfIfValid(VectorElement a, VectorElement b, VectorElement mask) {
+		for (int i = 0; i < components.length; i++)
+			components[i].addOfIfValid(a.components[i], b.components[i], mask.components[i]);
+		return this;
+	}
+
+	// subtract
+
+	@Override
 	public VectorElement sub(long other) {
 		for (ScalarElement c : components)
 			c.sub(other);
@@ -814,6 +1446,98 @@ public class VectorElement implements Element<VectorElement> {
 	}
 
 	@Override
+	public VectorElement subIfValid(long other, Element<?> mask) {
+		if (mask.getClass() == VectorElement.class) {
+			subIfValid(other, (VectorElement) mask);
+		} else {
+			subIfValid(other, (ScalarElement) mask);
+		}
+		return this;
+	}
+	public VectorElement subIfValid(long other, ScalarElement mask) {
+		for (int i = 0; i < components.length; i++)
+			components[i].subIfValid(other, mask);
+		return this;
+	}
+	public VectorElement subIfValid(long other, VectorElement mask) {
+		for (int i = 0; i < components.length; i++)
+			components[i].subIfValid(other, mask.components[i]);
+		return this;
+	}
+	@Override
+	public VectorElement subIfValid(double other, Element<?> mask) {
+		if (mask.getClass() == VectorElement.class) {
+			subIfValid(other, (VectorElement) mask);
+		} else {
+			subIfValid(other, (ScalarElement) mask);
+		}
+		return this;
+	}
+	public VectorElement subIfValid(double other, ScalarElement mask) {
+		for (int i = 0; i < components.length; i++)
+			components[i].subIfValid(other, mask);
+		return this;
+	}
+	public VectorElement subIfValid(double other, VectorElement mask) {
+		for (int i = 0; i < components.length; i++)
+			components[i].subIfValid(other, mask.components[i]);
+		return this;
+	}
+	@Override
+	public VectorElement subIfValid(Element<?> other) {
+		if (other.getClass() == VectorElement.class) {
+			subIfValid((VectorElement) other);
+		} else {
+			subIfValid((ScalarElement) other);
+		}
+		return this;
+	}
+	public VectorElement subIfValid(ScalarElement other) {
+		for (int i = 0; i < components.length; i++)
+			components[i].subIfValid(other);
+		return this;
+	}
+	public VectorElement subIfValid(VectorElement other) {
+		for (int i = 0; i < components.length; i++)
+			components[i].subIfValid(other.components[i]);
+		return this;
+	}
+	@Override
+	public VectorElement subIfValid(Element<?> other, Element<?> mask) {
+		if (other.getClass() == VectorElement.class) {
+			if (mask.getClass() == VectorElement.class)
+				return subIfValid((VectorElement) other, (VectorElement) mask);
+			else
+				return subIfValid((VectorElement) other, (ScalarElement) mask);
+		} else {
+			if (mask.getClass() == VectorElement.class)
+				return subIfValid((ScalarElement) other, (VectorElement) mask);
+			else
+				return subIfValid((ScalarElement) other, (ScalarElement) mask);
+		}
+	}
+	public VectorElement subIfValid(ScalarElement other, ScalarElement mask) {
+		for (int i = 0; i < components.length; i++)
+			components[i].subIfValid(other, mask);
+		return this;
+	}
+	public VectorElement subIfValid(ScalarElement other, VectorElement mask) {
+		for (int i = 0; i < components.length; i++)
+			components[i].subIfValid(other, mask.components[i]);
+		return this;
+	}
+	public VectorElement subIfValid(VectorElement other, ScalarElement mask) {
+		for (int i = 0; i < components.length; i++)
+			components[i].subIfValid(other.components[i], mask);
+		return this;
+	}
+	public VectorElement subIfValid(VectorElement other, VectorElement mask) {
+		for (int i = 0; i < components.length; i++)
+			components[i].subIfValid(other.components[i], mask.components[i]);
+		return this;
+	}
+
+	@Override
 	public VectorElement subNew(long other) {
 		VectorElement res = copy();
 		return res.sub(other);
@@ -826,11 +1550,10 @@ public class VectorElement implements Element<VectorElement> {
 	@Override
 	public VectorElement subNew(Element<?> other) {
 		if (other.getClass() == VectorElement.class) {
-			subNew((VectorElement) other);
+			return subNew((VectorElement) other);
 		} else {
-			subNew((ScalarElement) other);
+			return subNew((ScalarElement) other);
 		}
-		return this;
 	}
 	public VectorElement subNew(ScalarElement other) {
 		VectorElement res = copy();
@@ -839,6 +1562,85 @@ public class VectorElement implements Element<VectorElement> {
 	public VectorElement subNew(VectorElement other) {
 		VectorElement res = copy();
 		return res.sub(other);
+	}
+
+	@Override
+	public VectorElement subNewIfValid(long other, Element<?> mask) {
+		if (mask.getClass() == VectorElement.class) {
+			return subNewIfValid(other, (VectorElement) mask);
+		} else {
+			return subNewIfValid(other, (ScalarElement) mask);
+		}
+	}
+	public VectorElement subNewIfValid(long other, ScalarElement mask) {
+		VectorElement res = copy();
+		return res.subIfValid(other, mask);
+	}
+	public VectorElement subNewIfValid(long other, VectorElement mask) {
+		VectorElement res = copy();
+		return res.subIfValid(other, mask);
+	}
+	@Override
+	public VectorElement subNewIfValid(double other, Element<?> mask) {
+		if (mask.getClass() == VectorElement.class) {
+			return subNewIfValid(other, (VectorElement) mask);
+		} else {
+			return subNewIfValid(other, (ScalarElement) mask);
+		}
+	}
+	public VectorElement subNewIfValid(double other, ScalarElement mask) {
+		VectorElement res = copy();
+		return res.subIfValid(other, mask);
+	}
+	public VectorElement subNewIfValid(double other, VectorElement mask) {
+		VectorElement res = copy();
+		return res.subIfValid(other, mask);
+	}
+	@Override
+	public VectorElement subNewIfValid(Element<?> other) {
+		if (other.getClass() == VectorElement.class) {
+			return subNewIfValid((VectorElement) other);
+		} else {
+			return subNewIfValid((ScalarElement) other);
+		}
+	}
+	public VectorElement subNewIfValid(ScalarElement other) {
+		VectorElement res = copy();
+		return res.subIfValid(other);
+	}
+	public VectorElement subNewIfValid(VectorElement other) {
+		VectorElement res = copy();
+		return res.subIfValid(other);
+	}
+	@Override
+	public VectorElement subNewIfValid(Element<?> other, Element<?> mask) {
+		if (other.getClass() == VectorElement.class) {
+			if (mask.getClass() == VectorElement.class)
+				return subNewIfValid((VectorElement) other, (VectorElement) mask);
+			else
+				return subNewIfValid((VectorElement) other, (ScalarElement) mask);
+		} else {
+			if (mask.getClass() == VectorElement.class)
+				return subNewIfValid((ScalarElement) other, (VectorElement) mask);
+			else
+				return subNewIfValid((ScalarElement) other, (ScalarElement) mask);
+		}
+	}
+	public VectorElement subNewIfValid(ScalarElement other, ScalarElement mask) {
+		VectorElement res = copy();
+		return res.subIfValid(other, mask);
+	}
+	public VectorElement subNewIfValid(ScalarElement other, VectorElement mask) {
+		VectorElement res = copy();
+		return res.subIfValid(other, mask);
+	}
+	public VectorElement subNewIfValid(VectorElement other, ScalarElement mask) {
+		VectorElement res = copy();
+		return res.subIfValid(other, mask);
+	}
+	public VectorElement subNewIfValid(VectorElement other, VectorElement mask) {
+		VectorElement res = copy();
+		return res.subIfValid(other, mask);
 	}
 
 	@Override
@@ -936,6 +1738,417 @@ public class VectorElement implements Element<VectorElement> {
 	}
 
 	@Override
+	public VectorElement subOfIfValid(long a, long b, Element<?> mask) {
+		if (mask.getClass() == VectorElement.class) {
+			return subOfIfValid(a, b, (VectorElement) mask);
+		} else {
+			return subOfIfValid(a, b, (ScalarElement) mask);
+		}
+	}
+	public VectorElement subOfIfValid(long a, long b, ScalarElement mask) {
+		if (!mask.isValid())
+			return this;
+		return subOf(a, b);
+	}
+	public VectorElement subOfIfValid(long a, long b, VectorElement mask) {
+		for (int i = 0; i < components.length; i++)
+			components[i].subOfIfValid(a, b, mask.components[i]);
+		return this;
+	}
+	@Override
+	public VectorElement subOfIfValid(double a, long b, Element<?> mask) {
+		if (mask.getClass() == VectorElement.class) {
+			return subOfIfValid(a, b, (VectorElement) mask);
+		} else {
+			return subOfIfValid(a, b, (ScalarElement) mask);
+		}
+	}
+	public VectorElement subOfIfValid(double a, long b, ScalarElement mask) {
+		if (!mask.isValid())
+			return this;
+		return subOf(a, b);
+	}
+	public VectorElement subOfIfValid(double a, long b, VectorElement mask) {
+		for (int i = 0; i < components.length; i++)
+			components[i].subOfIfValid(a, b, mask.components[i]);
+		return this;
+	}
+	@Override
+	public VectorElement subOfIfValid(long a, double b, Element<?> mask) {
+		if (mask.getClass() == VectorElement.class) {
+			return subOfIfValid(a, b, (VectorElement) mask);
+		} else {
+			return subOfIfValid(a, b, (ScalarElement) mask);
+		}
+	}
+	public VectorElement subOfIfValid(long a, double b, ScalarElement mask) {
+		if (!mask.isValid())
+			return this;
+		return subOf(a, b);
+	}
+	public VectorElement subOfIfValid(long a, double b, VectorElement mask) {
+		for (int i = 0; i < components.length; i++)
+			components[i].subOfIfValid(a, b, mask.components[i]);
+		return this;
+	}
+	@Override
+	public VectorElement subOfIfValid(double a, double b, Element<?> mask) {
+		if (mask.getClass() == VectorElement.class) {
+			return subOfIfValid(a, b, (VectorElement) mask);
+		} else {
+			return subOfIfValid(a, b, (ScalarElement) mask);
+		}
+	}
+	public VectorElement subOfIfValid(double a, double b, ScalarElement mask) {
+		if (!mask.isValid())
+			return this;
+		return subOf(a, b);
+	}
+	public VectorElement subOfIfValid(double a, double b, VectorElement mask) {
+		for (int i = 0; i < components.length; i++)
+			components[i].subOfIfValid(a, b, mask.components[i]);
+		return this;
+	}
+	@Override
+	public VectorElement subOfIfValid(Element<?> a, long b) {
+		if (a.getClass() == VectorElement.class) {
+			return subOfIfValid((VectorElement) a, b);
+		} else {
+			return subOfIfValid((ScalarElement) a, b);
+		}
+	}
+	public VectorElement subOfIfValid(ScalarElement a, long b) {
+		if (!a.isValid())
+			return this;
+		return subOf(a, b);
+	}
+	public VectorElement subOfIfValid(VectorElement a, long b) {
+		for (int i = 0; i < components.length; i++)
+			components[i].subOfIfValid(a.components[i], b);
+		return this;
+	}
+	@Override
+	public VectorElement subOfIfValid(Element<?> a, long b, Element<?> mask) {
+		if (a.getClass() == VectorElement.class) {
+			if (mask.getClass() == VectorElement.class)
+				return subOfIfValid((VectorElement) a, b, (VectorElement) mask);
+			else
+				return subOfIfValid((VectorElement) a, b, (ScalarElement) mask);
+		} else {
+			if (mask.getClass() == VectorElement.class)
+				return subOfIfValid((ScalarElement) a, b, (VectorElement) mask);
+			else
+				return subOfIfValid((ScalarElement) a, b, (ScalarElement) mask);
+		}
+	}
+	public VectorElement subOfIfValid(ScalarElement a, long b, ScalarElement mask) {
+		if (!a.isValid() || !mask.isValid())
+			return this;
+		for (int i = 0; i < components.length; i++)
+			components[i].subOf(a, b);
+		return this;
+	}
+	public VectorElement subOfIfValid(ScalarElement a, long b, VectorElement mask) {
+		if (!a.isValid())
+			return this;
+		for (int i = 0; i < components.length; i++)
+			components[i].subOfIfValid(a, b, mask);
+		return this;
+	}
+	public VectorElement subOfIfValid(VectorElement a, long b, ScalarElement mask) {
+		if (!mask.isValid())
+			return this;
+		for (int i = 0; i < components.length; i++)
+			components[i].subOfIfValid(a, b, mask);
+		return this;
+	}
+	public VectorElement subOfIfValid(VectorElement a, long b, VectorElement mask) {
+		for (int i = 0; i < components.length; i++)
+			components[i].subOfIfValid(a.components[i], mask.components[i]);
+		return this;
+	}
+	@Override
+	public VectorElement subOfIfValid(long a, Element<?> b) {
+		if (b.getClass() == VectorElement.class) {
+			return subOfIfValid(a, (VectorElement) b);
+		} else {
+			return subOfIfValid(a, (ScalarElement) b);
+		}
+	}
+	public VectorElement subOfIfValid(long a, ScalarElement b) {
+		if (!b.isValid())
+			return this;
+		return subOf(a, b);
+	}
+	public VectorElement subOfIfValid(long a, VectorElement b) {
+		for (int i = 0; i < components.length; i++)
+			components[i].subOfIfValid(a, b.components[i]);
+		return this;
+	}
+	@Override
+	public VectorElement subOfIfValid(long a, Element<?> b, Element<?> mask) {
+		if (b.getClass() == VectorElement.class) {
+			if (mask.getClass() == VectorElement.class)
+				return subOfIfValid(a, (VectorElement) b, (VectorElement) mask);
+			else
+				return subOfIfValid(a, (VectorElement) b, (ScalarElement) mask);
+		} else {
+			if (mask.getClass() == VectorElement.class)
+				return subOfIfValid(a, (ScalarElement) b, (VectorElement) mask);
+			else
+				return subOfIfValid(a, (ScalarElement) b, (ScalarElement) mask);
+		}
+	}
+	public VectorElement subOfIfValid(long a, ScalarElement b, ScalarElement mask) {
+		if (!b.isValid() || !mask.isValid())
+			return this;
+		return subOf(a, b);
+	}
+	public VectorElement subOfIfValid(long a, ScalarElement b, VectorElement mask) {
+		if (!b.isValid())
+			return this;
+		for (int i = 0; i < components.length; i++)
+			components[i].subOfIfValid(a, b, mask.components[i]);
+		return this;
+	}
+	public VectorElement subOfIfValid(long a, VectorElement b, ScalarElement mask) {
+		if (!mask.isValid())
+			return this;
+		for (int i = 0; i < components.length; i++)
+			components[i].subOfIfValid(a, b.components[i], mask);
+		return this;
+	}
+	public VectorElement subOfIfValid(long a, VectorElement b, VectorElement mask) {
+		for (int i = 0; i < components.length; i++)
+			components[i].subOfIfValid(a, b.components[i], mask.components[i]);
+		return this;
+	}
+	@Override
+	public VectorElement subOfIfValid(Element<?> a, double b) {
+		if (a.getClass() == VectorElement.class) {
+			return subOfIfValid((VectorElement) a, b);
+		} else {
+			return subOfIfValid((ScalarElement) a, b);
+		}
+	}
+	public VectorElement subOfIfValid(ScalarElement a, double b, ScalarElement mask) {
+		if (!a.isValid() || !mask.isValid())
+			return this;
+		return subOf(a, b);
+	}
+	public VectorElement subOfIfValid(ScalarElement a, double b, VectorElement mask) {
+		if (!a.isValid())
+			return this;
+		for (int i = 0; i < components.length; i++)
+			components[i].subOfIfValid(a, b, mask.components[i]);
+		return this;
+	}
+	public VectorElement subOfIfValid(VectorElement a, double b, ScalarElement mask) {
+		if (!mask.isValid())
+			return this;
+		for (int i = 0; i < components.length; i++)
+			components[i].subOfIfValid(a.components[i], b, mask);
+		return this;
+	}
+	public VectorElement subOfIfValid(VectorElement a, double b, VectorElement mask) {
+		for (int i = 0; i < components.length; i++)
+			components[i].subOfIfValid(a.components[i], b, mask.components[i]);
+		return this;
+	}
+	@Override
+	public VectorElement subOfIfValid(Element<?> a, double b, Element<?> mask) {
+		if (a.getClass() == VectorElement.class) {
+			if (mask.getClass() == VectorElement.class)
+				return subOfIfValid((VectorElement) a, b, (VectorElement) mask);
+			else
+				return subOfIfValid((VectorElement) a, b, (ScalarElement) mask);
+		} else {
+			if (mask.getClass() == VectorElement.class)
+				return subOfIfValid((ScalarElement) a, b, (VectorElement) mask);
+			else
+				return subOfIfValid((ScalarElement) a, b, (ScalarElement) mask);
+		}
+	}
+	@Override
+	public VectorElement subOfIfValid(double a, Element<?> b) {
+		if (b.getClass() == VectorElement.class) {
+			return subOfIfValid(a, (VectorElement) b);
+		} else {
+			return subOfIfValid(a, (ScalarElement) b);
+		}
+	}
+	public VectorElement subOfIfValid(double a, ScalarElement b) {
+		if (!b.isValid())
+			return this;
+		return subOf(a, b);
+	}
+	public VectorElement subOfIfValid(double a, VectorElement b) {
+		for (int i = 0; i < components.length; i++)
+			components[i].subOfIfValid(a, b.components[i]);
+		return this;
+	}
+	@Override
+	public VectorElement subOfIfValid(double a, Element<?> b, Element<?> mask) {
+		if (b.getClass() == VectorElement.class) {
+			if (mask.getClass() == VectorElement.class)
+				return subOfIfValid(a, (VectorElement) b, (VectorElement) mask);
+			else
+				return subOfIfValid(a, (VectorElement) b, (ScalarElement) mask);
+		} else {
+			if (mask.getClass() == VectorElement.class)
+				return subOfIfValid(a, (ScalarElement) b, (VectorElement) mask);
+			else
+				return subOfIfValid(a, (ScalarElement) b, (ScalarElement) mask);
+		}
+	}
+	public VectorElement subOfIfValid(double a, ScalarElement b, ScalarElement mask) {
+		if (!b.isValid() || !mask.isValid())
+			return this;
+		return subOf(a, b);
+	}
+	public VectorElement subOfIfValid(double a, ScalarElement b, VectorElement mask) {
+		if (!b.isValid())
+			return this;
+		for (int i = 0; i < components.length; i++)
+			components[i].subOfIfValid(a, b, mask.components[i]);
+		return this;
+	}
+	public VectorElement subOfIfValid(double a, VectorElement b, ScalarElement mask) {
+		if (!mask.isValid())
+			return this;
+		for (int i = 0; i < components.length; i++)
+			components[i].subOfIfValid(a, b.components[i], mask);
+		return this;
+	}
+	public VectorElement subOfIfValid(double a, VectorElement b, VectorElement mask) {
+		for (int i = 0; i < components.length; i++)
+			components[i].subOfIfValid(a, b.components[i], mask.components[i]);
+		return this;
+	}
+	@Override
+	public VectorElement subOfIfValid(Element<?> a, Element<?> b) {
+		if (b.getClass() == VectorElement.class) {
+			if (a.getClass() == VectorElement.class)
+				return subOfIfValid((VectorElement) a, (VectorElement) b);
+			else
+				return subOfIfValid((ScalarElement) a, (VectorElement) b);
+		} else {
+			if (a.getClass() == VectorElement.class)
+				return subOfIfValid((VectorElement) a, (ScalarElement) b);
+			else
+				return subOfIfValid((ScalarElement) a, (ScalarElement) b);
+		}
+	}
+	public VectorElement subOfIfValid(ScalarElement a, ScalarElement b) {
+		if (!a.isValid() || !b.isValid())
+			return this;
+		return subOf(a, b);
+	}
+	public VectorElement subOfIfValid(ScalarElement a, VectorElement b) {
+		if (!b.isValid())
+			return this;
+		for (int i = 0; i < components.length; i++)
+			components[i].subOfIfValid(a, b.components[i]);
+		return this;
+	}
+	public VectorElement subOfIfValid(VectorElement a, ScalarElement b) {
+		if (!b.isValid())
+			return this;
+		for (int i = 0; i < components.length; i++)
+			components[i].subOfIfValid(a.components[i], b);
+		return this;
+	}
+	public VectorElement subOfIfValid(VectorElement a, VectorElement b) {
+		for (int i = 0; i < components.length; i++)
+			components[i].subOfIfValid(a.components[i], b.components[i]);
+		return this;
+	}
+	@Override
+	public VectorElement subOfIfValid(Element<?> a, Element<?> b, Element<?> mask) {
+		if (b.getClass() == VectorElement.class) {
+			if (mask.getClass() == VectorElement.class) {
+				if (a.getClass() == VectorElement.class)
+					return subOfIfValid((VectorElement) a, (VectorElement) b, (VectorElement) mask);
+				else
+					return subOfIfValid((ScalarElement) a, (VectorElement) b, (VectorElement) mask);
+			} else {
+				if (a.getClass() == VectorElement.class)
+					return subOfIfValid((VectorElement) a, (VectorElement) b, (ScalarElement) mask);
+				else
+					return subOfIfValid((ScalarElement) a, (VectorElement) b, (ScalarElement) mask);
+			}
+		} else {
+			if (mask.getClass() == VectorElement.class) {
+				if (a.getClass() == VectorElement.class)
+					return subOfIfValid((VectorElement) a, (ScalarElement) b, (VectorElement) mask);
+				else
+					return subOfIfValid((ScalarElement) a, (ScalarElement) b, (VectorElement) mask);
+			} else {
+				if (a.getClass() == VectorElement.class)
+					return subOfIfValid((VectorElement) a, (ScalarElement) b, (ScalarElement) mask);
+				else
+					return subOfIfValid((ScalarElement) a, (ScalarElement) b, (ScalarElement) mask);
+			}
+		}
+	}
+	public VectorElement subOfIfValid(ScalarElement a, ScalarElement b, ScalarElement mask) {
+		if (!a.isValid() || !b.isValid() || !mask.isValid())
+			return this;
+		for (int i = 0; i < components.length; i++)
+			components[i].subOf(a, b);
+		return this;
+	}
+	public VectorElement subOfIfValid(ScalarElement a, ScalarElement b, VectorElement mask) {
+		if (!a.isValid() || !b.isValid())
+			return this;
+		for (int i = 0; i < components.length; i++)
+			components[i].subOfIfValid(a, b, mask.components[i]);
+		return this;
+	}
+	public VectorElement subOfIfValid(ScalarElement a, VectorElement b, ScalarElement mask) {
+		if (!a.isValid() || !mask.isValid())
+			return this;
+		for (int i = 0; i < components.length; i++)
+			components[i].subOfIfValid(a, b.components[i]);
+		return this;
+	}
+	public VectorElement subOfIfValid(ScalarElement a, VectorElement b, VectorElement mask) {
+		if (!a.isValid())
+			return this;
+		for (int i = 0; i < components.length; i++)
+			components[i].subOfIfValid(a, b.components[i], mask.components[i]);
+		return this;
+	}
+	public VectorElement subOfIfValid(VectorElement a, ScalarElement b, ScalarElement mask) {
+		if (!b.isValid() || !mask.isValid())
+			return this;
+		for (int i = 0; i < components.length; i++)
+			components[i].subOfIfValid(a.components[i], b);
+		return this;
+	}
+	public VectorElement subOfIfValid(VectorElement a, ScalarElement b, VectorElement mask) {
+		if (!b.isValid())
+			return this;
+		for (int i = 0; i < components.length; i++)
+			components[i].subOfIfValid(a.components[i], b, mask.components[i]);
+		return this;
+	}
+	public VectorElement subOfIfValid(VectorElement a, VectorElement b, ScalarElement mask) {
+		if (!mask.isValid())
+			return this;
+		for (int i = 0; i < components.length; i++)
+			components[i].subOfIfValid(a.components[i], b.components[i]);
+		return this;
+	}
+	public VectorElement subOfIfValid(VectorElement a, VectorElement b, VectorElement mask) {
+		for (int i = 0; i < components.length; i++)
+			components[i].subOfIfValid(a.components[i], b.components[i], mask.components[i]);
+		return this;
+	}
+
+	// multiply
+
+	@Override
 	public VectorElement mul(long other) {
 		for (ScalarElement c : components)
 			c.mul(other);
@@ -968,6 +2181,98 @@ public class VectorElement implements Element<VectorElement> {
 	}
 
 	@Override
+	public VectorElement mulIfValid(long other, Element<?> mask) {
+		if (mask.getClass() == VectorElement.class) {
+			mulIfValid(other, (VectorElement) mask);
+		} else {
+			mulIfValid(other, (ScalarElement) mask);
+		}
+		return this;
+	}
+	public VectorElement mulIfValid(long other, ScalarElement mask) {
+		for (int i = 0; i < components.length; i++)
+			components[i].mulIfValid(other, mask);
+		return this;
+	}
+	public VectorElement mulIfValid(long other, VectorElement mask) {
+		for (int i = 0; i < components.length; i++)
+			components[i].mulIfValid(other, mask.components[i]);
+		return this;
+	}
+	@Override
+	public VectorElement mulIfValid(double other, Element<?> mask) {
+		if (mask.getClass() == VectorElement.class) {
+			mulIfValid(other, (VectorElement) mask);
+		} else {
+			mulIfValid(other, (ScalarElement) mask);
+		}
+		return this;
+	}
+	public VectorElement mulIfValid(double other, ScalarElement mask) {
+		for (int i = 0; i < components.length; i++)
+			components[i].mulIfValid(other, mask);
+		return this;
+	}
+	public VectorElement mulIfValid(double other, VectorElement mask) {
+		for (int i = 0; i < components.length; i++)
+			components[i].mulIfValid(other, mask.components[i]);
+		return this;
+	}
+	@Override
+	public VectorElement mulIfValid(Element<?> other) {
+		if (other.getClass() == VectorElement.class) {
+			mulIfValid((VectorElement) other);
+		} else {
+			mulIfValid((ScalarElement) other);
+		}
+		return this;
+	}
+	public VectorElement mulIfValid(ScalarElement other) {
+		for (int i = 0; i < components.length; i++)
+			components[i].mulIfValid(other);
+		return this;
+	}
+	public VectorElement mulIfValid(VectorElement other) {
+		for (int i = 0; i < components.length; i++)
+			components[i].mulIfValid(other.components[i]);
+		return this;
+	}
+	@Override
+	public VectorElement mulIfValid(Element<?> other, Element<?> mask) {
+		if (other.getClass() == VectorElement.class) {
+			if (mask.getClass() == VectorElement.class)
+				return mulIfValid((VectorElement) other, (VectorElement) mask);
+			else
+				return mulIfValid((VectorElement) other, (ScalarElement) mask);
+		} else {
+			if (mask.getClass() == VectorElement.class)
+				return mulIfValid((ScalarElement) other, (VectorElement) mask);
+			else
+				return mulIfValid((ScalarElement) other, (ScalarElement) mask);
+		}
+	}
+	public VectorElement mulIfValid(ScalarElement other, ScalarElement mask) {
+		for (int i = 0; i < components.length; i++)
+			components[i].mulIfValid(other, mask);
+		return this;
+	}
+	public VectorElement mulIfValid(ScalarElement other, VectorElement mask) {
+		for (int i = 0; i < components.length; i++)
+			components[i].mulIfValid(other, mask.components[i]);
+		return this;
+	}
+	public VectorElement mulIfValid(VectorElement other, ScalarElement mask) {
+		for (int i = 0; i < components.length; i++)
+			components[i].mulIfValid(other.components[i], mask);
+		return this;
+	}
+	public VectorElement mulIfValid(VectorElement other, VectorElement mask) {
+		for (int i = 0; i < components.length; i++)
+			components[i].mulIfValid(other.components[i], mask.components[i]);
+		return this;
+	}
+
+	@Override
 	public VectorElement mulNew(long other) {
 		VectorElement res = copy();
 		return res.mul(other);
@@ -980,11 +2285,10 @@ public class VectorElement implements Element<VectorElement> {
 	@Override
 	public VectorElement mulNew(Element<?> other) {
 		if (other.getClass() == VectorElement.class) {
-			mulNew((VectorElement) other);
+			return mulNew((VectorElement) other);
 		} else {
-			mulNew((ScalarElement) other);
+			return mulNew((ScalarElement) other);
 		}
-		return this;
 	}
 	public VectorElement mulNew(ScalarElement other) {
 		VectorElement res = copy();
@@ -993,6 +2297,85 @@ public class VectorElement implements Element<VectorElement> {
 	public VectorElement mulNew(VectorElement other) {
 		VectorElement res = copy();
 		return res.mul(other);
+	}
+
+	@Override
+	public VectorElement mulNewIfValid(long other, Element<?> mask) {
+		if (mask.getClass() == VectorElement.class) {
+			return mulNewIfValid(other, (VectorElement) mask);
+		} else {
+			return mulNewIfValid(other, (ScalarElement) mask);
+		}
+	}
+	public VectorElement mulNewIfValid(long other, ScalarElement mask) {
+		VectorElement res = copy();
+		return res.mulIfValid(other, mask);
+	}
+	public VectorElement mulNewIfValid(long other, VectorElement mask) {
+		VectorElement res = copy();
+		return res.mulIfValid(other, mask);
+	}
+	@Override
+	public VectorElement mulNewIfValid(double other, Element<?> mask) {
+		if (mask.getClass() == VectorElement.class) {
+			return mulNewIfValid(other, (VectorElement) mask);
+		} else {
+			return mulNewIfValid(other, (ScalarElement) mask);
+		}
+	}
+	public VectorElement mulNewIfValid(double other, ScalarElement mask) {
+		VectorElement res = copy();
+		return res.mulIfValid(other, mask);
+	}
+	public VectorElement mulNewIfValid(double other, VectorElement mask) {
+		VectorElement res = copy();
+		return res.mulIfValid(other, mask);
+	}
+	@Override
+	public VectorElement mulNewIfValid(Element<?> other) {
+		if (other.getClass() == VectorElement.class) {
+			return mulNewIfValid((VectorElement) other);
+		} else {
+			return mulNewIfValid((ScalarElement) other);
+		}
+	}
+	public VectorElement mulNewIfValid(ScalarElement other) {
+		VectorElement res = copy();
+		return res.mulIfValid(other);
+	}
+	public VectorElement mulNewIfValid(VectorElement other) {
+		VectorElement res = copy();
+		return res.mulIfValid(other);
+	}
+	@Override
+	public VectorElement mulNewIfValid(Element<?> other, Element<?> mask) {
+		if (other.getClass() == VectorElement.class) {
+			if (mask.getClass() == VectorElement.class)
+				return mulNewIfValid((VectorElement) other, (VectorElement) mask);
+			else
+				return mulNewIfValid((VectorElement) other, (ScalarElement) mask);
+		} else {
+			if (mask.getClass() == VectorElement.class)
+				return mulNewIfValid((ScalarElement) other, (VectorElement) mask);
+			else
+				return mulNewIfValid((ScalarElement) other, (ScalarElement) mask);
+		}
+	}
+	public VectorElement mulNewIfValid(ScalarElement other, ScalarElement mask) {
+		VectorElement res = copy();
+		return res.mulIfValid(other, mask);
+	}
+	public VectorElement mulNewIfValid(ScalarElement other, VectorElement mask) {
+		VectorElement res = copy();
+		return res.mulIfValid(other, mask);
+	}
+	public VectorElement mulNewIfValid(VectorElement other, ScalarElement mask) {
+		VectorElement res = copy();
+		return res.mulIfValid(other, mask);
+	}
+	public VectorElement mulNewIfValid(VectorElement other, VectorElement mask) {
+		VectorElement res = copy();
+		return res.mulIfValid(other, mask);
 	}
 
 	@Override
@@ -1090,6 +2473,417 @@ public class VectorElement implements Element<VectorElement> {
 	}
 
 	@Override
+	public VectorElement mulOfIfValid(long a, long b, Element<?> mask) {
+		if (mask.getClass() == VectorElement.class) {
+			return mulOfIfValid(a, b, (VectorElement) mask);
+		} else {
+			return mulOfIfValid(a, b, (ScalarElement) mask);
+		}
+	}
+	public VectorElement mulOfIfValid(long a, long b, ScalarElement mask) {
+		if (!mask.isValid())
+			return this;
+		return mulOf(a, b);
+	}
+	public VectorElement mulOfIfValid(long a, long b, VectorElement mask) {
+		for (int i = 0; i < components.length; i++)
+			components[i].mulOfIfValid(a, b, mask.components[i]);
+		return this;
+	}
+	@Override
+	public VectorElement mulOfIfValid(double a, long b, Element<?> mask) {
+		if (mask.getClass() == VectorElement.class) {
+			return mulOfIfValid(a, b, (VectorElement) mask);
+		} else {
+			return mulOfIfValid(a, b, (ScalarElement) mask);
+		}
+	}
+	public VectorElement mulOfIfValid(double a, long b, ScalarElement mask) {
+		if (!mask.isValid())
+			return this;
+		return mulOf(a, b);
+	}
+	public VectorElement mulOfIfValid(double a, long b, VectorElement mask) {
+		for (int i = 0; i < components.length; i++)
+			components[i].mulOfIfValid(a, b, mask.components[i]);
+		return this;
+	}
+	@Override
+	public VectorElement mulOfIfValid(long a, double b, Element<?> mask) {
+		if (mask.getClass() == VectorElement.class) {
+			return mulOfIfValid(a, b, (VectorElement) mask);
+		} else {
+			return mulOfIfValid(a, b, (ScalarElement) mask);
+		}
+	}
+	public VectorElement mulOfIfValid(long a, double b, ScalarElement mask) {
+		if (!mask.isValid())
+			return this;
+		return mulOf(a, b);
+	}
+	public VectorElement mulOfIfValid(long a, double b, VectorElement mask) {
+		for (int i = 0; i < components.length; i++)
+			components[i].mulOfIfValid(a, b, mask.components[i]);
+		return this;
+	}
+	@Override
+	public VectorElement mulOfIfValid(double a, double b, Element<?> mask) {
+		if (mask.getClass() == VectorElement.class) {
+			return mulOfIfValid(a, b, (VectorElement) mask);
+		} else {
+			return mulOfIfValid(a, b, (ScalarElement) mask);
+		}
+	}
+	public VectorElement mulOfIfValid(double a, double b, ScalarElement mask) {
+		if (!mask.isValid())
+			return this;
+		return mulOf(a, b);
+	}
+	public VectorElement mulOfIfValid(double a, double b, VectorElement mask) {
+		for (int i = 0; i < components.length; i++)
+			components[i].mulOfIfValid(a, b, mask.components[i]);
+		return this;
+	}
+	@Override
+	public VectorElement mulOfIfValid(Element<?> a, long b) {
+		if (a.getClass() == VectorElement.class) {
+			return mulOfIfValid((VectorElement) a, b);
+		} else {
+			return mulOfIfValid((ScalarElement) a, b);
+		}
+	}
+	public VectorElement mulOfIfValid(ScalarElement a, long b) {
+		if (!a.isValid())
+			return this;
+		return mulOf(a, b);
+	}
+	public VectorElement mulOfIfValid(VectorElement a, long b) {
+		for (int i = 0; i < components.length; i++)
+			components[i].mulOfIfValid(a.components[i], b);
+		return this;
+	}
+	@Override
+	public VectorElement mulOfIfValid(Element<?> a, long b, Element<?> mask) {
+		if (a.getClass() == VectorElement.class) {
+			if (mask.getClass() == VectorElement.class)
+				return mulOfIfValid((VectorElement) a, b, (VectorElement) mask);
+			else
+				return mulOfIfValid((VectorElement) a, b, (ScalarElement) mask);
+		} else {
+			if (mask.getClass() == VectorElement.class)
+				return mulOfIfValid((ScalarElement) a, b, (VectorElement) mask);
+			else
+				return mulOfIfValid((ScalarElement) a, b, (ScalarElement) mask);
+		}
+	}
+	public VectorElement mulOfIfValid(ScalarElement a, long b, ScalarElement mask) {
+		if (!a.isValid() || !mask.isValid())
+			return this;
+		for (int i = 0; i < components.length; i++)
+			components[i].mulOf(a, b);
+		return this;
+	}
+	public VectorElement mulOfIfValid(ScalarElement a, long b, VectorElement mask) {
+		if (!a.isValid())
+			return this;
+		for (int i = 0; i < components.length; i++)
+			components[i].mulOfIfValid(a, b, mask);
+		return this;
+	}
+	public VectorElement mulOfIfValid(VectorElement a, long b, ScalarElement mask) {
+		if (!mask.isValid())
+			return this;
+		for (int i = 0; i < components.length; i++)
+			components[i].mulOfIfValid(a, b, mask);
+		return this;
+	}
+	public VectorElement mulOfIfValid(VectorElement a, long b, VectorElement mask) {
+		for (int i = 0; i < components.length; i++)
+			components[i].mulOfIfValid(a.components[i], mask.components[i]);
+		return this;
+	}
+	@Override
+	public VectorElement mulOfIfValid(long a, Element<?> b) {
+		if (b.getClass() == VectorElement.class) {
+			return mulOfIfValid(a, (VectorElement) b);
+		} else {
+			return mulOfIfValid(a, (ScalarElement) b);
+		}
+	}
+	public VectorElement mulOfIfValid(long a, ScalarElement b) {
+		if (!b.isValid())
+			return this;
+		return mulOf(a, b);
+	}
+	public VectorElement mulOfIfValid(long a, VectorElement b) {
+		for (int i = 0; i < components.length; i++)
+			components[i].mulOfIfValid(a, b.components[i]);
+		return this;
+	}
+	@Override
+	public VectorElement mulOfIfValid(long a, Element<?> b, Element<?> mask) {
+		if (b.getClass() == VectorElement.class) {
+			if (mask.getClass() == VectorElement.class)
+				return mulOfIfValid(a, (VectorElement) b, (VectorElement) mask);
+			else
+				return mulOfIfValid(a, (VectorElement) b, (ScalarElement) mask);
+		} else {
+			if (mask.getClass() == VectorElement.class)
+				return mulOfIfValid(a, (ScalarElement) b, (VectorElement) mask);
+			else
+				return mulOfIfValid(a, (ScalarElement) b, (ScalarElement) mask);
+		}
+	}
+	public VectorElement mulOfIfValid(long a, ScalarElement b, ScalarElement mask) {
+		if (!b.isValid() || !mask.isValid())
+			return this;
+		return mulOf(a, b);
+	}
+	public VectorElement mulOfIfValid(long a, ScalarElement b, VectorElement mask) {
+		if (!b.isValid())
+			return this;
+		for (int i = 0; i < components.length; i++)
+			components[i].mulOfIfValid(a, b, mask.components[i]);
+		return this;
+	}
+	public VectorElement mulOfIfValid(long a, VectorElement b, ScalarElement mask) {
+		if (!mask.isValid())
+			return this;
+		for (int i = 0; i < components.length; i++)
+			components[i].mulOfIfValid(a, b.components[i], mask);
+		return this;
+	}
+	public VectorElement mulOfIfValid(long a, VectorElement b, VectorElement mask) {
+		for (int i = 0; i < components.length; i++)
+			components[i].mulOfIfValid(a, b.components[i], mask.components[i]);
+		return this;
+	}
+	@Override
+	public VectorElement mulOfIfValid(Element<?> a, double b) {
+		if (a.getClass() == VectorElement.class) {
+			return mulOfIfValid((VectorElement) a, b);
+		} else {
+			return mulOfIfValid((ScalarElement) a, b);
+		}
+	}
+	public VectorElement mulOfIfValid(ScalarElement a, double b, ScalarElement mask) {
+		if (!a.isValid() || !mask.isValid())
+			return this;
+		return mulOf(a, b);
+	}
+	public VectorElement mulOfIfValid(ScalarElement a, double b, VectorElement mask) {
+		if (!a.isValid())
+			return this;
+		for (int i = 0; i < components.length; i++)
+			components[i].mulOfIfValid(a, b, mask.components[i]);
+		return this;
+	}
+	public VectorElement mulOfIfValid(VectorElement a, double b, ScalarElement mask) {
+		if (!mask.isValid())
+			return this;
+		for (int i = 0; i < components.length; i++)
+			components[i].mulOfIfValid(a.components[i], b, mask);
+		return this;
+	}
+	public VectorElement mulOfIfValid(VectorElement a, double b, VectorElement mask) {
+		for (int i = 0; i < components.length; i++)
+			components[i].mulOfIfValid(a.components[i], b, mask.components[i]);
+		return this;
+	}
+	@Override
+	public VectorElement mulOfIfValid(Element<?> a, double b, Element<?> mask) {
+		if (a.getClass() == VectorElement.class) {
+			if (mask.getClass() == VectorElement.class)
+				return mulOfIfValid((VectorElement) a, b, (VectorElement) mask);
+			else
+				return mulOfIfValid((VectorElement) a, b, (ScalarElement) mask);
+		} else {
+			if (mask.getClass() == VectorElement.class)
+				return mulOfIfValid((ScalarElement) a, b, (VectorElement) mask);
+			else
+				return mulOfIfValid((ScalarElement) a, b, (ScalarElement) mask);
+		}
+	}
+	@Override
+	public VectorElement mulOfIfValid(double a, Element<?> b) {
+		if (b.getClass() == VectorElement.class) {
+			return mulOfIfValid(a, (VectorElement) b);
+		} else {
+			return mulOfIfValid(a, (ScalarElement) b);
+		}
+	}
+	public VectorElement mulOfIfValid(double a, ScalarElement b) {
+		if (!b.isValid())
+			return this;
+		return mulOf(a, b);
+	}
+	public VectorElement mulOfIfValid(double a, VectorElement b) {
+		for (int i = 0; i < components.length; i++)
+			components[i].mulOfIfValid(a, b.components[i]);
+		return this;
+	}
+	@Override
+	public VectorElement mulOfIfValid(double a, Element<?> b, Element<?> mask) {
+		if (b.getClass() == VectorElement.class) {
+			if (mask.getClass() == VectorElement.class)
+				return mulOfIfValid(a, (VectorElement) b, (VectorElement) mask);
+			else
+				return mulOfIfValid(a, (VectorElement) b, (ScalarElement) mask);
+		} else {
+			if (mask.getClass() == VectorElement.class)
+				return mulOfIfValid(a, (ScalarElement) b, (VectorElement) mask);
+			else
+				return mulOfIfValid(a, (ScalarElement) b, (ScalarElement) mask);
+		}
+	}
+	public VectorElement mulOfIfValid(double a, ScalarElement b, ScalarElement mask) {
+		if (!b.isValid() || !mask.isValid())
+			return this;
+		return mulOf(a, b);
+	}
+	public VectorElement mulOfIfValid(double a, ScalarElement b, VectorElement mask) {
+		if (!b.isValid())
+			return this;
+		for (int i = 0; i < components.length; i++)
+			components[i].mulOfIfValid(a, b, mask.components[i]);
+		return this;
+	}
+	public VectorElement mulOfIfValid(double a, VectorElement b, ScalarElement mask) {
+		if (!mask.isValid())
+			return this;
+		for (int i = 0; i < components.length; i++)
+			components[i].mulOfIfValid(a, b.components[i], mask);
+		return this;
+	}
+	public VectorElement mulOfIfValid(double a, VectorElement b, VectorElement mask) {
+		for (int i = 0; i < components.length; i++)
+			components[i].mulOfIfValid(a, b.components[i], mask.components[i]);
+		return this;
+	}
+	@Override
+	public VectorElement mulOfIfValid(Element<?> a, Element<?> b) {
+		if (b.getClass() == VectorElement.class) {
+			if (a.getClass() == VectorElement.class)
+				return mulOfIfValid((VectorElement) a, (VectorElement) b);
+			else
+				return mulOfIfValid((ScalarElement) a, (VectorElement) b);
+		} else {
+			if (a.getClass() == VectorElement.class)
+				return mulOfIfValid((VectorElement) a, (ScalarElement) b);
+			else
+				return mulOfIfValid((ScalarElement) a, (ScalarElement) b);
+		}
+	}
+	public VectorElement mulOfIfValid(ScalarElement a, ScalarElement b) {
+		if (!a.isValid() || !b.isValid())
+			return this;
+		return mulOf(a, b);
+	}
+	public VectorElement mulOfIfValid(ScalarElement a, VectorElement b) {
+		if (!b.isValid())
+			return this;
+		for (int i = 0; i < components.length; i++)
+			components[i].mulOfIfValid(a, b.components[i]);
+		return this;
+	}
+	public VectorElement mulOfIfValid(VectorElement a, ScalarElement b) {
+		if (!b.isValid())
+			return this;
+		for (int i = 0; i < components.length; i++)
+			components[i].mulOfIfValid(a.components[i], b);
+		return this;
+	}
+	public VectorElement mulOfIfValid(VectorElement a, VectorElement b) {
+		for (int i = 0; i < components.length; i++)
+			components[i].mulOfIfValid(a.components[i], b.components[i]);
+		return this;
+	}
+	@Override
+	public VectorElement mulOfIfValid(Element<?> a, Element<?> b, Element<?> mask) {
+		if (b.getClass() == VectorElement.class) {
+			if (mask.getClass() == VectorElement.class) {
+				if (a.getClass() == VectorElement.class)
+					return mulOfIfValid((VectorElement) a, (VectorElement) b, (VectorElement) mask);
+				else
+					return mulOfIfValid((ScalarElement) a, (VectorElement) b, (VectorElement) mask);
+			} else {
+				if (a.getClass() == VectorElement.class)
+					return mulOfIfValid((VectorElement) a, (VectorElement) b, (ScalarElement) mask);
+				else
+					return mulOfIfValid((ScalarElement) a, (VectorElement) b, (ScalarElement) mask);
+			}
+		} else {
+			if (mask.getClass() == VectorElement.class) {
+				if (a.getClass() == VectorElement.class)
+					return mulOfIfValid((VectorElement) a, (ScalarElement) b, (VectorElement) mask);
+				else
+					return mulOfIfValid((ScalarElement) a, (ScalarElement) b, (VectorElement) mask);
+			} else {
+				if (a.getClass() == VectorElement.class)
+					return mulOfIfValid((VectorElement) a, (ScalarElement) b, (ScalarElement) mask);
+				else
+					return mulOfIfValid((ScalarElement) a, (ScalarElement) b, (ScalarElement) mask);
+			}
+		}
+	}
+	public VectorElement mulOfIfValid(ScalarElement a, ScalarElement b, ScalarElement mask) {
+		if (!a.isValid() || !b.isValid() || !mask.isValid())
+			return this;
+		for (int i = 0; i < components.length; i++)
+			components[i].mulOf(a, b);
+		return this;
+	}
+	public VectorElement mulOfIfValid(ScalarElement a, ScalarElement b, VectorElement mask) {
+		if (!a.isValid() || !b.isValid())
+			return this;
+		for (int i = 0; i < components.length; i++)
+			components[i].mulOfIfValid(a, b, mask.components[i]);
+		return this;
+	}
+	public VectorElement mulOfIfValid(ScalarElement a, VectorElement b, ScalarElement mask) {
+		if (!a.isValid() || !mask.isValid())
+			return this;
+		for (int i = 0; i < components.length; i++)
+			components[i].mulOfIfValid(a, b.components[i]);
+		return this;
+	}
+	public VectorElement mulOfIfValid(ScalarElement a, VectorElement b, VectorElement mask) {
+		if (!a.isValid())
+			return this;
+		for (int i = 0; i < components.length; i++)
+			components[i].mulOfIfValid(a, b.components[i], mask.components[i]);
+		return this;
+	}
+	public VectorElement mulOfIfValid(VectorElement a, ScalarElement b, ScalarElement mask) {
+		if (!b.isValid() || !mask.isValid())
+			return this;
+		for (int i = 0; i < components.length; i++)
+			components[i].mulOfIfValid(a.components[i], b);
+		return this;
+	}
+	public VectorElement mulOfIfValid(VectorElement a, ScalarElement b, VectorElement mask) {
+		if (!b.isValid())
+			return this;
+		for (int i = 0; i < components.length; i++)
+			components[i].mulOfIfValid(a.components[i], b, mask.components[i]);
+		return this;
+	}
+	public VectorElement mulOfIfValid(VectorElement a, VectorElement b, ScalarElement mask) {
+		if (!mask.isValid())
+			return this;
+		for (int i = 0; i < components.length; i++)
+			components[i].mulOfIfValid(a.components[i], b.components[i]);
+		return this;
+	}
+	public VectorElement mulOfIfValid(VectorElement a, VectorElement b, VectorElement mask) {
+		for (int i = 0; i < components.length; i++)
+			components[i].mulOfIfValid(a.components[i], b.components[i], mask.components[i]);
+		return this;
+	}
+
+	// divide
+
+	@Override
 	public VectorElement div(long other) {
 		for (ScalarElement c : components)
 			c.div(other);
@@ -1122,6 +2916,98 @@ public class VectorElement implements Element<VectorElement> {
 	}
 
 	@Override
+	public VectorElement divIfValid(long other, Element<?> mask) {
+		if (mask.getClass() == VectorElement.class) {
+			divIfValid(other, (VectorElement) mask);
+		} else {
+			divIfValid(other, (ScalarElement) mask);
+		}
+		return this;
+	}
+	public VectorElement divIfValid(long other, ScalarElement mask) {
+		for (int i = 0; i < components.length; i++)
+			components[i].divIfValid(other, mask);
+		return this;
+	}
+	public VectorElement divIfValid(long other, VectorElement mask) {
+		for (int i = 0; i < components.length; i++)
+			components[i].divIfValid(other, mask.components[i]);
+		return this;
+	}
+	@Override
+	public VectorElement divIfValid(double other, Element<?> mask) {
+		if (mask.getClass() == VectorElement.class) {
+			divIfValid(other, (VectorElement) mask);
+		} else {
+			divIfValid(other, (ScalarElement) mask);
+		}
+		return this;
+	}
+	public VectorElement divIfValid(double other, ScalarElement mask) {
+		for (int i = 0; i < components.length; i++)
+			components[i].divIfValid(other, mask);
+		return this;
+	}
+	public VectorElement divIfValid(double other, VectorElement mask) {
+		for (int i = 0; i < components.length; i++)
+			components[i].divIfValid(other, mask.components[i]);
+		return this;
+	}
+	@Override
+	public VectorElement divIfValid(Element<?> other) {
+		if (other.getClass() == VectorElement.class) {
+			divIfValid((VectorElement) other);
+		} else {
+			divIfValid((ScalarElement) other);
+		}
+		return this;
+	}
+	public VectorElement divIfValid(ScalarElement other) {
+		for (int i = 0; i < components.length; i++)
+			components[i].divIfValid(other);
+		return this;
+	}
+	public VectorElement divIfValid(VectorElement other) {
+		for (int i = 0; i < components.length; i++)
+			components[i].divIfValid(other.components[i]);
+		return this;
+	}
+	@Override
+	public VectorElement divIfValid(Element<?> other, Element<?> mask) {
+		if (other.getClass() == VectorElement.class) {
+			if (mask.getClass() == VectorElement.class)
+				return divIfValid((VectorElement) other, (VectorElement) mask);
+			else
+				return divIfValid((VectorElement) other, (ScalarElement) mask);
+		} else {
+			if (mask.getClass() == VectorElement.class)
+				return divIfValid((ScalarElement) other, (VectorElement) mask);
+			else
+				return divIfValid((ScalarElement) other, (ScalarElement) mask);
+		}
+	}
+	public VectorElement divIfValid(ScalarElement other, ScalarElement mask) {
+		for (int i = 0; i < components.length; i++)
+			components[i].divIfValid(other, mask);
+		return this;
+	}
+	public VectorElement divIfValid(ScalarElement other, VectorElement mask) {
+		for (int i = 0; i < components.length; i++)
+			components[i].divIfValid(other, mask.components[i]);
+		return this;
+	}
+	public VectorElement divIfValid(VectorElement other, ScalarElement mask) {
+		for (int i = 0; i < components.length; i++)
+			components[i].divIfValid(other.components[i], mask);
+		return this;
+	}
+	public VectorElement divIfValid(VectorElement other, VectorElement mask) {
+		for (int i = 0; i < components.length; i++)
+			components[i].divIfValid(other.components[i], mask.components[i]);
+		return this;
+	}
+
+	@Override
 	public VectorElement divNew(long other) {
 		VectorElement res = copy();
 		return res.div(other);
@@ -1134,11 +3020,10 @@ public class VectorElement implements Element<VectorElement> {
 	@Override
 	public VectorElement divNew(Element<?> other) {
 		if (other.getClass() == VectorElement.class) {
-			divNew((VectorElement) other);
+			return divNew((VectorElement) other);
 		} else {
-			divNew((ScalarElement) other);
+			return divNew((ScalarElement) other);
 		}
-		return this;
 	}
 	public VectorElement divNew(ScalarElement other) {
 		VectorElement res = copy();
@@ -1147,6 +3032,85 @@ public class VectorElement implements Element<VectorElement> {
 	public VectorElement divNew(VectorElement other) {
 		VectorElement res = copy();
 		return res.div(other);
+	}
+
+	@Override
+	public VectorElement divNewIfValid(long other, Element<?> mask) {
+		if (mask.getClass() == VectorElement.class) {
+			return divNewIfValid(other, (VectorElement) mask);
+		} else {
+			return divNewIfValid(other, (ScalarElement) mask);
+		}
+	}
+	public VectorElement divNewIfValid(long other, ScalarElement mask) {
+		VectorElement res = copy();
+		return res.divIfValid(other, mask);
+	}
+	public VectorElement divNewIfValid(long other, VectorElement mask) {
+		VectorElement res = copy();
+		return res.divIfValid(other, mask);
+	}
+	@Override
+	public VectorElement divNewIfValid(double other, Element<?> mask) {
+		if (mask.getClass() == VectorElement.class) {
+			return divNewIfValid(other, (VectorElement) mask);
+		} else {
+			return divNewIfValid(other, (ScalarElement) mask);
+		}
+	}
+	public VectorElement divNewIfValid(double other, ScalarElement mask) {
+		VectorElement res = copy();
+		return res.divIfValid(other, mask);
+	}
+	public VectorElement divNewIfValid(double other, VectorElement mask) {
+		VectorElement res = copy();
+		return res.divIfValid(other, mask);
+	}
+	@Override
+	public VectorElement divNewIfValid(Element<?> other) {
+		if (other.getClass() == VectorElement.class) {
+			return divNewIfValid((VectorElement) other);
+		} else {
+			return divNewIfValid((ScalarElement) other);
+		}
+	}
+	public VectorElement divNewIfValid(ScalarElement other) {
+		VectorElement res = copy();
+		return res.divIfValid(other);
+	}
+	public VectorElement divNewIfValid(VectorElement other) {
+		VectorElement res = copy();
+		return res.divIfValid(other);
+	}
+	@Override
+	public VectorElement divNewIfValid(Element<?> other, Element<?> mask) {
+		if (other.getClass() == VectorElement.class) {
+			if (mask.getClass() == VectorElement.class)
+				return divNewIfValid((VectorElement) other, (VectorElement) mask);
+			else
+				return divNewIfValid((VectorElement) other, (ScalarElement) mask);
+		} else {
+			if (mask.getClass() == VectorElement.class)
+				return divNewIfValid((ScalarElement) other, (VectorElement) mask);
+			else
+				return divNewIfValid((ScalarElement) other, (ScalarElement) mask);
+		}
+	}
+	public VectorElement divNewIfValid(ScalarElement other, ScalarElement mask) {
+		VectorElement res = copy();
+		return res.divIfValid(other, mask);
+	}
+	public VectorElement divNewIfValid(ScalarElement other, VectorElement mask) {
+		VectorElement res = copy();
+		return res.divIfValid(other, mask);
+	}
+	public VectorElement divNewIfValid(VectorElement other, ScalarElement mask) {
+		VectorElement res = copy();
+		return res.divIfValid(other, mask);
+	}
+	public VectorElement divNewIfValid(VectorElement other, VectorElement mask) {
+		VectorElement res = copy();
+		return res.divIfValid(other, mask);
 	}
 
 	@Override
@@ -1244,6 +3208,417 @@ public class VectorElement implements Element<VectorElement> {
 	}
 
 	@Override
+	public VectorElement divOfIfValid(long a, long b, Element<?> mask) {
+		if (mask.getClass() == VectorElement.class) {
+			return divOfIfValid(a, b, (VectorElement) mask);
+		} else {
+			return divOfIfValid(a, b, (ScalarElement) mask);
+		}
+	}
+	public VectorElement divOfIfValid(long a, long b, ScalarElement mask) {
+		if (!mask.isValid())
+			return this;
+		return divOf(a, b);
+	}
+	public VectorElement divOfIfValid(long a, long b, VectorElement mask) {
+		for (int i = 0; i < components.length; i++)
+			components[i].divOfIfValid(a, b, mask.components[i]);
+		return this;
+	}
+	@Override
+	public VectorElement divOfIfValid(double a, long b, Element<?> mask) {
+		if (mask.getClass() == VectorElement.class) {
+			return divOfIfValid(a, b, (VectorElement) mask);
+		} else {
+			return divOfIfValid(a, b, (ScalarElement) mask);
+		}
+	}
+	public VectorElement divOfIfValid(double a, long b, ScalarElement mask) {
+		if (!mask.isValid())
+			return this;
+		return divOf(a, b);
+	}
+	public VectorElement divOfIfValid(double a, long b, VectorElement mask) {
+		for (int i = 0; i < components.length; i++)
+			components[i].divOfIfValid(a, b, mask.components[i]);
+		return this;
+	}
+	@Override
+	public VectorElement divOfIfValid(long a, double b, Element<?> mask) {
+		if (mask.getClass() == VectorElement.class) {
+			return divOfIfValid(a, b, (VectorElement) mask);
+		} else {
+			return divOfIfValid(a, b, (ScalarElement) mask);
+		}
+	}
+	public VectorElement divOfIfValid(long a, double b, ScalarElement mask) {
+		if (!mask.isValid())
+			return this;
+		return divOf(a, b);
+	}
+	public VectorElement divOfIfValid(long a, double b, VectorElement mask) {
+		for (int i = 0; i < components.length; i++)
+			components[i].divOfIfValid(a, b, mask.components[i]);
+		return this;
+	}
+	@Override
+	public VectorElement divOfIfValid(double a, double b, Element<?> mask) {
+		if (mask.getClass() == VectorElement.class) {
+			return divOfIfValid(a, b, (VectorElement) mask);
+		} else {
+			return divOfIfValid(a, b, (ScalarElement) mask);
+		}
+	}
+	public VectorElement divOfIfValid(double a, double b, ScalarElement mask) {
+		if (!mask.isValid())
+			return this;
+		return divOf(a, b);
+	}
+	public VectorElement divOfIfValid(double a, double b, VectorElement mask) {
+		for (int i = 0; i < components.length; i++)
+			components[i].divOfIfValid(a, b, mask.components[i]);
+		return this;
+	}
+	@Override
+	public VectorElement divOfIfValid(Element<?> a, long b) {
+		if (a.getClass() == VectorElement.class) {
+			return divOfIfValid((VectorElement) a, b);
+		} else {
+			return divOfIfValid((ScalarElement) a, b);
+		}
+	}
+	public VectorElement divOfIfValid(ScalarElement a, long b) {
+		if (!a.isValid())
+			return this;
+		return divOf(a, b);
+	}
+	public VectorElement divOfIfValid(VectorElement a, long b) {
+		for (int i = 0; i < components.length; i++)
+			components[i].divOfIfValid(a.components[i], b);
+		return this;
+	}
+	@Override
+	public VectorElement divOfIfValid(Element<?> a, long b, Element<?> mask) {
+		if (a.getClass() == VectorElement.class) {
+			if (mask.getClass() == VectorElement.class)
+				return divOfIfValid((VectorElement) a, b, (VectorElement) mask);
+			else
+				return divOfIfValid((VectorElement) a, b, (ScalarElement) mask);
+		} else {
+			if (mask.getClass() == VectorElement.class)
+				return divOfIfValid((ScalarElement) a, b, (VectorElement) mask);
+			else
+				return divOfIfValid((ScalarElement) a, b, (ScalarElement) mask);
+		}
+	}
+	public VectorElement divOfIfValid(ScalarElement a, long b, ScalarElement mask) {
+		if (!a.isValid() || !mask.isValid())
+			return this;
+		for (int i = 0; i < components.length; i++)
+			components[i].divOf(a, b);
+		return this;
+	}
+	public VectorElement divOfIfValid(ScalarElement a, long b, VectorElement mask) {
+		if (!a.isValid())
+			return this;
+		for (int i = 0; i < components.length; i++)
+			components[i].divOfIfValid(a, b, mask);
+		return this;
+	}
+	public VectorElement divOfIfValid(VectorElement a, long b, ScalarElement mask) {
+		if (!mask.isValid())
+			return this;
+		for (int i = 0; i < components.length; i++)
+			components[i].divOfIfValid(a, b, mask);
+		return this;
+	}
+	public VectorElement divOfIfValid(VectorElement a, long b, VectorElement mask) {
+		for (int i = 0; i < components.length; i++)
+			components[i].divOfIfValid(a.components[i], mask.components[i]);
+		return this;
+	}
+	@Override
+	public VectorElement divOfIfValid(long a, Element<?> b) {
+		if (b.getClass() == VectorElement.class) {
+			return divOfIfValid(a, (VectorElement) b);
+		} else {
+			return divOfIfValid(a, (ScalarElement) b);
+		}
+	}
+	public VectorElement divOfIfValid(long a, ScalarElement b) {
+		if (!b.isValid())
+			return this;
+		return divOf(a, b);
+	}
+	public VectorElement divOfIfValid(long a, VectorElement b) {
+		for (int i = 0; i < components.length; i++)
+			components[i].divOfIfValid(a, b.components[i]);
+		return this;
+	}
+	@Override
+	public VectorElement divOfIfValid(long a, Element<?> b, Element<?> mask) {
+		if (b.getClass() == VectorElement.class) {
+			if (mask.getClass() == VectorElement.class)
+				return divOfIfValid(a, (VectorElement) b, (VectorElement) mask);
+			else
+				return divOfIfValid(a, (VectorElement) b, (ScalarElement) mask);
+		} else {
+			if (mask.getClass() == VectorElement.class)
+				return divOfIfValid(a, (ScalarElement) b, (VectorElement) mask);
+			else
+				return divOfIfValid(a, (ScalarElement) b, (ScalarElement) mask);
+		}
+	}
+	public VectorElement divOfIfValid(long a, ScalarElement b, ScalarElement mask) {
+		if (!b.isValid() || !mask.isValid())
+			return this;
+		return divOf(a, b);
+	}
+	public VectorElement divOfIfValid(long a, ScalarElement b, VectorElement mask) {
+		if (!b.isValid())
+			return this;
+		for (int i = 0; i < components.length; i++)
+			components[i].divOfIfValid(a, b, mask.components[i]);
+		return this;
+	}
+	public VectorElement divOfIfValid(long a, VectorElement b, ScalarElement mask) {
+		if (!mask.isValid())
+			return this;
+		for (int i = 0; i < components.length; i++)
+			components[i].divOfIfValid(a, b.components[i], mask);
+		return this;
+	}
+	public VectorElement divOfIfValid(long a, VectorElement b, VectorElement mask) {
+		for (int i = 0; i < components.length; i++)
+			components[i].divOfIfValid(a, b.components[i], mask.components[i]);
+		return this;
+	}
+	@Override
+	public VectorElement divOfIfValid(Element<?> a, double b) {
+		if (a.getClass() == VectorElement.class) {
+			return divOfIfValid((VectorElement) a, b);
+		} else {
+			return divOfIfValid((ScalarElement) a, b);
+		}
+	}
+	public VectorElement divOfIfValid(ScalarElement a, double b, ScalarElement mask) {
+		if (!a.isValid() || !mask.isValid())
+			return this;
+		return divOf(a, b);
+	}
+	public VectorElement divOfIfValid(ScalarElement a, double b, VectorElement mask) {
+		if (!a.isValid())
+			return this;
+		for (int i = 0; i < components.length; i++)
+			components[i].divOfIfValid(a, b, mask.components[i]);
+		return this;
+	}
+	public VectorElement divOfIfValid(VectorElement a, double b, ScalarElement mask) {
+		if (!mask.isValid())
+			return this;
+		for (int i = 0; i < components.length; i++)
+			components[i].divOfIfValid(a.components[i], b, mask);
+		return this;
+	}
+	public VectorElement divOfIfValid(VectorElement a, double b, VectorElement mask) {
+		for (int i = 0; i < components.length; i++)
+			components[i].divOfIfValid(a.components[i], b, mask.components[i]);
+		return this;
+	}
+	@Override
+	public VectorElement divOfIfValid(Element<?> a, double b, Element<?> mask) {
+		if (a.getClass() == VectorElement.class) {
+			if (mask.getClass() == VectorElement.class)
+				return divOfIfValid((VectorElement) a, b, (VectorElement) mask);
+			else
+				return divOfIfValid((VectorElement) a, b, (ScalarElement) mask);
+		} else {
+			if (mask.getClass() == VectorElement.class)
+				return divOfIfValid((ScalarElement) a, b, (VectorElement) mask);
+			else
+				return divOfIfValid((ScalarElement) a, b, (ScalarElement) mask);
+		}
+	}
+	@Override
+	public VectorElement divOfIfValid(double a, Element<?> b) {
+		if (b.getClass() == VectorElement.class) {
+			return divOfIfValid(a, (VectorElement) b);
+		} else {
+			return divOfIfValid(a, (ScalarElement) b);
+		}
+	}
+	public VectorElement divOfIfValid(double a, ScalarElement b) {
+		if (!b.isValid())
+			return this;
+		return divOf(a, b);
+	}
+	public VectorElement divOfIfValid(double a, VectorElement b) {
+		for (int i = 0; i < components.length; i++)
+			components[i].divOfIfValid(a, b.components[i]);
+		return this;
+	}
+	@Override
+	public VectorElement divOfIfValid(double a, Element<?> b, Element<?> mask) {
+		if (b.getClass() == VectorElement.class) {
+			if (mask.getClass() == VectorElement.class)
+				return divOfIfValid(a, (VectorElement) b, (VectorElement) mask);
+			else
+				return divOfIfValid(a, (VectorElement) b, (ScalarElement) mask);
+		} else {
+			if (mask.getClass() == VectorElement.class)
+				return divOfIfValid(a, (ScalarElement) b, (VectorElement) mask);
+			else
+				return divOfIfValid(a, (ScalarElement) b, (ScalarElement) mask);
+		}
+	}
+	public VectorElement divOfIfValid(double a, ScalarElement b, ScalarElement mask) {
+		if (!b.isValid() || !mask.isValid())
+			return this;
+		return divOf(a, b);
+	}
+	public VectorElement divOfIfValid(double a, ScalarElement b, VectorElement mask) {
+		if (!b.isValid())
+			return this;
+		for (int i = 0; i < components.length; i++)
+			components[i].divOfIfValid(a, b, mask.components[i]);
+		return this;
+	}
+	public VectorElement divOfIfValid(double a, VectorElement b, ScalarElement mask) {
+		if (!mask.isValid())
+			return this;
+		for (int i = 0; i < components.length; i++)
+			components[i].divOfIfValid(a, b.components[i], mask);
+		return this;
+	}
+	public VectorElement divOfIfValid(double a, VectorElement b, VectorElement mask) {
+		for (int i = 0; i < components.length; i++)
+			components[i].divOfIfValid(a, b.components[i], mask.components[i]);
+		return this;
+	}
+	@Override
+	public VectorElement divOfIfValid(Element<?> a, Element<?> b) {
+		if (b.getClass() == VectorElement.class) {
+			if (a.getClass() == VectorElement.class)
+				return divOfIfValid((VectorElement) a, (VectorElement) b);
+			else
+				return divOfIfValid((ScalarElement) a, (VectorElement) b);
+		} else {
+			if (a.getClass() == VectorElement.class)
+				return divOfIfValid((VectorElement) a, (ScalarElement) b);
+			else
+				return divOfIfValid((ScalarElement) a, (ScalarElement) b);
+		}
+	}
+	public VectorElement divOfIfValid(ScalarElement a, ScalarElement b) {
+		if (!a.isValid() || !b.isValid())
+			return this;
+		return divOf(a, b);
+	}
+	public VectorElement divOfIfValid(ScalarElement a, VectorElement b) {
+		if (!b.isValid())
+			return this;
+		for (int i = 0; i < components.length; i++)
+			components[i].divOfIfValid(a, b.components[i]);
+		return this;
+	}
+	public VectorElement divOfIfValid(VectorElement a, ScalarElement b) {
+		if (!b.isValid())
+			return this;
+		for (int i = 0; i < components.length; i++)
+			components[i].divOfIfValid(a.components[i], b);
+		return this;
+	}
+	public VectorElement divOfIfValid(VectorElement a, VectorElement b) {
+		for (int i = 0; i < components.length; i++)
+			components[i].divOfIfValid(a.components[i], b.components[i]);
+		return this;
+	}
+	@Override
+	public VectorElement divOfIfValid(Element<?> a, Element<?> b, Element<?> mask) {
+		if (b.getClass() == VectorElement.class) {
+			if (mask.getClass() == VectorElement.class) {
+				if (a.getClass() == VectorElement.class)
+					return divOfIfValid((VectorElement) a, (VectorElement) b, (VectorElement) mask);
+				else
+					return divOfIfValid((ScalarElement) a, (VectorElement) b, (VectorElement) mask);
+			} else {
+				if (a.getClass() == VectorElement.class)
+					return divOfIfValid((VectorElement) a, (VectorElement) b, (ScalarElement) mask);
+				else
+					return divOfIfValid((ScalarElement) a, (VectorElement) b, (ScalarElement) mask);
+			}
+		} else {
+			if (mask.getClass() == VectorElement.class) {
+				if (a.getClass() == VectorElement.class)
+					return divOfIfValid((VectorElement) a, (ScalarElement) b, (VectorElement) mask);
+				else
+					return divOfIfValid((ScalarElement) a, (ScalarElement) b, (VectorElement) mask);
+			} else {
+				if (a.getClass() == VectorElement.class)
+					return divOfIfValid((VectorElement) a, (ScalarElement) b, (ScalarElement) mask);
+				else
+					return divOfIfValid((ScalarElement) a, (ScalarElement) b, (ScalarElement) mask);
+			}
+		}
+	}
+	public VectorElement divOfIfValid(ScalarElement a, ScalarElement b, ScalarElement mask) {
+		if (!a.isValid() || !b.isValid() || !mask.isValid())
+			return this;
+		for (int i = 0; i < components.length; i++)
+			components[i].divOf(a, b);
+		return this;
+	}
+	public VectorElement divOfIfValid(ScalarElement a, ScalarElement b, VectorElement mask) {
+		if (!a.isValid() || !b.isValid())
+			return this;
+		for (int i = 0; i < components.length; i++)
+			components[i].divOfIfValid(a, b, mask.components[i]);
+		return this;
+	}
+	public VectorElement divOfIfValid(ScalarElement a, VectorElement b, ScalarElement mask) {
+		if (!a.isValid() || !mask.isValid())
+			return this;
+		for (int i = 0; i < components.length; i++)
+			components[i].divOfIfValid(a, b.components[i]);
+		return this;
+	}
+	public VectorElement divOfIfValid(ScalarElement a, VectorElement b, VectorElement mask) {
+		if (!a.isValid())
+			return this;
+		for (int i = 0; i < components.length; i++)
+			components[i].divOfIfValid(a, b.components[i], mask.components[i]);
+		return this;
+	}
+	public VectorElement divOfIfValid(VectorElement a, ScalarElement b, ScalarElement mask) {
+		if (!b.isValid() || !mask.isValid())
+			return this;
+		for (int i = 0; i < components.length; i++)
+			components[i].divOfIfValid(a.components[i], b);
+		return this;
+	}
+	public VectorElement divOfIfValid(VectorElement a, ScalarElement b, VectorElement mask) {
+		if (!b.isValid())
+			return this;
+		for (int i = 0; i < components.length; i++)
+			components[i].divOfIfValid(a.components[i], b, mask.components[i]);
+		return this;
+	}
+	public VectorElement divOfIfValid(VectorElement a, VectorElement b, ScalarElement mask) {
+		if (!mask.isValid())
+			return this;
+		for (int i = 0; i < components.length; i++)
+			components[i].divOfIfValid(a.components[i], b.components[i]);
+		return this;
+	}
+	public VectorElement divOfIfValid(VectorElement a, VectorElement b, VectorElement mask) {
+		for (int i = 0; i < components.length; i++)
+			components[i].divOfIfValid(a.components[i], b.components[i], mask.components[i]);
+		return this;
+	}
+
+	// modulo
+
+	@Override
 	public VectorElement mod(long other) {
 		for (ScalarElement c : components)
 			c.mod(other);
@@ -1276,6 +3651,98 @@ public class VectorElement implements Element<VectorElement> {
 	}
 
 	@Override
+	public VectorElement modIfValid(long other, Element<?> mask) {
+		if (mask.getClass() == VectorElement.class) {
+			modIfValid(other, (VectorElement) mask);
+		} else {
+			modIfValid(other, (ScalarElement) mask);
+		}
+		return this;
+	}
+	public VectorElement modIfValid(long other, ScalarElement mask) {
+		for (int i = 0; i < components.length; i++)
+			components[i].modIfValid(other, mask);
+		return this;
+	}
+	public VectorElement modIfValid(long other, VectorElement mask) {
+		for (int i = 0; i < components.length; i++)
+			components[i].modIfValid(other, mask.components[i]);
+		return this;
+	}
+	@Override
+	public VectorElement modIfValid(double other, Element<?> mask) {
+		if (mask.getClass() == VectorElement.class) {
+			modIfValid(other, (VectorElement) mask);
+		} else {
+			modIfValid(other, (ScalarElement) mask);
+		}
+		return this;
+	}
+	public VectorElement modIfValid(double other, ScalarElement mask) {
+		for (int i = 0; i < components.length; i++)
+			components[i].modIfValid(other, mask);
+		return this;
+	}
+	public VectorElement modIfValid(double other, VectorElement mask) {
+		for (int i = 0; i < components.length; i++)
+			components[i].modIfValid(other, mask.components[i]);
+		return this;
+	}
+	@Override
+	public VectorElement modIfValid(Element<?> other) {
+		if (other.getClass() == VectorElement.class) {
+			modIfValid((VectorElement) other);
+		} else {
+			modIfValid((ScalarElement) other);
+		}
+		return this;
+	}
+	public VectorElement modIfValid(ScalarElement other) {
+		for (int i = 0; i < components.length; i++)
+			components[i].modIfValid(other);
+		return this;
+	}
+	public VectorElement modIfValid(VectorElement other) {
+		for (int i = 0; i < components.length; i++)
+			components[i].modIfValid(other.components[i]);
+		return this;
+	}
+	@Override
+	public VectorElement modIfValid(Element<?> other, Element<?> mask) {
+		if (other.getClass() == VectorElement.class) {
+			if (mask.getClass() == VectorElement.class)
+				return modIfValid((VectorElement) other, (VectorElement) mask);
+			else
+				return modIfValid((VectorElement) other, (ScalarElement) mask);
+		} else {
+			if (mask.getClass() == VectorElement.class)
+				return modIfValid((ScalarElement) other, (VectorElement) mask);
+			else
+				return modIfValid((ScalarElement) other, (ScalarElement) mask);
+		}
+	}
+	public VectorElement modIfValid(ScalarElement other, ScalarElement mask) {
+		for (int i = 0; i < components.length; i++)
+			components[i].modIfValid(other, mask);
+		return this;
+	}
+	public VectorElement modIfValid(ScalarElement other, VectorElement mask) {
+		for (int i = 0; i < components.length; i++)
+			components[i].modIfValid(other, mask.components[i]);
+		return this;
+	}
+	public VectorElement modIfValid(VectorElement other, ScalarElement mask) {
+		for (int i = 0; i < components.length; i++)
+			components[i].modIfValid(other.components[i], mask);
+		return this;
+	}
+	public VectorElement modIfValid(VectorElement other, VectorElement mask) {
+		for (int i = 0; i < components.length; i++)
+			components[i].modIfValid(other.components[i], mask.components[i]);
+		return this;
+	}
+
+	@Override
 	public VectorElement modNew(long other) {
 		VectorElement res = copy();
 		return res.mod(other);
@@ -1288,11 +3755,10 @@ public class VectorElement implements Element<VectorElement> {
 	@Override
 	public VectorElement modNew(Element<?> other) {
 		if (other.getClass() == VectorElement.class) {
-			modNew((VectorElement) other);
+			return modNew((VectorElement) other);
 		} else {
-			modNew((ScalarElement) other);
+			return modNew((ScalarElement) other);
 		}
-		return this;
 	}
 	public VectorElement modNew(ScalarElement other) {
 		VectorElement res = copy();
@@ -1301,6 +3767,85 @@ public class VectorElement implements Element<VectorElement> {
 	public VectorElement modNew(VectorElement other) {
 		VectorElement res = copy();
 		return res.mod(other);
+	}
+
+	@Override
+	public VectorElement modNewIfValid(long other, Element<?> mask) {
+		if (mask.getClass() == VectorElement.class) {
+			return modNewIfValid(other, (VectorElement) mask);
+		} else {
+			return modNewIfValid(other, (ScalarElement) mask);
+		}
+	}
+	public VectorElement modNewIfValid(long other, ScalarElement mask) {
+		VectorElement res = copy();
+		return res.modIfValid(other, mask);
+	}
+	public VectorElement modNewIfValid(long other, VectorElement mask) {
+		VectorElement res = copy();
+		return res.modIfValid(other, mask);
+	}
+	@Override
+	public VectorElement modNewIfValid(double other, Element<?> mask) {
+		if (mask.getClass() == VectorElement.class) {
+			return modNewIfValid(other, (VectorElement) mask);
+		} else {
+			return modNewIfValid(other, (ScalarElement) mask);
+		}
+	}
+	public VectorElement modNewIfValid(double other, ScalarElement mask) {
+		VectorElement res = copy();
+		return res.modIfValid(other, mask);
+	}
+	public VectorElement modNewIfValid(double other, VectorElement mask) {
+		VectorElement res = copy();
+		return res.modIfValid(other, mask);
+	}
+	@Override
+	public VectorElement modNewIfValid(Element<?> other) {
+		if (other.getClass() == VectorElement.class) {
+			return modNewIfValid((VectorElement) other);
+		} else {
+			return modNewIfValid((ScalarElement) other);
+		}
+	}
+	public VectorElement modNewIfValid(ScalarElement other) {
+		VectorElement res = copy();
+		return res.modIfValid(other);
+	}
+	public VectorElement modNewIfValid(VectorElement other) {
+		VectorElement res = copy();
+		return res.modIfValid(other);
+	}
+	@Override
+	public VectorElement modNewIfValid(Element<?> other, Element<?> mask) {
+		if (other.getClass() == VectorElement.class) {
+			if (mask.getClass() == VectorElement.class)
+				return modNewIfValid((VectorElement) other, (VectorElement) mask);
+			else
+				return modNewIfValid((VectorElement) other, (ScalarElement) mask);
+		} else {
+			if (mask.getClass() == VectorElement.class)
+				return modNewIfValid((ScalarElement) other, (VectorElement) mask);
+			else
+				return modNewIfValid((ScalarElement) other, (ScalarElement) mask);
+		}
+	}
+	public VectorElement modNewIfValid(ScalarElement other, ScalarElement mask) {
+		VectorElement res = copy();
+		return res.modIfValid(other, mask);
+	}
+	public VectorElement modNewIfValid(ScalarElement other, VectorElement mask) {
+		VectorElement res = copy();
+		return res.modIfValid(other, mask);
+	}
+	public VectorElement modNewIfValid(VectorElement other, ScalarElement mask) {
+		VectorElement res = copy();
+		return res.modIfValid(other, mask);
+	}
+	public VectorElement modNewIfValid(VectorElement other, VectorElement mask) {
+		VectorElement res = copy();
+		return res.modIfValid(other, mask);
 	}
 
 	@Override
@@ -1397,7 +3942,418 @@ public class VectorElement implements Element<VectorElement> {
 		return this;
 	}
 
+	@Override
+	public VectorElement modOfIfValid(long a, long b, Element<?> mask) {
+		if (mask.getClass() == VectorElement.class) {
+			return modOfIfValid(a, b, (VectorElement) mask);
+		} else {
+			return modOfIfValid(a, b, (ScalarElement) mask);
+		}
+	}
+	public VectorElement modOfIfValid(long a, long b, ScalarElement mask) {
+		if (!mask.isValid())
+			return this;
+		return modOf(a, b);
+	}
+	public VectorElement modOfIfValid(long a, long b, VectorElement mask) {
+		for (int i = 0; i < components.length; i++)
+			components[i].modOfIfValid(a, b, mask.components[i]);
+		return this;
+	}
+	@Override
+	public VectorElement modOfIfValid(double a, long b, Element<?> mask) {
+		if (mask.getClass() == VectorElement.class) {
+			return modOfIfValid(a, b, (VectorElement) mask);
+		} else {
+			return modOfIfValid(a, b, (ScalarElement) mask);
+		}
+	}
+	public VectorElement modOfIfValid(double a, long b, ScalarElement mask) {
+		if (!mask.isValid())
+			return this;
+		return modOf(a, b);
+	}
+	public VectorElement modOfIfValid(double a, long b, VectorElement mask) {
+		for (int i = 0; i < components.length; i++)
+			components[i].modOfIfValid(a, b, mask.components[i]);
+		return this;
+	}
+	@Override
+	public VectorElement modOfIfValid(long a, double b, Element<?> mask) {
+		if (mask.getClass() == VectorElement.class) {
+			return modOfIfValid(a, b, (VectorElement) mask);
+		} else {
+			return modOfIfValid(a, b, (ScalarElement) mask);
+		}
+	}
+	public VectorElement modOfIfValid(long a, double b, ScalarElement mask) {
+		if (!mask.isValid())
+			return this;
+		return modOf(a, b);
+	}
+	public VectorElement modOfIfValid(long a, double b, VectorElement mask) {
+		for (int i = 0; i < components.length; i++)
+			components[i].modOfIfValid(a, b, mask.components[i]);
+		return this;
+	}
+	@Override
+	public VectorElement modOfIfValid(double a, double b, Element<?> mask) {
+		if (mask.getClass() == VectorElement.class) {
+			return modOfIfValid(a, b, (VectorElement) mask);
+		} else {
+			return modOfIfValid(a, b, (ScalarElement) mask);
+		}
+	}
+	public VectorElement modOfIfValid(double a, double b, ScalarElement mask) {
+		if (!mask.isValid())
+			return this;
+		return modOf(a, b);
+	}
+	public VectorElement modOfIfValid(double a, double b, VectorElement mask) {
+		for (int i = 0; i < components.length; i++)
+			components[i].modOfIfValid(a, b, mask.components[i]);
+		return this;
+	}
+	@Override
+	public VectorElement modOfIfValid(Element<?> a, long b) {
+		if (a.getClass() == VectorElement.class) {
+			return modOfIfValid((VectorElement) a, b);
+		} else {
+			return modOfIfValid((ScalarElement) a, b);
+		}
+	}
+	public VectorElement modOfIfValid(ScalarElement a, long b) {
+		if (!a.isValid())
+			return this;
+		return modOf(a, b);
+	}
+	public VectorElement modOfIfValid(VectorElement a, long b) {
+		for (int i = 0; i < components.length; i++)
+			components[i].modOfIfValid(a.components[i], b);
+		return this;
+	}
+	@Override
+	public VectorElement modOfIfValid(Element<?> a, long b, Element<?> mask) {
+		if (a.getClass() == VectorElement.class) {
+			if (mask.getClass() == VectorElement.class)
+				return modOfIfValid((VectorElement) a, b, (VectorElement) mask);
+			else
+				return modOfIfValid((VectorElement) a, b, (ScalarElement) mask);
+		} else {
+			if (mask.getClass() == VectorElement.class)
+				return modOfIfValid((ScalarElement) a, b, (VectorElement) mask);
+			else
+				return modOfIfValid((ScalarElement) a, b, (ScalarElement) mask);
+		}
+	}
+	public VectorElement modOfIfValid(ScalarElement a, long b, ScalarElement mask) {
+		if (!a.isValid() || !mask.isValid())
+			return this;
+		for (int i = 0; i < components.length; i++)
+			components[i].modOf(a, b);
+		return this;
+	}
+	public VectorElement modOfIfValid(ScalarElement a, long b, VectorElement mask) {
+		if (!a.isValid())
+			return this;
+		for (int i = 0; i < components.length; i++)
+			components[i].modOfIfValid(a, b, mask);
+		return this;
+	}
+	public VectorElement modOfIfValid(VectorElement a, long b, ScalarElement mask) {
+		if (!mask.isValid())
+			return this;
+		for (int i = 0; i < components.length; i++)
+			components[i].modOfIfValid(a, b, mask);
+		return this;
+	}
+	public VectorElement modOfIfValid(VectorElement a, long b, VectorElement mask) {
+		for (int i = 0; i < components.length; i++)
+			components[i].modOfIfValid(a.components[i], mask.components[i]);
+		return this;
+	}
+	@Override
+	public VectorElement modOfIfValid(long a, Element<?> b) {
+		if (b.getClass() == VectorElement.class) {
+			return modOfIfValid(a, (VectorElement) b);
+		} else {
+			return modOfIfValid(a, (ScalarElement) b);
+		}
+	}
+	public VectorElement modOfIfValid(long a, ScalarElement b) {
+		if (!b.isValid())
+			return this;
+		return modOf(a, b);
+	}
+	public VectorElement modOfIfValid(long a, VectorElement b) {
+		for (int i = 0; i < components.length; i++)
+			components[i].modOfIfValid(a, b.components[i]);
+		return this;
+	}
+	@Override
+	public VectorElement modOfIfValid(long a, Element<?> b, Element<?> mask) {
+		if (b.getClass() == VectorElement.class) {
+			if (mask.getClass() == VectorElement.class)
+				return modOfIfValid(a, (VectorElement) b, (VectorElement) mask);
+			else
+				return modOfIfValid(a, (VectorElement) b, (ScalarElement) mask);
+		} else {
+			if (mask.getClass() == VectorElement.class)
+				return modOfIfValid(a, (ScalarElement) b, (VectorElement) mask);
+			else
+				return modOfIfValid(a, (ScalarElement) b, (ScalarElement) mask);
+		}
+	}
+	public VectorElement modOfIfValid(long a, ScalarElement b, ScalarElement mask) {
+		if (!b.isValid() || !mask.isValid())
+			return this;
+		return modOf(a, b);
+	}
+	public VectorElement modOfIfValid(long a, ScalarElement b, VectorElement mask) {
+		if (!b.isValid())
+			return this;
+		for (int i = 0; i < components.length; i++)
+			components[i].modOfIfValid(a, b, mask.components[i]);
+		return this;
+	}
+	public VectorElement modOfIfValid(long a, VectorElement b, ScalarElement mask) {
+		if (!mask.isValid())
+			return this;
+		for (int i = 0; i < components.length; i++)
+			components[i].modOfIfValid(a, b.components[i], mask);
+		return this;
+	}
+	public VectorElement modOfIfValid(long a, VectorElement b, VectorElement mask) {
+		for (int i = 0; i < components.length; i++)
+			components[i].modOfIfValid(a, b.components[i], mask.components[i]);
+		return this;
+	}
+	@Override
+	public VectorElement modOfIfValid(Element<?> a, double b) {
+		if (a.getClass() == VectorElement.class) {
+			return modOfIfValid((VectorElement) a, b);
+		} else {
+			return modOfIfValid((ScalarElement) a, b);
+		}
+	}
+	public VectorElement modOfIfValid(ScalarElement a, double b, ScalarElement mask) {
+		if (!a.isValid() || !mask.isValid())
+			return this;
+		return modOf(a, b);
+	}
+	public VectorElement modOfIfValid(ScalarElement a, double b, VectorElement mask) {
+		if (!a.isValid())
+			return this;
+		for (int i = 0; i < components.length; i++)
+			components[i].modOfIfValid(a, b, mask.components[i]);
+		return this;
+	}
+	public VectorElement modOfIfValid(VectorElement a, double b, ScalarElement mask) {
+		if (!mask.isValid())
+			return this;
+		for (int i = 0; i < components.length; i++)
+			components[i].modOfIfValid(a.components[i], b, mask);
+		return this;
+	}
+	public VectorElement modOfIfValid(VectorElement a, double b, VectorElement mask) {
+		for (int i = 0; i < components.length; i++)
+			components[i].modOfIfValid(a.components[i], b, mask.components[i]);
+		return this;
+	}
+	@Override
+	public VectorElement modOfIfValid(Element<?> a, double b, Element<?> mask) {
+		if (a.getClass() == VectorElement.class) {
+			if (mask.getClass() == VectorElement.class)
+				return modOfIfValid((VectorElement) a, b, (VectorElement) mask);
+			else
+				return modOfIfValid((VectorElement) a, b, (ScalarElement) mask);
+		} else {
+			if (mask.getClass() == VectorElement.class)
+				return modOfIfValid((ScalarElement) a, b, (VectorElement) mask);
+			else
+				return modOfIfValid((ScalarElement) a, b, (ScalarElement) mask);
+		}
+	}
+	@Override
+	public VectorElement modOfIfValid(double a, Element<?> b) {
+		if (b.getClass() == VectorElement.class) {
+			return modOfIfValid(a, (VectorElement) b);
+		} else {
+			return modOfIfValid(a, (ScalarElement) b);
+		}
+	}
+	public VectorElement modOfIfValid(double a, ScalarElement b) {
+		if (!b.isValid())
+			return this;
+		return modOf(a, b);
+	}
+	public VectorElement modOfIfValid(double a, VectorElement b) {
+		for (int i = 0; i < components.length; i++)
+			components[i].modOfIfValid(a, b.components[i]);
+		return this;
+	}
+	@Override
+	public VectorElement modOfIfValid(double a, Element<?> b, Element<?> mask) {
+		if (b.getClass() == VectorElement.class) {
+			if (mask.getClass() == VectorElement.class)
+				return modOfIfValid(a, (VectorElement) b, (VectorElement) mask);
+			else
+				return modOfIfValid(a, (VectorElement) b, (ScalarElement) mask);
+		} else {
+			if (mask.getClass() == VectorElement.class)
+				return modOfIfValid(a, (ScalarElement) b, (VectorElement) mask);
+			else
+				return modOfIfValid(a, (ScalarElement) b, (ScalarElement) mask);
+		}
+	}
+	public VectorElement modOfIfValid(double a, ScalarElement b, ScalarElement mask) {
+		if (!b.isValid() || !mask.isValid())
+			return this;
+		return modOf(a, b);
+	}
+	public VectorElement modOfIfValid(double a, ScalarElement b, VectorElement mask) {
+		if (!b.isValid())
+			return this;
+		for (int i = 0; i < components.length; i++)
+			components[i].modOfIfValid(a, b, mask.components[i]);
+		return this;
+	}
+	public VectorElement modOfIfValid(double a, VectorElement b, ScalarElement mask) {
+		if (!mask.isValid())
+			return this;
+		for (int i = 0; i < components.length; i++)
+			components[i].modOfIfValid(a, b.components[i], mask);
+		return this;
+	}
+	public VectorElement modOfIfValid(double a, VectorElement b, VectorElement mask) {
+		for (int i = 0; i < components.length; i++)
+			components[i].modOfIfValid(a, b.components[i], mask.components[i]);
+		return this;
+	}
+	@Override
+	public VectorElement modOfIfValid(Element<?> a, Element<?> b) {
+		if (b.getClass() == VectorElement.class) {
+			if (a.getClass() == VectorElement.class)
+				return modOfIfValid((VectorElement) a, (VectorElement) b);
+			else
+				return modOfIfValid((ScalarElement) a, (VectorElement) b);
+		} else {
+			if (a.getClass() == VectorElement.class)
+				return modOfIfValid((VectorElement) a, (ScalarElement) b);
+			else
+				return modOfIfValid((ScalarElement) a, (ScalarElement) b);
+		}
+	}
+	public VectorElement modOfIfValid(ScalarElement a, ScalarElement b) {
+		if (!a.isValid() || !b.isValid())
+			return this;
+		return modOf(a, b);
+	}
+	public VectorElement modOfIfValid(ScalarElement a, VectorElement b) {
+		if (!b.isValid())
+			return this;
+		for (int i = 0; i < components.length; i++)
+			components[i].modOfIfValid(a, b.components[i]);
+		return this;
+	}
+	public VectorElement modOfIfValid(VectorElement a, ScalarElement b) {
+		if (!b.isValid())
+			return this;
+		for (int i = 0; i < components.length; i++)
+			components[i].modOfIfValid(a.components[i], b);
+		return this;
+	}
+	public VectorElement modOfIfValid(VectorElement a, VectorElement b) {
+		for (int i = 0; i < components.length; i++)
+			components[i].modOfIfValid(a.components[i], b.components[i]);
+		return this;
+	}
+	@Override
+	public VectorElement modOfIfValid(Element<?> a, Element<?> b, Element<?> mask) {
+		if (b.getClass() == VectorElement.class) {
+			if (mask.getClass() == VectorElement.class) {
+				if (a.getClass() == VectorElement.class)
+					return modOfIfValid((VectorElement) a, (VectorElement) b, (VectorElement) mask);
+				else
+					return modOfIfValid((ScalarElement) a, (VectorElement) b, (VectorElement) mask);
+			} else {
+				if (a.getClass() == VectorElement.class)
+					return modOfIfValid((VectorElement) a, (VectorElement) b, (ScalarElement) mask);
+				else
+					return modOfIfValid((ScalarElement) a, (VectorElement) b, (ScalarElement) mask);
+			}
+		} else {
+			if (mask.getClass() == VectorElement.class) {
+				if (a.getClass() == VectorElement.class)
+					return modOfIfValid((VectorElement) a, (ScalarElement) b, (VectorElement) mask);
+				else
+					return modOfIfValid((ScalarElement) a, (ScalarElement) b, (VectorElement) mask);
+			} else {
+				if (a.getClass() == VectorElement.class)
+					return modOfIfValid((VectorElement) a, (ScalarElement) b, (ScalarElement) mask);
+				else
+					return modOfIfValid((ScalarElement) a, (ScalarElement) b, (ScalarElement) mask);
+			}
+		}
+	}
+	public VectorElement modOfIfValid(ScalarElement a, ScalarElement b, ScalarElement mask) {
+		if (!a.isValid() || !b.isValid() || !mask.isValid())
+			return this;
+		for (int i = 0; i < components.length; i++)
+			components[i].modOf(a, b);
+		return this;
+	}
+	public VectorElement modOfIfValid(ScalarElement a, ScalarElement b, VectorElement mask) {
+		if (!a.isValid() || !b.isValid())
+			return this;
+		for (int i = 0; i < components.length; i++)
+			components[i].modOfIfValid(a, b, mask.components[i]);
+		return this;
+	}
+	public VectorElement modOfIfValid(ScalarElement a, VectorElement b, ScalarElement mask) {
+		if (!a.isValid() || !mask.isValid())
+			return this;
+		for (int i = 0; i < components.length; i++)
+			components[i].modOfIfValid(a, b.components[i]);
+		return this;
+	}
+	public VectorElement modOfIfValid(ScalarElement a, VectorElement b, VectorElement mask) {
+		if (!a.isValid())
+			return this;
+		for (int i = 0; i < components.length; i++)
+			components[i].modOfIfValid(a, b.components[i], mask.components[i]);
+		return this;
+	}
+	public VectorElement modOfIfValid(VectorElement a, ScalarElement b, ScalarElement mask) {
+		if (!b.isValid() || !mask.isValid())
+			return this;
+		for (int i = 0; i < components.length; i++)
+			components[i].modOfIfValid(a.components[i], b);
+		return this;
+	}
+	public VectorElement modOfIfValid(VectorElement a, ScalarElement b, VectorElement mask) {
+		if (!b.isValid())
+			return this;
+		for (int i = 0; i < components.length; i++)
+			components[i].modOfIfValid(a.components[i], b, mask.components[i]);
+		return this;
+	}
+	public VectorElement modOfIfValid(VectorElement a, VectorElement b, ScalarElement mask) {
+		if (!mask.isValid())
+			return this;
+		for (int i = 0; i < components.length; i++)
+			components[i].modOfIfValid(a.components[i], b.components[i]);
+		return this;
+	}
+	public VectorElement modOfIfValid(VectorElement a, VectorElement b, VectorElement mask) {
+		for (int i = 0; i < components.length; i++)
+			components[i].modOfIfValid(a.components[i], b.components[i], mask.components[i]);
+		return this;
+	}
+
 	// BOUNDING
+
+	// minimum
 
 	@Override
 	public VectorElement min(long other) {
@@ -1432,6 +4388,98 @@ public class VectorElement implements Element<VectorElement> {
 	}
 
 	@Override
+	public VectorElement minIfValid(long other, Element<?> mask) {
+		if (mask.getClass() == VectorElement.class) {
+			minIfValid(other, (VectorElement) mask);
+		} else {
+			minIfValid(other, (ScalarElement) mask);
+		}
+		return this;
+	}
+	public VectorElement minIfValid(long other, ScalarElement mask) {
+		for (int i = 0; i < components.length; i++)
+			components[i].minIfValid(other, mask);
+		return this;
+	}
+	public VectorElement minIfValid(long other, VectorElement mask) {
+		for (int i = 0; i < components.length; i++)
+			components[i].minIfValid(other, mask.components[i]);
+		return this;
+	}
+	@Override
+	public VectorElement minIfValid(double other, Element<?> mask) {
+		if (mask.getClass() == VectorElement.class) {
+			minIfValid(other, (VectorElement) mask);
+		} else {
+			minIfValid(other, (ScalarElement) mask);
+		}
+		return this;
+	}
+	public VectorElement minIfValid(double other, ScalarElement mask) {
+		for (int i = 0; i < components.length; i++)
+			components[i].minIfValid(other, mask);
+		return this;
+	}
+	public VectorElement minIfValid(double other, VectorElement mask) {
+		for (int i = 0; i < components.length; i++)
+			components[i].minIfValid(other, mask.components[i]);
+		return this;
+	}
+	@Override
+	public VectorElement minIfValid(Element<?> other) {
+		if (other.getClass() == VectorElement.class) {
+			minIfValid((VectorElement) other);
+		} else {
+			minIfValid((ScalarElement) other);
+		}
+		return this;
+	}
+	public VectorElement minIfValid(ScalarElement other) {
+		for (int i = 0; i < components.length; i++)
+			components[i].minIfValid(other);
+		return this;
+	}
+	public VectorElement minIfValid(VectorElement other) {
+		for (int i = 0; i < components.length; i++)
+			components[i].minIfValid(other.components[i]);
+		return this;
+	}
+	@Override
+	public VectorElement minIfValid(Element<?> other, Element<?> mask) {
+		if (other.getClass() == VectorElement.class) {
+			if (mask.getClass() == VectorElement.class)
+				return minIfValid((VectorElement) other, (VectorElement) mask);
+			else
+				return minIfValid((VectorElement) other, (ScalarElement) mask);
+		} else {
+			if (mask.getClass() == VectorElement.class)
+				return minIfValid((ScalarElement) other, (VectorElement) mask);
+			else
+				return minIfValid((ScalarElement) other, (ScalarElement) mask);
+		}
+	}
+	public VectorElement minIfValid(ScalarElement other, ScalarElement mask) {
+		for (int i = 0; i < components.length; i++)
+			components[i].minIfValid(other, mask);
+		return this;
+	}
+	public VectorElement minIfValid(ScalarElement other, VectorElement mask) {
+		for (int i = 0; i < components.length; i++)
+			components[i].minIfValid(other, mask.components[i]);
+		return this;
+	}
+	public VectorElement minIfValid(VectorElement other, ScalarElement mask) {
+		for (int i = 0; i < components.length; i++)
+			components[i].minIfValid(other.components[i], mask);
+		return this;
+	}
+	public VectorElement minIfValid(VectorElement other, VectorElement mask) {
+		for (int i = 0; i < components.length; i++)
+			components[i].minIfValid(other.components[i], mask.components[i]);
+		return this;
+	}
+
+	@Override
 	public VectorElement minNew(long other) {
 		VectorElement res = copy();
 		return res.min(other);
@@ -1444,11 +4492,10 @@ public class VectorElement implements Element<VectorElement> {
 	@Override
 	public VectorElement minNew(Element<?> other) {
 		if (other.getClass() == VectorElement.class) {
-			minNew((VectorElement) other);
+			return minNew((VectorElement) other);
 		} else {
-			minNew((ScalarElement) other);
+			return minNew((ScalarElement) other);
 		}
-		return this;
 	}
 	public VectorElement minNew(ScalarElement other) {
 		VectorElement res = copy();
@@ -1457,6 +4504,85 @@ public class VectorElement implements Element<VectorElement> {
 	public VectorElement minNew(VectorElement other) {
 		VectorElement res = copy();
 		return res.min(other);
+	}
+
+	@Override
+	public VectorElement minNewIfValid(long other, Element<?> mask) {
+		if (mask.getClass() == VectorElement.class) {
+			return minNewIfValid(other, (VectorElement) mask);
+		} else {
+			return minNewIfValid(other, (ScalarElement) mask);
+		}
+	}
+	public VectorElement minNewIfValid(long other, ScalarElement mask) {
+		VectorElement res = copy();
+		return res.minIfValid(other, mask);
+	}
+	public VectorElement minNewIfValid(long other, VectorElement mask) {
+		VectorElement res = copy();
+		return res.minIfValid(other, mask);
+	}
+	@Override
+	public VectorElement minNewIfValid(double other, Element<?> mask) {
+		if (mask.getClass() == VectorElement.class) {
+			return minNewIfValid(other, (VectorElement) mask);
+		} else {
+			return minNewIfValid(other, (ScalarElement) mask);
+		}
+	}
+	public VectorElement minNewIfValid(double other, ScalarElement mask) {
+		VectorElement res = copy();
+		return res.minIfValid(other, mask);
+	}
+	public VectorElement minNewIfValid(double other, VectorElement mask) {
+		VectorElement res = copy();
+		return res.minIfValid(other, mask);
+	}
+	@Override
+	public VectorElement minNewIfValid(Element<?> other) {
+		if (other.getClass() == VectorElement.class) {
+			return minNewIfValid((VectorElement) other);
+		} else {
+			return minNewIfValid((ScalarElement) other);
+		}
+	}
+	public VectorElement minNewIfValid(ScalarElement other) {
+		VectorElement res = copy();
+		return res.minIfValid(other);
+	}
+	public VectorElement minNewIfValid(VectorElement other) {
+		VectorElement res = copy();
+		return res.minIfValid(other);
+	}
+	@Override
+	public VectorElement minNewIfValid(Element<?> other, Element<?> mask) {
+		if (other.getClass() == VectorElement.class) {
+			if (mask.getClass() == VectorElement.class)
+				return minNewIfValid((VectorElement) other, (VectorElement) mask);
+			else
+				return minNewIfValid((VectorElement) other, (ScalarElement) mask);
+		} else {
+			if (mask.getClass() == VectorElement.class)
+				return minNewIfValid((ScalarElement) other, (VectorElement) mask);
+			else
+				return minNewIfValid((ScalarElement) other, (ScalarElement) mask);
+		}
+	}
+	public VectorElement minNewIfValid(ScalarElement other, ScalarElement mask) {
+		VectorElement res = copy();
+		return res.minIfValid(other, mask);
+	}
+	public VectorElement minNewIfValid(ScalarElement other, VectorElement mask) {
+		VectorElement res = copy();
+		return res.minIfValid(other, mask);
+	}
+	public VectorElement minNewIfValid(VectorElement other, ScalarElement mask) {
+		VectorElement res = copy();
+		return res.minIfValid(other, mask);
+	}
+	public VectorElement minNewIfValid(VectorElement other, VectorElement mask) {
+		VectorElement res = copy();
+		return res.minIfValid(other, mask);
 	}
 
 	@Override
@@ -1554,6 +4680,417 @@ public class VectorElement implements Element<VectorElement> {
 	}
 
 	@Override
+	public VectorElement minOfIfValid(long a, long b, Element<?> mask) {
+		if (mask.getClass() == VectorElement.class) {
+			return minOfIfValid(a, b, (VectorElement) mask);
+		} else {
+			return minOfIfValid(a, b, (ScalarElement) mask);
+		}
+	}
+	public VectorElement minOfIfValid(long a, long b, ScalarElement mask) {
+		if (!mask.isValid())
+			return this;
+		return minOf(a, b);
+	}
+	public VectorElement minOfIfValid(long a, long b, VectorElement mask) {
+		for (int i = 0; i < components.length; i++)
+			components[i].minOfIfValid(a, b, mask.components[i]);
+		return this;
+	}
+	@Override
+	public VectorElement minOfIfValid(double a, long b, Element<?> mask) {
+		if (mask.getClass() == VectorElement.class) {
+			return minOfIfValid(a, b, (VectorElement) mask);
+		} else {
+			return minOfIfValid(a, b, (ScalarElement) mask);
+		}
+	}
+	public VectorElement minOfIfValid(double a, long b, ScalarElement mask) {
+		if (!mask.isValid())
+			return this;
+		return minOf(a, b);
+	}
+	public VectorElement minOfIfValid(double a, long b, VectorElement mask) {
+		for (int i = 0; i < components.length; i++)
+			components[i].minOfIfValid(a, b, mask.components[i]);
+		return this;
+	}
+	@Override
+	public VectorElement minOfIfValid(long a, double b, Element<?> mask) {
+		if (mask.getClass() == VectorElement.class) {
+			return minOfIfValid(a, b, (VectorElement) mask);
+		} else {
+			return minOfIfValid(a, b, (ScalarElement) mask);
+		}
+	}
+	public VectorElement minOfIfValid(long a, double b, ScalarElement mask) {
+		if (!mask.isValid())
+			return this;
+		return minOf(a, b);
+	}
+	public VectorElement minOfIfValid(long a, double b, VectorElement mask) {
+		for (int i = 0; i < components.length; i++)
+			components[i].minOfIfValid(a, b, mask.components[i]);
+		return this;
+	}
+	@Override
+	public VectorElement minOfIfValid(double a, double b, Element<?> mask) {
+		if (mask.getClass() == VectorElement.class) {
+			return minOfIfValid(a, b, (VectorElement) mask);
+		} else {
+			return minOfIfValid(a, b, (ScalarElement) mask);
+		}
+	}
+	public VectorElement minOfIfValid(double a, double b, ScalarElement mask) {
+		if (!mask.isValid())
+			return this;
+		return minOf(a, b);
+	}
+	public VectorElement minOfIfValid(double a, double b, VectorElement mask) {
+		for (int i = 0; i < components.length; i++)
+			components[i].minOfIfValid(a, b, mask.components[i]);
+		return this;
+	}
+	@Override
+	public VectorElement minOfIfValid(Element<?> a, long b) {
+		if (a.getClass() == VectorElement.class) {
+			return minOfIfValid((VectorElement) a, b);
+		} else {
+			return minOfIfValid((ScalarElement) a, b);
+		}
+	}
+	public VectorElement minOfIfValid(ScalarElement a, long b) {
+		if (!a.isValid())
+			return this;
+		return minOf(a, b);
+	}
+	public VectorElement minOfIfValid(VectorElement a, long b) {
+		for (int i = 0; i < components.length; i++)
+			components[i].minOfIfValid(a.components[i], b);
+		return this;
+	}
+	@Override
+	public VectorElement minOfIfValid(Element<?> a, long b, Element<?> mask) {
+		if (a.getClass() == VectorElement.class) {
+			if (mask.getClass() == VectorElement.class)
+				return minOfIfValid((VectorElement) a, b, (VectorElement) mask);
+			else
+				return minOfIfValid((VectorElement) a, b, (ScalarElement) mask);
+		} else {
+			if (mask.getClass() == VectorElement.class)
+				return minOfIfValid((ScalarElement) a, b, (VectorElement) mask);
+			else
+				return minOfIfValid((ScalarElement) a, b, (ScalarElement) mask);
+		}
+	}
+	public VectorElement minOfIfValid(ScalarElement a, long b, ScalarElement mask) {
+		if (!a.isValid() || !mask.isValid())
+			return this;
+		for (int i = 0; i < components.length; i++)
+			components[i].minOf(a, b);
+		return this;
+	}
+	public VectorElement minOfIfValid(ScalarElement a, long b, VectorElement mask) {
+		if (!a.isValid())
+			return this;
+		for (int i = 0; i < components.length; i++)
+			components[i].minOfIfValid(a, b, mask);
+		return this;
+	}
+	public VectorElement minOfIfValid(VectorElement a, long b, ScalarElement mask) {
+		if (!mask.isValid())
+			return this;
+		for (int i = 0; i < components.length; i++)
+			components[i].minOfIfValid(a, b, mask);
+		return this;
+	}
+	public VectorElement minOfIfValid(VectorElement a, long b, VectorElement mask) {
+		for (int i = 0; i < components.length; i++)
+			components[i].minOfIfValid(a.components[i], mask.components[i]);
+		return this;
+	}
+	@Override
+	public VectorElement minOfIfValid(long a, Element<?> b) {
+		if (b.getClass() == VectorElement.class) {
+			return minOfIfValid(a, (VectorElement) b);
+		} else {
+			return minOfIfValid(a, (ScalarElement) b);
+		}
+	}
+	public VectorElement minOfIfValid(long a, ScalarElement b) {
+		if (!b.isValid())
+			return this;
+		return minOf(a, b);
+	}
+	public VectorElement minOfIfValid(long a, VectorElement b) {
+		for (int i = 0; i < components.length; i++)
+			components[i].minOfIfValid(a, b.components[i]);
+		return this;
+	}
+	@Override
+	public VectorElement minOfIfValid(long a, Element<?> b, Element<?> mask) {
+		if (b.getClass() == VectorElement.class) {
+			if (mask.getClass() == VectorElement.class)
+				return minOfIfValid(a, (VectorElement) b, (VectorElement) mask);
+			else
+				return minOfIfValid(a, (VectorElement) b, (ScalarElement) mask);
+		} else {
+			if (mask.getClass() == VectorElement.class)
+				return minOfIfValid(a, (ScalarElement) b, (VectorElement) mask);
+			else
+				return minOfIfValid(a, (ScalarElement) b, (ScalarElement) mask);
+		}
+	}
+	public VectorElement minOfIfValid(long a, ScalarElement b, ScalarElement mask) {
+		if (!b.isValid() || !mask.isValid())
+			return this;
+		return minOf(a, b);
+	}
+	public VectorElement minOfIfValid(long a, ScalarElement b, VectorElement mask) {
+		if (!b.isValid())
+			return this;
+		for (int i = 0; i < components.length; i++)
+			components[i].minOfIfValid(a, b, mask.components[i]);
+		return this;
+	}
+	public VectorElement minOfIfValid(long a, VectorElement b, ScalarElement mask) {
+		if (!mask.isValid())
+			return this;
+		for (int i = 0; i < components.length; i++)
+			components[i].minOfIfValid(a, b.components[i], mask);
+		return this;
+	}
+	public VectorElement minOfIfValid(long a, VectorElement b, VectorElement mask) {
+		for (int i = 0; i < components.length; i++)
+			components[i].minOfIfValid(a, b.components[i], mask.components[i]);
+		return this;
+	}
+	@Override
+	public VectorElement minOfIfValid(Element<?> a, double b) {
+		if (a.getClass() == VectorElement.class) {
+			return minOfIfValid((VectorElement) a, b);
+		} else {
+			return minOfIfValid((ScalarElement) a, b);
+		}
+	}
+	public VectorElement minOfIfValid(ScalarElement a, double b, ScalarElement mask) {
+		if (!a.isValid() || !mask.isValid())
+			return this;
+		return minOf(a, b);
+	}
+	public VectorElement minOfIfValid(ScalarElement a, double b, VectorElement mask) {
+		if (!a.isValid())
+			return this;
+		for (int i = 0; i < components.length; i++)
+			components[i].minOfIfValid(a, b, mask.components[i]);
+		return this;
+	}
+	public VectorElement minOfIfValid(VectorElement a, double b, ScalarElement mask) {
+		if (!mask.isValid())
+			return this;
+		for (int i = 0; i < components.length; i++)
+			components[i].minOfIfValid(a.components[i], b, mask);
+		return this;
+	}
+	public VectorElement minOfIfValid(VectorElement a, double b, VectorElement mask) {
+		for (int i = 0; i < components.length; i++)
+			components[i].minOfIfValid(a.components[i], b, mask.components[i]);
+		return this;
+	}
+	@Override
+	public VectorElement minOfIfValid(Element<?> a, double b, Element<?> mask) {
+		if (a.getClass() == VectorElement.class) {
+			if (mask.getClass() == VectorElement.class)
+				return minOfIfValid((VectorElement) a, b, (VectorElement) mask);
+			else
+				return minOfIfValid((VectorElement) a, b, (ScalarElement) mask);
+		} else {
+			if (mask.getClass() == VectorElement.class)
+				return minOfIfValid((ScalarElement) a, b, (VectorElement) mask);
+			else
+				return minOfIfValid((ScalarElement) a, b, (ScalarElement) mask);
+		}
+	}
+	@Override
+	public VectorElement minOfIfValid(double a, Element<?> b) {
+		if (b.getClass() == VectorElement.class) {
+			return minOfIfValid(a, (VectorElement) b);
+		} else {
+			return minOfIfValid(a, (ScalarElement) b);
+		}
+	}
+	public VectorElement minOfIfValid(double a, ScalarElement b) {
+		if (!b.isValid())
+			return this;
+		return minOf(a, b);
+	}
+	public VectorElement minOfIfValid(double a, VectorElement b) {
+		for (int i = 0; i < components.length; i++)
+			components[i].minOfIfValid(a, b.components[i]);
+		return this;
+	}
+	@Override
+	public VectorElement minOfIfValid(double a, Element<?> b, Element<?> mask) {
+		if (b.getClass() == VectorElement.class) {
+			if (mask.getClass() == VectorElement.class)
+				return minOfIfValid(a, (VectorElement) b, (VectorElement) mask);
+			else
+				return minOfIfValid(a, (VectorElement) b, (ScalarElement) mask);
+		} else {
+			if (mask.getClass() == VectorElement.class)
+				return minOfIfValid(a, (ScalarElement) b, (VectorElement) mask);
+			else
+				return minOfIfValid(a, (ScalarElement) b, (ScalarElement) mask);
+		}
+	}
+	public VectorElement minOfIfValid(double a, ScalarElement b, ScalarElement mask) {
+		if (!b.isValid() || !mask.isValid())
+			return this;
+		return minOf(a, b);
+	}
+	public VectorElement minOfIfValid(double a, ScalarElement b, VectorElement mask) {
+		if (!b.isValid())
+			return this;
+		for (int i = 0; i < components.length; i++)
+			components[i].minOfIfValid(a, b, mask.components[i]);
+		return this;
+	}
+	public VectorElement minOfIfValid(double a, VectorElement b, ScalarElement mask) {
+		if (!mask.isValid())
+			return this;
+		for (int i = 0; i < components.length; i++)
+			components[i].minOfIfValid(a, b.components[i], mask);
+		return this;
+	}
+	public VectorElement minOfIfValid(double a, VectorElement b, VectorElement mask) {
+		for (int i = 0; i < components.length; i++)
+			components[i].minOfIfValid(a, b.components[i], mask.components[i]);
+		return this;
+	}
+	@Override
+	public VectorElement minOfIfValid(Element<?> a, Element<?> b) {
+		if (b.getClass() == VectorElement.class) {
+			if (a.getClass() == VectorElement.class)
+				return minOfIfValid((VectorElement) a, (VectorElement) b);
+			else
+				return minOfIfValid((ScalarElement) a, (VectorElement) b);
+		} else {
+			if (a.getClass() == VectorElement.class)
+				return minOfIfValid((VectorElement) a, (ScalarElement) b);
+			else
+				return minOfIfValid((ScalarElement) a, (ScalarElement) b);
+		}
+	}
+	public VectorElement minOfIfValid(ScalarElement a, ScalarElement b) {
+		if (!a.isValid() || !b.isValid())
+			return this;
+		return minOf(a, b);
+	}
+	public VectorElement minOfIfValid(ScalarElement a, VectorElement b) {
+		if (!b.isValid())
+			return this;
+		for (int i = 0; i < components.length; i++)
+			components[i].minOfIfValid(a, b.components[i]);
+		return this;
+	}
+	public VectorElement minOfIfValid(VectorElement a, ScalarElement b) {
+		if (!b.isValid())
+			return this;
+		for (int i = 0; i < components.length; i++)
+			components[i].minOfIfValid(a.components[i], b);
+		return this;
+	}
+	public VectorElement minOfIfValid(VectorElement a, VectorElement b) {
+		for (int i = 0; i < components.length; i++)
+			components[i].minOfIfValid(a.components[i], b.components[i]);
+		return this;
+	}
+	@Override
+	public VectorElement minOfIfValid(Element<?> a, Element<?> b, Element<?> mask) {
+		if (b.getClass() == VectorElement.class) {
+			if (mask.getClass() == VectorElement.class) {
+				if (a.getClass() == VectorElement.class)
+					return minOfIfValid((VectorElement) a, (VectorElement) b, (VectorElement) mask);
+				else
+					return minOfIfValid((ScalarElement) a, (VectorElement) b, (VectorElement) mask);
+			} else {
+				if (a.getClass() == VectorElement.class)
+					return minOfIfValid((VectorElement) a, (VectorElement) b, (ScalarElement) mask);
+				else
+					return minOfIfValid((ScalarElement) a, (VectorElement) b, (ScalarElement) mask);
+			}
+		} else {
+			if (mask.getClass() == VectorElement.class) {
+				if (a.getClass() == VectorElement.class)
+					return minOfIfValid((VectorElement) a, (ScalarElement) b, (VectorElement) mask);
+				else
+					return minOfIfValid((ScalarElement) a, (ScalarElement) b, (VectorElement) mask);
+			} else {
+				if (a.getClass() == VectorElement.class)
+					return minOfIfValid((VectorElement) a, (ScalarElement) b, (ScalarElement) mask);
+				else
+					return minOfIfValid((ScalarElement) a, (ScalarElement) b, (ScalarElement) mask);
+			}
+		}
+	}
+	public VectorElement minOfIfValid(ScalarElement a, ScalarElement b, ScalarElement mask) {
+		if (!a.isValid() || !b.isValid() || !mask.isValid())
+			return this;
+		for (int i = 0; i < components.length; i++)
+			components[i].minOf(a, b);
+		return this;
+	}
+	public VectorElement minOfIfValid(ScalarElement a, ScalarElement b, VectorElement mask) {
+		if (!a.isValid() || !b.isValid())
+			return this;
+		for (int i = 0; i < components.length; i++)
+			components[i].minOfIfValid(a, b, mask.components[i]);
+		return this;
+	}
+	public VectorElement minOfIfValid(ScalarElement a, VectorElement b, ScalarElement mask) {
+		if (!a.isValid() || !mask.isValid())
+			return this;
+		for (int i = 0; i < components.length; i++)
+			components[i].minOfIfValid(a, b.components[i]);
+		return this;
+	}
+	public VectorElement minOfIfValid(ScalarElement a, VectorElement b, VectorElement mask) {
+		if (!a.isValid())
+			return this;
+		for (int i = 0; i < components.length; i++)
+			components[i].minOfIfValid(a, b.components[i], mask.components[i]);
+		return this;
+	}
+	public VectorElement minOfIfValid(VectorElement a, ScalarElement b, ScalarElement mask) {
+		if (!b.isValid() || !mask.isValid())
+			return this;
+		for (int i = 0; i < components.length; i++)
+			components[i].minOfIfValid(a.components[i], b);
+		return this;
+	}
+	public VectorElement minOfIfValid(VectorElement a, ScalarElement b, VectorElement mask) {
+		if (!b.isValid())
+			return this;
+		for (int i = 0; i < components.length; i++)
+			components[i].minOfIfValid(a.components[i], b, mask.components[i]);
+		return this;
+	}
+	public VectorElement minOfIfValid(VectorElement a, VectorElement b, ScalarElement mask) {
+		if (!mask.isValid())
+			return this;
+		for (int i = 0; i < components.length; i++)
+			components[i].minOfIfValid(a.components[i], b.components[i]);
+		return this;
+	}
+	public VectorElement minOfIfValid(VectorElement a, VectorElement b, VectorElement mask) {
+		for (int i = 0; i < components.length; i++)
+			components[i].minOfIfValid(a.components[i], b.components[i], mask.components[i]);
+		return this;
+	}
+
+	// maximum
+
+	@Override
 	public VectorElement max(long other) {
 		for (ScalarElement c : components)
 			c.max(other);
@@ -1586,6 +5123,98 @@ public class VectorElement implements Element<VectorElement> {
 	}
 
 	@Override
+	public VectorElement maxIfValid(long other, Element<?> mask) {
+		if (mask.getClass() == VectorElement.class) {
+			maxIfValid(other, (VectorElement) mask);
+		} else {
+			maxIfValid(other, (ScalarElement) mask);
+		}
+		return this;
+	}
+	public VectorElement maxIfValid(long other, ScalarElement mask) {
+		for (int i = 0; i < components.length; i++)
+			components[i].maxIfValid(other, mask);
+		return this;
+	}
+	public VectorElement maxIfValid(long other, VectorElement mask) {
+		for (int i = 0; i < components.length; i++)
+			components[i].maxIfValid(other, mask.components[i]);
+		return this;
+	}
+	@Override
+	public VectorElement maxIfValid(double other, Element<?> mask) {
+		if (mask.getClass() == VectorElement.class) {
+			maxIfValid(other, (VectorElement) mask);
+		} else {
+			maxIfValid(other, (ScalarElement) mask);
+		}
+		return this;
+	}
+	public VectorElement maxIfValid(double other, ScalarElement mask) {
+		for (int i = 0; i < components.length; i++)
+			components[i].maxIfValid(other, mask);
+		return this;
+	}
+	public VectorElement maxIfValid(double other, VectorElement mask) {
+		for (int i = 0; i < components.length; i++)
+			components[i].maxIfValid(other, mask.components[i]);
+		return this;
+	}
+	@Override
+	public VectorElement maxIfValid(Element<?> other) {
+		if (other.getClass() == VectorElement.class) {
+			maxIfValid((VectorElement) other);
+		} else {
+			maxIfValid((ScalarElement) other);
+		}
+		return this;
+	}
+	public VectorElement maxIfValid(ScalarElement other) {
+		for (int i = 0; i < components.length; i++)
+			components[i].maxIfValid(other);
+		return this;
+	}
+	public VectorElement maxIfValid(VectorElement other) {
+		for (int i = 0; i < components.length; i++)
+			components[i].maxIfValid(other.components[i]);
+		return this;
+	}
+	@Override
+	public VectorElement maxIfValid(Element<?> other, Element<?> mask) {
+		if (other.getClass() == VectorElement.class) {
+			if (mask.getClass() == VectorElement.class)
+				return maxIfValid((VectorElement) other, (VectorElement) mask);
+			else
+				return maxIfValid((VectorElement) other, (ScalarElement) mask);
+		} else {
+			if (mask.getClass() == VectorElement.class)
+				return maxIfValid((ScalarElement) other, (VectorElement) mask);
+			else
+				return maxIfValid((ScalarElement) other, (ScalarElement) mask);
+		}
+	}
+	public VectorElement maxIfValid(ScalarElement other, ScalarElement mask) {
+		for (int i = 0; i < components.length; i++)
+			components[i].maxIfValid(other, mask);
+		return this;
+	}
+	public VectorElement maxIfValid(ScalarElement other, VectorElement mask) {
+		for (int i = 0; i < components.length; i++)
+			components[i].maxIfValid(other, mask.components[i]);
+		return this;
+	}
+	public VectorElement maxIfValid(VectorElement other, ScalarElement mask) {
+		for (int i = 0; i < components.length; i++)
+			components[i].maxIfValid(other.components[i], mask);
+		return this;
+	}
+	public VectorElement maxIfValid(VectorElement other, VectorElement mask) {
+		for (int i = 0; i < components.length; i++)
+			components[i].maxIfValid(other.components[i], mask.components[i]);
+		return this;
+	}
+
+	@Override
 	public VectorElement maxNew(long other) {
 		VectorElement res = copy();
 		return res.max(other);
@@ -1598,11 +5227,10 @@ public class VectorElement implements Element<VectorElement> {
 	@Override
 	public VectorElement maxNew(Element<?> other) {
 		if (other.getClass() == VectorElement.class) {
-			maxNew((VectorElement) other);
+			return maxNew((VectorElement) other);
 		} else {
-			maxNew((ScalarElement) other);
+			return maxNew((ScalarElement) other);
 		}
-		return this;
 	}
 	public VectorElement maxNew(ScalarElement other) {
 		VectorElement res = copy();
@@ -1611,6 +5239,85 @@ public class VectorElement implements Element<VectorElement> {
 	public VectorElement maxNew(VectorElement other) {
 		VectorElement res = copy();
 		return res.max(other);
+	}
+
+	@Override
+	public VectorElement maxNewIfValid(long other, Element<?> mask) {
+		if (mask.getClass() == VectorElement.class) {
+			return maxNewIfValid(other, (VectorElement) mask);
+		} else {
+			return maxNewIfValid(other, (ScalarElement) mask);
+		}
+	}
+	public VectorElement maxNewIfValid(long other, ScalarElement mask) {
+		VectorElement res = copy();
+		return res.maxIfValid(other, mask);
+	}
+	public VectorElement maxNewIfValid(long other, VectorElement mask) {
+		VectorElement res = copy();
+		return res.maxIfValid(other, mask);
+	}
+	@Override
+	public VectorElement maxNewIfValid(double other, Element<?> mask) {
+		if (mask.getClass() == VectorElement.class) {
+			return maxNewIfValid(other, (VectorElement) mask);
+		} else {
+			return maxNewIfValid(other, (ScalarElement) mask);
+		}
+	}
+	public VectorElement maxNewIfValid(double other, ScalarElement mask) {
+		VectorElement res = copy();
+		return res.maxIfValid(other, mask);
+	}
+	public VectorElement maxNewIfValid(double other, VectorElement mask) {
+		VectorElement res = copy();
+		return res.maxIfValid(other, mask);
+	}
+	@Override
+	public VectorElement maxNewIfValid(Element<?> other) {
+		if (other.getClass() == VectorElement.class) {
+			return maxNewIfValid((VectorElement) other);
+		} else {
+			return maxNewIfValid((ScalarElement) other);
+		}
+	}
+	public VectorElement maxNewIfValid(ScalarElement other) {
+		VectorElement res = copy();
+		return res.maxIfValid(other);
+	}
+	public VectorElement maxNewIfValid(VectorElement other) {
+		VectorElement res = copy();
+		return res.maxIfValid(other);
+	}
+	@Override
+	public VectorElement maxNewIfValid(Element<?> other, Element<?> mask) {
+		if (other.getClass() == VectorElement.class) {
+			if (mask.getClass() == VectorElement.class)
+				return maxNewIfValid((VectorElement) other, (VectorElement) mask);
+			else
+				return maxNewIfValid((VectorElement) other, (ScalarElement) mask);
+		} else {
+			if (mask.getClass() == VectorElement.class)
+				return maxNewIfValid((ScalarElement) other, (VectorElement) mask);
+			else
+				return maxNewIfValid((ScalarElement) other, (ScalarElement) mask);
+		}
+	}
+	public VectorElement maxNewIfValid(ScalarElement other, ScalarElement mask) {
+		VectorElement res = copy();
+		return res.maxIfValid(other, mask);
+	}
+	public VectorElement maxNewIfValid(ScalarElement other, VectorElement mask) {
+		VectorElement res = copy();
+		return res.maxIfValid(other, mask);
+	}
+	public VectorElement maxNewIfValid(VectorElement other, ScalarElement mask) {
+		VectorElement res = copy();
+		return res.maxIfValid(other, mask);
+	}
+	public VectorElement maxNewIfValid(VectorElement other, VectorElement mask) {
+		VectorElement res = copy();
+		return res.maxIfValid(other, mask);
 	}
 
 	@Override
@@ -1704,6 +5411,415 @@ public class VectorElement implements Element<VectorElement> {
 			for (int i = 0; i < components.length; i++)
 				components[i].maxOf(a, b);
 		}
+		return this;
+	}
+
+	@Override
+	public VectorElement maxOfIfValid(long a, long b, Element<?> mask) {
+		if (mask.getClass() == VectorElement.class) {
+			return maxOfIfValid(a, b, (VectorElement) mask);
+		} else {
+			return maxOfIfValid(a, b, (ScalarElement) mask);
+		}
+	}
+	public VectorElement maxOfIfValid(long a, long b, ScalarElement mask) {
+		if (!mask.isValid())
+			return this;
+		return maxOf(a, b);
+	}
+	public VectorElement maxOfIfValid(long a, long b, VectorElement mask) {
+		for (int i = 0; i < components.length; i++)
+			components[i].maxOfIfValid(a, b, mask.components[i]);
+		return this;
+	}
+	@Override
+	public VectorElement maxOfIfValid(double a, long b, Element<?> mask) {
+		if (mask.getClass() == VectorElement.class) {
+			return maxOfIfValid(a, b, (VectorElement) mask);
+		} else {
+			return maxOfIfValid(a, b, (ScalarElement) mask);
+		}
+	}
+	public VectorElement maxOfIfValid(double a, long b, ScalarElement mask) {
+		if (!mask.isValid())
+			return this;
+		return maxOf(a, b);
+	}
+	public VectorElement maxOfIfValid(double a, long b, VectorElement mask) {
+		for (int i = 0; i < components.length; i++)
+			components[i].maxOfIfValid(a, b, mask.components[i]);
+		return this;
+	}
+	@Override
+	public VectorElement maxOfIfValid(long a, double b, Element<?> mask) {
+		if (mask.getClass() == VectorElement.class) {
+			return maxOfIfValid(a, b, (VectorElement) mask);
+		} else {
+			return maxOfIfValid(a, b, (ScalarElement) mask);
+		}
+	}
+	public VectorElement maxOfIfValid(long a, double b, ScalarElement mask) {
+		if (!mask.isValid())
+			return this;
+		return maxOf(a, b);
+	}
+	public VectorElement maxOfIfValid(long a, double b, VectorElement mask) {
+		for (int i = 0; i < components.length; i++)
+			components[i].maxOfIfValid(a, b, mask.components[i]);
+		return this;
+	}
+	@Override
+	public VectorElement maxOfIfValid(double a, double b, Element<?> mask) {
+		if (mask.getClass() == VectorElement.class) {
+			return maxOfIfValid(a, b, (VectorElement) mask);
+		} else {
+			return maxOfIfValid(a, b, (ScalarElement) mask);
+		}
+	}
+	public VectorElement maxOfIfValid(double a, double b, ScalarElement mask) {
+		if (!mask.isValid())
+			return this;
+		return maxOf(a, b);
+	}
+	public VectorElement maxOfIfValid(double a, double b, VectorElement mask) {
+		for (int i = 0; i < components.length; i++)
+			components[i].maxOfIfValid(a, b, mask.components[i]);
+		return this;
+	}
+	@Override
+	public VectorElement maxOfIfValid(Element<?> a, long b) {
+		if (a.getClass() == VectorElement.class) {
+			return maxOfIfValid((VectorElement) a, b);
+		} else {
+			return maxOfIfValid((ScalarElement) a, b);
+		}
+	}
+	public VectorElement maxOfIfValid(ScalarElement a, long b) {
+		if (!a.isValid())
+			return this;
+		return maxOf(a, b);
+	}
+	public VectorElement maxOfIfValid(VectorElement a, long b) {
+		for (int i = 0; i < components.length; i++)
+			components[i].maxOfIfValid(a.components[i], b);
+		return this;
+	}
+	@Override
+	public VectorElement maxOfIfValid(Element<?> a, long b, Element<?> mask) {
+		if (a.getClass() == VectorElement.class) {
+			if (mask.getClass() == VectorElement.class)
+				return maxOfIfValid((VectorElement) a, b, (VectorElement) mask);
+			else
+				return maxOfIfValid((VectorElement) a, b, (ScalarElement) mask);
+		} else {
+			if (mask.getClass() == VectorElement.class)
+				return maxOfIfValid((ScalarElement) a, b, (VectorElement) mask);
+			else
+				return maxOfIfValid((ScalarElement) a, b, (ScalarElement) mask);
+		}
+	}
+	public VectorElement maxOfIfValid(ScalarElement a, long b, ScalarElement mask) {
+		if (!a.isValid() || !mask.isValid())
+			return this;
+		for (int i = 0; i < components.length; i++)
+			components[i].maxOf(a, b);
+		return this;
+	}
+	public VectorElement maxOfIfValid(ScalarElement a, long b, VectorElement mask) {
+		if (!a.isValid())
+			return this;
+		for (int i = 0; i < components.length; i++)
+			components[i].maxOfIfValid(a, b, mask);
+		return this;
+	}
+	public VectorElement maxOfIfValid(VectorElement a, long b, ScalarElement mask) {
+		if (!mask.isValid())
+			return this;
+		for (int i = 0; i < components.length; i++)
+			components[i].maxOfIfValid(a, b, mask);
+		return this;
+	}
+	public VectorElement maxOfIfValid(VectorElement a, long b, VectorElement mask) {
+		for (int i = 0; i < components.length; i++)
+			components[i].maxOfIfValid(a.components[i], mask.components[i]);
+		return this;
+	}
+	@Override
+	public VectorElement maxOfIfValid(long a, Element<?> b) {
+		if (b.getClass() == VectorElement.class) {
+			return maxOfIfValid(a, (VectorElement) b);
+		} else {
+			return maxOfIfValid(a, (ScalarElement) b);
+		}
+	}
+	public VectorElement maxOfIfValid(long a, ScalarElement b) {
+		if (!b.isValid())
+			return this;
+		return maxOf(a, b);
+	}
+	public VectorElement maxOfIfValid(long a, VectorElement b) {
+		for (int i = 0; i < components.length; i++)
+			components[i].maxOfIfValid(a, b.components[i]);
+		return this;
+	}
+	@Override
+	public VectorElement maxOfIfValid(long a, Element<?> b, Element<?> mask) {
+		if (b.getClass() == VectorElement.class) {
+			if (mask.getClass() == VectorElement.class)
+				return maxOfIfValid(a, (VectorElement) b, (VectorElement) mask);
+			else
+				return maxOfIfValid(a, (VectorElement) b, (ScalarElement) mask);
+		} else {
+			if (mask.getClass() == VectorElement.class)
+				return maxOfIfValid(a, (ScalarElement) b, (VectorElement) mask);
+			else
+				return maxOfIfValid(a, (ScalarElement) b, (ScalarElement) mask);
+		}
+	}
+	public VectorElement maxOfIfValid(long a, ScalarElement b, ScalarElement mask) {
+		if (!b.isValid() || !mask.isValid())
+			return this;
+		return maxOf(a, b);
+	}
+	public VectorElement maxOfIfValid(long a, ScalarElement b, VectorElement mask) {
+		if (!b.isValid())
+			return this;
+		for (int i = 0; i < components.length; i++)
+			components[i].maxOfIfValid(a, b, mask.components[i]);
+		return this;
+	}
+	public VectorElement maxOfIfValid(long a, VectorElement b, ScalarElement mask) {
+		if (!mask.isValid())
+			return this;
+		for (int i = 0; i < components.length; i++)
+			components[i].maxOfIfValid(a, b.components[i], mask);
+		return this;
+	}
+	public VectorElement maxOfIfValid(long a, VectorElement b, VectorElement mask) {
+		for (int i = 0; i < components.length; i++)
+			components[i].maxOfIfValid(a, b.components[i], mask.components[i]);
+		return this;
+	}
+	@Override
+	public VectorElement maxOfIfValid(Element<?> a, double b) {
+		if (a.getClass() == VectorElement.class) {
+			return maxOfIfValid((VectorElement) a, b);
+		} else {
+			return maxOfIfValid((ScalarElement) a, b);
+		}
+	}
+	public VectorElement maxOfIfValid(ScalarElement a, double b, ScalarElement mask) {
+		if (!a.isValid() || !mask.isValid())
+			return this;
+		return maxOf(a, b);
+	}
+	public VectorElement maxOfIfValid(ScalarElement a, double b, VectorElement mask) {
+		if (!a.isValid())
+			return this;
+		for (int i = 0; i < components.length; i++)
+			components[i].maxOfIfValid(a, b, mask.components[i]);
+		return this;
+	}
+	public VectorElement maxOfIfValid(VectorElement a, double b, ScalarElement mask) {
+		if (!mask.isValid())
+			return this;
+		for (int i = 0; i < components.length; i++)
+			components[i].maxOfIfValid(a.components[i], b, mask);
+		return this;
+	}
+	public VectorElement maxOfIfValid(VectorElement a, double b, VectorElement mask) {
+		for (int i = 0; i < components.length; i++)
+			components[i].maxOfIfValid(a.components[i], b, mask.components[i]);
+		return this;
+	}
+	@Override
+	public VectorElement maxOfIfValid(Element<?> a, double b, Element<?> mask) {
+		if (a.getClass() == VectorElement.class) {
+			if (mask.getClass() == VectorElement.class)
+				return maxOfIfValid((VectorElement) a, b, (VectorElement) mask);
+			else
+				return maxOfIfValid((VectorElement) a, b, (ScalarElement) mask);
+		} else {
+			if (mask.getClass() == VectorElement.class)
+				return maxOfIfValid((ScalarElement) a, b, (VectorElement) mask);
+			else
+				return maxOfIfValid((ScalarElement) a, b, (ScalarElement) mask);
+		}
+	}
+	@Override
+	public VectorElement maxOfIfValid(double a, Element<?> b) {
+		if (b.getClass() == VectorElement.class) {
+			return maxOfIfValid(a, (VectorElement) b);
+		} else {
+			return maxOfIfValid(a, (ScalarElement) b);
+		}
+	}
+	public VectorElement maxOfIfValid(double a, ScalarElement b) {
+		if (!b.isValid())
+			return this;
+		return maxOf(a, b);
+	}
+	public VectorElement maxOfIfValid(double a, VectorElement b) {
+		for (int i = 0; i < components.length; i++)
+			components[i].maxOfIfValid(a, b.components[i]);
+		return this;
+	}
+	@Override
+	public VectorElement maxOfIfValid(double a, Element<?> b, Element<?> mask) {
+		if (b.getClass() == VectorElement.class) {
+			if (mask.getClass() == VectorElement.class)
+				return maxOfIfValid(a, (VectorElement) b, (VectorElement) mask);
+			else
+				return maxOfIfValid(a, (VectorElement) b, (ScalarElement) mask);
+		} else {
+			if (mask.getClass() == VectorElement.class)
+				return maxOfIfValid(a, (ScalarElement) b, (VectorElement) mask);
+			else
+				return maxOfIfValid(a, (ScalarElement) b, (ScalarElement) mask);
+		}
+	}
+	public VectorElement maxOfIfValid(double a, ScalarElement b, ScalarElement mask) {
+		if (!b.isValid() || !mask.isValid())
+			return this;
+		return maxOf(a, b);
+	}
+	public VectorElement maxOfIfValid(double a, ScalarElement b, VectorElement mask) {
+		if (!b.isValid())
+			return this;
+		for (int i = 0; i < components.length; i++)
+			components[i].maxOfIfValid(a, b, mask.components[i]);
+		return this;
+	}
+	public VectorElement maxOfIfValid(double a, VectorElement b, ScalarElement mask) {
+		if (!mask.isValid())
+			return this;
+		for (int i = 0; i < components.length; i++)
+			components[i].maxOfIfValid(a, b.components[i], mask);
+		return this;
+	}
+	public VectorElement maxOfIfValid(double a, VectorElement b, VectorElement mask) {
+		for (int i = 0; i < components.length; i++)
+			components[i].maxOfIfValid(a, b.components[i], mask.components[i]);
+		return this;
+	}
+	@Override
+	public VectorElement maxOfIfValid(Element<?> a, Element<?> b) {
+		if (b.getClass() == VectorElement.class) {
+			if (a.getClass() == VectorElement.class)
+				return maxOfIfValid((VectorElement) a, (VectorElement) b);
+			else
+				return maxOfIfValid((ScalarElement) a, (VectorElement) b);
+		} else {
+			if (a.getClass() == VectorElement.class)
+				return maxOfIfValid((VectorElement) a, (ScalarElement) b);
+			else
+				return maxOfIfValid((ScalarElement) a, (ScalarElement) b);
+		}
+	}
+	public VectorElement maxOfIfValid(ScalarElement a, ScalarElement b) {
+		if (!a.isValid() || !b.isValid())
+			return this;
+		return maxOf(a, b);
+	}
+	public VectorElement maxOfIfValid(ScalarElement a, VectorElement b) {
+		if (!b.isValid())
+			return this;
+		for (int i = 0; i < components.length; i++)
+			components[i].maxOfIfValid(a, b.components[i]);
+		return this;
+	}
+	public VectorElement maxOfIfValid(VectorElement a, ScalarElement b) {
+		if (!b.isValid())
+			return this;
+		for (int i = 0; i < components.length; i++)
+			components[i].maxOfIfValid(a.components[i], b);
+		return this;
+	}
+	public VectorElement maxOfIfValid(VectorElement a, VectorElement b) {
+		for (int i = 0; i < components.length; i++)
+			components[i].maxOfIfValid(a.components[i], b.components[i]);
+		return this;
+	}
+	@Override
+	public VectorElement maxOfIfValid(Element<?> a, Element<?> b, Element<?> mask) {
+		if (b.getClass() == VectorElement.class) {
+			if (mask.getClass() == VectorElement.class) {
+				if (a.getClass() == VectorElement.class)
+					return maxOfIfValid((VectorElement) a, (VectorElement) b, (VectorElement) mask);
+				else
+					return maxOfIfValid((ScalarElement) a, (VectorElement) b, (VectorElement) mask);
+			} else {
+				if (a.getClass() == VectorElement.class)
+					return maxOfIfValid((VectorElement) a, (VectorElement) b, (ScalarElement) mask);
+				else
+					return maxOfIfValid((ScalarElement) a, (VectorElement) b, (ScalarElement) mask);
+			}
+		} else {
+			if (mask.getClass() == VectorElement.class) {
+				if (a.getClass() == VectorElement.class)
+					return maxOfIfValid((VectorElement) a, (ScalarElement) b, (VectorElement) mask);
+				else
+					return maxOfIfValid((ScalarElement) a, (ScalarElement) b, (VectorElement) mask);
+			} else {
+				if (a.getClass() == VectorElement.class)
+					return maxOfIfValid((VectorElement) a, (ScalarElement) b, (ScalarElement) mask);
+				else
+					return maxOfIfValid((ScalarElement) a, (ScalarElement) b, (ScalarElement) mask);
+			}
+		}
+	}
+	public VectorElement maxOfIfValid(ScalarElement a, ScalarElement b, ScalarElement mask) {
+		if (!a.isValid() || !b.isValid() || !mask.isValid())
+			return this;
+		for (int i = 0; i < components.length; i++)
+			components[i].maxOf(a, b);
+		return this;
+	}
+	public VectorElement maxOfIfValid(ScalarElement a, ScalarElement b, VectorElement mask) {
+		if (!a.isValid() || !b.isValid())
+			return this;
+		for (int i = 0; i < components.length; i++)
+			components[i].maxOfIfValid(a, b, mask.components[i]);
+		return this;
+	}
+	public VectorElement maxOfIfValid(ScalarElement a, VectorElement b, ScalarElement mask) {
+		if (!a.isValid() || !mask.isValid())
+			return this;
+		for (int i = 0; i < components.length; i++)
+			components[i].maxOfIfValid(a, b.components[i]);
+		return this;
+	}
+	public VectorElement maxOfIfValid(ScalarElement a, VectorElement b, VectorElement mask) {
+		if (!a.isValid())
+			return this;
+		for (int i = 0; i < components.length; i++)
+			components[i].maxOfIfValid(a, b.components[i], mask.components[i]);
+		return this;
+	}
+	public VectorElement maxOfIfValid(VectorElement a, ScalarElement b, ScalarElement mask) {
+		if (!b.isValid() || !mask.isValid())
+			return this;
+		for (int i = 0; i < components.length; i++)
+			components[i].maxOfIfValid(a.components[i], b);
+		return this;
+	}
+	public VectorElement maxOfIfValid(VectorElement a, ScalarElement b, VectorElement mask) {
+		if (!b.isValid())
+			return this;
+		for (int i = 0; i < components.length; i++)
+			components[i].maxOfIfValid(a.components[i], b, mask.components[i]);
+		return this;
+	}
+	public VectorElement maxOfIfValid(VectorElement a, VectorElement b, ScalarElement mask) {
+		if (!mask.isValid())
+			return this;
+		for (int i = 0; i < components.length; i++)
+			components[i].maxOfIfValid(a.components[i], b.components[i]);
+		return this;
+	}
+	public VectorElement maxOfIfValid(VectorElement a, VectorElement b, VectorElement mask) {
+		for (int i = 0; i < components.length; i++)
+			components[i].maxOfIfValid(a.components[i], b.components[i], mask.components[i]);
 		return this;
 	}
 

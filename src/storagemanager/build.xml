@@ -170,7 +170,10 @@
 		<copy todir="${dist}/config" verbose="true">
 			<fileset dir="${config}">
 				<exclude name="datasource.xml"/>
+				<exclude name="logback.xml"/>
+				<exclude name="rsa.xml"/>
 			</fileset>
+		    <globmapper from="*.SAMPLE" to="*"/>
 		</copy>
 
 		<jar jarfile="${dist}/${app.name}.jar" basedir="${build}">

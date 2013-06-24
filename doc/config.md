@@ -1,17 +1,0 @@
-# Configuration
-
-This is an example of how `rsa` can be configured:
-
-```
- <rsaConfig>
-
-	<!-- spatial reference system (SRS) EPSG code to be used -->	<targetSrsEpsgId>3577</targetSrsEpsgId>
-	<!-- Origin in specified SRS -->	<gridOriginPointInTargetSrs>		<x class="double">-2690000.0</x>		<y class="double">-1000000.0</y>	</gridOriginPointInTargetSrs>
-	<!-- Whether Y axis increases heading north -->	<upPositive>true</upPositive>
-	<!-- Turn on/off file locking capability -->	<filelockingOn>true</filelockingOn>
-	<!-- Time in seconds between each heartbeat (keepalive) -->	<heartBeatSpacing>60.0</heartBeatSpacing>
-	<!-- How many heartbeats can be missed before lock expires -->	<lockDeadline>3</lockDeadline>
-	<!-- Generate ncml/vrt aggregation on import, this is useful for testing -->	<generateImportTileAggregation>false</generateImportTileAggregation>
-	<!-- Specify all supported resolutions here -->	<resolutionList>		<entry>			<cellSize>km10</cellSize>			<int>5000</int>		</entry>		<entry>			<cellSize>km1</cellSize>			<int>5000</int>		</entry>		<entry>			<cellSize>m500</cellSize>			<int>5000</int>		</entry>		<entry>			<cellSize>m250</cellSize>			<int>5000</int>		</entry>		<entry>			<cellSize>m100</cellSize>			<int>5000</int>		</entry>		<entry>			<cellSize>m50</cellSize>			<int>5000</int>		</entry>		<entry>			<cellSize>m25</cellSize>			<int>5000</int>		</entry>		<entry>			<cellSize>m20</cellSize>			<int>5000</int>		</entry>		<entry>			<cellSize>m10</cellSize>			<int>5000</int>		</entry>		<entry>			<cellSize>m5</cellSize>			<int>5000</int>		</entry>		<entry>			<cellSize>m2p5</cellSize>			<int>5000</int>		</entry>		<entry>			<cellSize>m1</cellSize>			<int>5000</int>		</entry>	</resolutionList>	<!-- Specify rsa directories here -->	<storagepool>/var/lib/ndg/storagepool</storagepool>	<temploc>/var/tmp/ndg</temploc>	<uploadloc>/var/spool/ndg/upload</uploadloc>	<pickuploc>/var/spool/ndg/pickup</pickuploc>	<!-- Specify gdal location here -->	<gdalprefix>/usr/local</gdalprefix> </rsaConfig> 
-```
-

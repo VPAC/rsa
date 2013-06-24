@@ -1,11 +1,11 @@
 # RSA spatialcubeservice API
 
-This section details out all available web services on spatialcubeservice:
+This document describes the RESTful Web services available in the RSA's SpatialCubeService module.
 
-1. [Dataset web services - for listing, creating, retrieving, and deleting dataset](#dataset)
-2. [Timeslice web services - for listing, creating, retrieving, and deleting timeslice for a dataset](#timeslice)
-3. [Band web services - for listing, creating, retrieving, and deleting band for a dataset](#band)
-4. [Data web services - for importing, exporting, uploading, downloading data and also performing a query](#data)
+1. [Dataset web services](#dataset) - for listing, creating, retrieving, and deleting dataset
+1. [Timeslice web services](#timeslice) - for listing, creating, retrieving, and deleting timeslice for a dataset
+1. [Band web services](#band) - for listing, creating, retrieving, and deleting band for a dataset
+1. [Data web services](#data) - for importing, exporting, uploading, downloading data and also performing a query
 
 ## Dataset
 

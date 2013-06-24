@@ -1,11 +1,11 @@
 # Manual Install
 
-This section details about:
+Contents:
 
-1. [Dependencies - What is the RSA  requirements?](#1-dependencies)
-2. [Setup Database - How to set up and configure RSA database](#2-setup-database)
-3. [Setup Filesystem - How to configuring RSA filesystem](#3-setup-filesystem) 
-4. [Build RSA - How to build RSA from source](#4-build-rsa-from-source)
+1. [Dependencies](#1-dependencies) - What are the RSA's requirements?
+2. [Configure Database](#2-configure-database) - How to set up and configure RSA's database
+3. [Configure Filesystem](#3-configure-filesystem) - Creating directories, setting permissions
+4. [Build RSA](#4-build-rsa-from-source) - Building RSA from source
 
 ## 1. Dependencies
 
@@ -37,9 +37,10 @@ Additional web server dependencies required for `spatialcubeservice` war deploym
 Several other packages relied upon by the RSA application, such as the
 Hibernate ORM framework, are distributed as JAR archives as part of the RSA itself.
 
-**Note:** This document doesn't include advice on the Tomcat
-   installation and configuration, as this differs considerably for
-   Development versus Server setups.
+This document doesn't include advice on Tomcat installation and configuration,
+as this differs considerably for development versus server setups. Developers
+may wish to run the web services through a Tomcat instance managed by Eclipse.
+For server deployment, see [deploy.md](deploy.md).
 
 ### Installing Dependencies (on Debian/Ubuntu or Centos/RedHat)
 
@@ -118,13 +119,13 @@ Centos/RedHat:
 
 	$ sudo yum install proj-devel
 
-**Note:** On Centos, the public key for these packages may not be
-   installed. The error can be ignored by passing *--nogpgcheck* to
-   yum, however this constitutes a security risk, and should be
-   cleared with the system admin team first.
+On Centos, the public key for these packages may not be
+installed. The error can be ignored by passing `--nogpgcheck` to
+yum, however this constitutes a security risk, and should be
+cleared with the system admin team first.
 
-As specified above, we also require netCDF and HDF5 software to be
-installed to use the netCDF driver via GDAL.
+As specified above, we also require NetCDF and HDF5 software to be
+installed to use the NetCDF driver via GDAL.
 
 ##### Installing GDAL from source
 
@@ -145,9 +146,7 @@ Check out the latest svn source of GDAL:
 
 	$ svn checkout https://svn.osgeo.org/gdal/trunk  gdal-trunk
 
-An alternative to an svn checkout would be to get a nightly build from [here](http://trac.osgeo.org/gdal/wiki/DownloadSource).
-
-Then configure gdal:
+An alternative to an svn checkout would be to get a [nightly build][gdn]. Then configure:
 
 	$ cd gdal-trunk/gdal
 	$ ./configure --with-netcdf=/usr/local --with-hdf5=/usr/local
@@ -158,12 +157,13 @@ Then configure gdal:
 To be doubly sure, open the config.log file:
 
 	$ less config.log
-and check the NETCDF_HAS_NC4 flag is set to 'yes'.
+
+... and check that the `NETCDF_HAS_NC4` flag is set to 'yes'.
 
 You can specify different prefix paths than the one suggested. The
-default would be */usr/local*.
+default would be `/usr/local`.
 
-Note: Before compiling and installing GDAL on Centos/RedHat, edit GDALmake.opt (after ./configure stage), 
+Before compiling and installing GDAL on Centos/RedHat, edit GDALmake.opt (after ./configure stage), 
 and manually add -lstdc++ on the "LIBS = xxxx" line as it is required by the compilation
 This step shouldn't be necessary on Debian/Ubuntu.
 
@@ -183,6 +183,8 @@ e.g. via creating an updatePath.sh script to source containing:
 That script could be configured to run from your login script
 (e.g. *~/.bashrc*).
 
+[gdn]: http://trac.osgeo.org/gdal/wiki/DownloadSource
+
 ##### Installing GDAL Java libraries
 
 The GDAL Java bindings aren't installed automatically as part of make
@@ -201,7 +203,7 @@ First:
 
     JAVA_HOME=/usr/java/latest
 
-And just for good measure, set your JAVA_HOME environment variable (on the
+And just for good measure, set your `JAVA_HOME` environment variable (on the
 command line).
 
 Debian/Ubuntu:
@@ -212,7 +214,7 @@ Centos/RedHat (on NCI):
 
 	$ export JAVA_HOME=/usr/java/latest
 
-Then go to your GDAL source root dir, and run the build::
+Then go to your GDAL source root dir, and run the build:
 
 	$ cd swig/java
 	$ make
@@ -224,8 +226,7 @@ Then go to your GDAL source root dir, and run the build::
 	$ sudo ln -s libosrjni.so libosrjni.so.1
 	$ popd
 
-**Note:** If this fails, double-check that the Java JDK (not JRE) is
-   installed.
+If `make` fails, double-check that the Java JDK (not JRE) is installed.
 
 To run GDAL via Java bindings and Apache, you may need to create a symlink to libproj:
 
@@ -236,7 +237,7 @@ You should also do a dynamic library update to be safe:
 
 	$ sudo ldconfig
 
-## 2. Setup Database
+## 2. Set Up Database
 
 ### Configuring PostgreSQL
 
@@ -259,67 +260,61 @@ Centos/RedHat:
 
 	vi /var/lib/pgsql/data/postgresql.conf
 
-Navigate to the 'port =' line, and make sure it is 5432 if you wish to
-leave RSA's as default.
+Navigate to the `port =` line, and make sure it is `5432` if you wish to
+leave RSA's configuration as default.
 
-**Note:** The Ubuntu Server Postgres documentation suggests removing
-   the '#' at the start of the line *listen_addresses = 'localhost'*
-   to enable TCP/IP access, but this hasn't proved necessary for jdbc
-   access in the RSA thus far.
+The Ubuntu Server Postgres documentation suggests removing
+the '#' at the start of the line `listen_addresses = 'localhost'`
+to enable TCP/IP access, but this hasn't proved necessary for jdbc
+access in the RSA so far.
 
-###Setting up new user roles and empty database
+### Setting up new user roles and empty database
 
 Choose a database name, and user/password for use throughout the
 RSA. We then need to:
 
  * Create a new postgres user;
  * Create an empty database owned by the user and specify appropriate permissions;
- * (later) Save the appropriate configurations to the `rsacli` and `spatialcubeservice` datasource.xml file.
+ * (later) Save the appropriate configurations to the *rsacli* and *spatialcubeservice* *datasource.xml* file.
 
 The RSA will automatically initialise the database with required tables 
 when it's first deployed.
 
 The default connection role the RSA will use is:
 
- * Username: ula
- * Password: password
- * Database: uladb 
+ * Username: *ula*
+ * Password: *password*
+ * Database: *uladb*
 
-**Note:** However, if you want to choose a different name and credential - you
-will just need to modify the `rsacli` and `spatialcubeservice`'s datasource.xml file.
+If you want to choose a different name and credential, you
+will need to modify the *rsacli* and *spatialcubeservice* *datasource.xml* file.
 
-###Creating database (from the command line)
+### Creating database (from the command line)
 
-To create RSA database from the command-line, run a command such as that below -
+To create RSA's database from the command-line, run the command below -
 substituting values for RSA database name and accessing user as appropriate:
 
 	$ sudo -u postgres createuser -D -A -P ula
 	$ sudo -u postgres createdb -O ula uladb
 
-You'll be prompted to enter a password for the new user after the first command. When asked *Shall the new role be allowed to create more new
-roles?*, answer *n*.
+You'll be prompted to enter a password for the new user after the first command. When asked *Shall the new role be allowed to create more new roles?*, answer *n*.
 
-**Important:** Remember to record the values chosen for database name and user, as you'll have to configure the RSA's connection to them via the datasource.xml file in `rsacli` and `spatialcubeservice` later.
+**Important:** Remember to record the values chosen for database name and user, as you'll have to configure the RSA's connection to them via the *datasource.xml*.
 
-**Note:** It is possible to set up the database graphically using [pgAdmin](http://www.pgadmin.org/) - but you may need to change the database access rules in *postgresql.conf* to allow it to connect.
+It is possible to set up the database graphically using [pgAdmin][pga] - but you may need to change the database access rules in *postgresql.conf* to allow it to connect.
+
+[pga]: http://www.pgadmin.org/
 
 ## 3. Setup Filesystem
 
 The RSA requires four directories on the filesystem:
 
-	upload
-   		Stores uploaded data before it is tiled and moved to the storage pool.
-
-	tmp
-   		Stores temporary raster processing files in intermediate state.
-
-	pickup
-		Processed files are kept here, to be downloaded later by a user.
-		
-	storagepool
-   		Persistent storage for rsa dataset. A design intention is that
-   		actual storagepool directories here may be NFS mounts to other
-   		file-systems.
+ * *upload*: Stores uploaded data before it is tiled and moved to the storage pool.
+ * *tmp*: Stores temporary raster processing files in intermediate state.
+ * *pickup*: Processed files are kept here, to be downloaded later by a user.
+ * *storagepool*: Persistent storage for rsa dataset. A design intention is that
+    actual storagepool directories here may be NFS mounts to other
+    file-systems.
 
 ###Creating directories
 
@@ -335,17 +330,9 @@ user. For a development system, it would be your own user
 name.
 
 At this stage, for a production server you may wish to mount NFS locations
-within the storagepool directory if you intend to store large contiguous
-datasets there.
+within the storagepool directory if you intend to store large datasets there.
 
 ## 4. Build RSA from source
-
-RSA consists of these main components:
-
-* storagemanager - the storage and database component
-* rsaquery - the query engine and processing capability
-* cmdclient - the command line client component
-* spatialcubeservice - the web application and web services component
 
 To build RSA from source using [ant](http://ant.apache.org/):
 
@@ -376,7 +363,4 @@ Building spatialcubeservice individually:
 
 	$ cd rsa/src/spatialcubeservice
 	$ ant
-
-	
-	
 

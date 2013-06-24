@@ -1,3 +1,22 @@
+/*
+ * This file is part of the Raster Storage Archive (RSA).
+ *
+ * The RSA is free software: you can redistribute it and/or modify it under the
+ * terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any later
+ * version.
+ *
+ * The RSA is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+ * A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * the RSA.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Copyright 2013 CRCSI - Cooperative Research Centre for Spatial Information
+ * http://www.crcsi.com.au/
+ */
+
 package org.vpac.ndg.query;
 
 import java.io.IOException;
@@ -31,6 +50,7 @@ public class Blur implements Filter {
 	Kernel<Float> kernelGen;
 	Element<?> result;
 	Element<?> val;
+	Element<?> sum;
 
 	protected static Float[] convolution_kernel = {
 		0.00000067f, 0.00002292f, 0.00019117f, 0.00038771f, 0.00019117f, 0.00002292f, 0.00000067f,
@@ -49,31 +69,29 @@ public class Blur implements Filter {
 		kernelGen = new Kernel<Float>(shape, convolution_kernel);
 		result = input.getPrototype().getElement().asFloat();
 		val = result.copy();
+		sum = result.copy();
 	}
 
 	@Override
 	public void kernel(VectorReal coords) throws IOException {
-		// Only blur neighbouring pixels if this pixel is not nodata - prevents
-		// dilation.
-		if (!input.getPixel(coords).isValid()) {
-			output.unset();
-			return;
-		}
-
 		// Even when it is necessary to do arithmetic with a certain data type,
 		// it's better to use Elements because they preserve NODATA - and in
 		// this case, automatic handling of vector types.
-		float sum = 0;
-		result.set(0);
+		sum.set(0.0);
+		result.set(0.0);
+		// Start by inheriting the validity of the central (current) pixel. This
+		// prevents dilation.
+		result.setValid(input.getPixel(coords));
 		for (KernelPair<Float> pair : kernelGen.setCentre(coords)) {
 			val.set(input.getPixel(pair.coordinates));
-			// Only include this pixel if not nodata - prevents erosion.
-			if (val.isValid()) {
-				result.add(val.mul(pair.value));
-				sum += pair.value;
-			}
+			// Only add the pixel if it is valid, for each component. This
+			// prevents erosion.
+			result.addIfValid(val.mul(pair.value));
+			// Add the current kernel value, but mask it by the pixel that has
+			// been read - to ensure the sum matches the result for the division
+			// later.
+			sum.addIfValid(pair.value, val);
 		}
-		// kernel has no zeros; this should be safe.
 		result.div(sum);
 		output.set(result);
 	}
