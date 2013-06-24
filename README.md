@@ -1,4 +1,4 @@
-![Logo](doc/logo.png)
+![Logo](doc/images/logo.png)
 
 # Raster Storage Archive
 
@@ -13,7 +13,7 @@ The RSA has a Java API, and two user interfaces:
  * [rsacli](doc/rsacli_tutorial.md) - The command line interface, great for administration and automation.
  * [spatialcubeservice](doc/spatialcubeservice.md) - Web services, and a graphical interface for the query engine.
 
-![Screenshot](doc/screenshot.png)
+![Screenshot](doc/images/screenshot.png)
 
 ## Installation
 
