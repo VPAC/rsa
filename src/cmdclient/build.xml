@@ -235,6 +235,7 @@
 				<exclude name="rsa.ini"/>
 				<exclude name="README_HIDDEN.txt" />
 			</fileset>
+			<globmapper from="*.SAMPLE" to="*"/>
 		</copy>
 		<concat destfile="${dist}/${dist.name}/config/README.txt">
 			<fileset file="${storagemanagerConfig}/README.txt" />

@@ -132,10 +132,9 @@
 			<path refid="classpath" />
 		</copy>
 
-		<!-- copy config. Because this combines the contents of several
-		     directories, the readme files are concatenated. -->
 		<copy todir="${dist}/${dist.name}/config" flatten="false" verbose="true">
 			<fileset dir="${config}" />
+			<globmapper from="*.SAMPLE" to="*"/>
 		</copy>
 
 		<!-- copy filters: source and compiled -->
