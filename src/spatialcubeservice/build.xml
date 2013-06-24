@@ -96,6 +96,8 @@
 			<fileset dir="${storagemanagerResources}">
 				<include name="**/*.xml" />
 			</fileset>
+		</copy>
+		<copy todir="${build}">
 			<!-- Default configuration -->
 			<fileset dir="${storagemanagerConfig}">
 				<exclude name="datasource.xml"/>
