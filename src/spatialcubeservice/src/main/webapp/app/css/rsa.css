@@ -63,17 +63,14 @@ h1, h2, h3 {
 	line-height: normal;
 }
 h1 {
+	white-space: nowrap;
     overflow: hidden;
     font-size: 1.7em;
     height: 1.2em;
     margin: 0;
-    padding: 0.3em 1em;
+    padding: 0.3em 0.7em;
     z-index: 1000;
     color: #222;
-    border-bottom: 1px solid #e3e3e3;
-    -moz-box-shadow: 0 0 2ex rgba(0, 0, 0, 0.1);
-    -webkit-box-shadow: 0 0 2ex rgba(0, 0, 0, 0.1);
-    box-shadow: 0 0 2ex rgba(0, 0, 0, 0.1);
     background: white;
 }
 h1 span {
@@ -90,14 +87,11 @@ h1 span {
     color: gray;
  }
 #split-1 {
-    /* Offset based on h1: 1.7 * (1.2 + 0.3 + 0.3) */
-    top: 3.06em;
     z-index: -1;
 }
 
 #toolbox {
     width: 25ex;
-    padding-top: 1ex;
     border-right: 0.3ex solid #eee;
     z-index: 1;
     background: white;
