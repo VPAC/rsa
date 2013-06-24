@@ -3,7 +3,26 @@
 The Raster Storage Archive (RSA) is a system for storing and processing large
 geospatial datasets. This document presents the high-level design of the system.
 
-## Storage
+## Software Stack
+
+The RSA makes use of several libraries. The primary dependencies are shown in
+grey in the diagram below; RSA modules are green.
+
+![Diagram of RSA software stack (dependencies)](images/rsa-architecture.png)
+
+The primary dependencies are:
+
+ * [GDAL][gdal] and [NetCDF-Java][ncj] for processing and transforming data for import and export.
+ * [Hibernate][hb] for interacting with the database.
+ * [Tomcat][tc] and [Spring][sp] for servicing web requests.
+
+[gdal]: http://gdal.org/
+[ncj]: http://www.unidata.ucar.edu/software/netcdf-java/
+[hb]: http://www.hibernate.org/
+[tc]: http://tomcat.apache.org/
+[sp]: http://www.springsource.org/
+
+## Storage Manager
 
 The RSA currently handles data with three dimensions (*time*, *x* and *y*) and
 any number of [bands][var]. Data is stored in buckets called *datasets*, which
@@ -108,11 +127,4 @@ RSA.
 [var]: http://www.unidata.ucar.edu/software/netcdf/docs/netcdf/Variables.html
 [gn]: http://geonetwork-opensource.org/
 [tui]: http://www.unidata.ucar.edu/software/netcdf-java/documentation.htm
-
-## Software Stack
-
-The RSA depends heavily on [GDAL][gdal] to process and transform data for import
-and export. 
-
-[gdal]: http://gdal.org/
 
