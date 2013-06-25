@@ -43,7 +43,7 @@
 		<link>
 			<name>StorageManagerConfig</name>
 			<type>2</type>
-			<locationURI>$%7BPARENT-1-PROJECT_LOC%7D/storagemanager/config</locationURI>
+			<locationURI>PARENT-1-PROJECT_LOC/storagemanager/config</locationURI>
 		</link>
 		<link>
 			<name>StorageManagerResources</name>
@@ -68,12 +68,12 @@
 	</linkedResources>
 	<filteredResources>
 		<filter>
-			<id>0</id>
+			<id>1372057150115</id>
 			<name>StorageManagerConfig</name>
-			<type>6</type>
+			<type>22</type>
 			<matcher>
 				<id>org.eclipse.ui.ide.multiFilter</id>
-				<arguments>1.0-name-matches-false-false-logback.xml</arguments>
+				<arguments>1.0-name-matches-false-false-*.SAMPLE</arguments>
 			</matcher>
 		</filter>
 	</filteredResources>

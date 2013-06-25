@@ -22,5 +22,6 @@
 	<logger name="org.vpac.ndg" level="warn"/>
 	<logger name="org.hibernate" level="error"/>
 	<logger name="org.springframework" level="error"/>
+	<logger name="com.mchange" level="warn"/>
 
 </configuration>

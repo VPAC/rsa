@@ -18,8 +18,14 @@ The RSA has a Java API, and two user interfaces:
 ## Installation
 
  * [Using Vagrant](doc/vagrant_install.md) - Automatically build RSA and its environment using Puppet/Vagrant.
- * [Manual Install](doc/manual_install.md) - Install RSA and its dependencies from scratch on Debian/Ubuntu or Centos/RedHat. This is the path most developers should choose.
+ * [Manual Install](doc/manual_install.md) - Install RSA and its dependencies from scratch on Debian/Ubuntu or Centos/RedHat.
  * [Deployment](doc/deploy.md) - How to deploy spatialcubeservice on Tomcat6
+
+## Developer Documentation
+
+ * [Manual Install](doc/manual_install.md) - Install RSA and its dependencies from scratch on Debian/Ubuntu or Centos/RedHat.
+ * [Storage Manager](doc/design.md) - Design of the storage system.
+ * [Query Engine](doc/design-rsaquery.md) - Design of the RSA's programmable image processing system.
 
 ## License & Acknowledgements
 

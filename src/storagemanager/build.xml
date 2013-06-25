@@ -168,12 +168,14 @@
 		</copy>
 		<mkdir dir="${dist}/config" />
 		<copy todir="${dist}/config" verbose="true">
-			<fileset dir="${config}">
-				<exclude name="datasource.xml"/>
-				<exclude name="logback.xml"/>
-				<exclude name="rsa.xml"/>
-			</fileset>
+			<fileset dir="${config}" />
 		    <globmapper from="*.SAMPLE" to="*"/>
+		</copy>
+		<copy todir="${build}" flatten="false" verbose="true">
+			<fileset dir="${config}">
+				<include name="mchange-log.properties"/>
+				<include name="README.txt"/>
+			</fileset>
 		</copy>
 
 		<jar jarfile="${dist}/${app.name}.jar" basedir="${build}">

@@ -34,15 +34,13 @@
 
 <body>
 
-  <h1><span>Raster Storage Archive</span> <span class="subdir">rsaquery</span>
-    <span class="subtitle">A query engine and image processing system for large
-    raster datasets</span>
-  </h1>
-
   <div id="split-1" ng-controller="GraphEditor" ui-jq="splitPanel"
     ui-options="{orientation: 'horizontal'}">
     <div id="toolbox">
-      <h2>Toolbox <a ng-click="fetchTools()" class="btn btn-link">Refresh</a></h2>
+      <h1>
+        <img src="images/rsa_icon.png">
+        <span>rsaquery</span>
+      </h1>
       <div ui-jq="accordionVpac" ui-options="{heightStyle: 'fill'}">
         <h3>{{toolbox[0].name}}</h3>
         <div>

@@ -219,23 +219,19 @@
 		</copy>
 
 		<!-- copy config. Because this combines the contents of several
-		     directories, the readme files are concatenated. -->
+		     directories, the readme files are concatenated. Also, .SAMPLE files
+		     are renamed. Due to the way the globbing works, we need multiple
+		     copy tasks here. -->
 		<copy todir="${dist}/${dist.name}/config" flatten="false" verbose="true">
-			<fileset dir="${storagemanagerConfig}">
-				<exclude name="datasource.xml"/>
-				<exclude name="logback.xml"/>
-				<exclude name="rsa.xml"/>
-				<exclude name="README.txt"/>
-			</fileset>
+			<fileset dir="${storagemanagerConfig}" />
 			<!-- Override some of the storagemanager's default config -->
-			<fileset dir="${config}">
-				<exclude name="datasource.xml"/>
-				<exclude name="logback.xml"/>
-				<exclude name="rsa.xml"/>
-				<exclude name="rsa.ini"/>
-				<exclude name="README_HIDDEN.txt" />
-			</fileset>
+			<fileset dir="${config}" />
 			<globmapper from="*.SAMPLE" to="*"/>
+		</copy>
+		<copy todir="${dist}/${dist.name}/config" flatten="false" verbose="true">
+			<fileset dir="${config}">
+				<include name="mchange-log.properties"/>
+			</fileset>
 		</copy>
 		<concat destfile="${dist}/${dist.name}/config/README.txt">
 			<fileset file="${storagemanagerConfig}/README.txt" />
@@ -279,15 +275,18 @@
 			<zipfileset dir="${dist}" includes="${dist.name}/ng" filemode="755" />
 		</zip>
 
+		<echo>Copying local config to allow immediate execution.</echo>
 		<!-- Copy the files that were previously ignored. This allows the user
 		     to run the RSA immediately, while having clean .zip files for
 		     publication. -->
-		<copy todir="${dist}/${dist.name}/config" flatten="false" verbose="true">
+		<copy todir="${dist}/${dist.name}/config" flatten="false" verbose="true" overwrite="true">
 			<fileset dir="${storagemanagerConfig}">
 				<include name="datasource.xml"/>
 				<include name="logback.xml"/>
 				<include name="rsa.xml"/>
 			</fileset>
+		</copy>
+		<copy todir="${dist}/${dist.name}/config" flatten="false" verbose="true" overwrite="true">
 			<!-- Override some of the storagemanager's default config -->
 			<fileset dir="${config}">
 				<include name="datasource.xml"/>
