@@ -3,6 +3,7 @@
 Contents:
 
  1. [Introduction](#introduction)
+ 1. [High-level Design](#high-level-design)
  1. [Filters](#filters)
  1. [Queries](#queries)
  1. [Architecture](#architecture)
@@ -546,7 +547,7 @@ The way pixel source fields are attached depends on what they refer to. If the `
 
 #### Execution
 
-The basic process of execution is shown in the [Introduction](#introduction). That section explains that the filters are executed once for each pixel in the output image. To reduce memory usage, this process is actually split into chunks called tiles based on the output coordinates, as shown below.
+The basic process of execution is shown in the [High-level Design](#high-level-design) section. That section explains that the filters are executed once for each pixel in the output image. To reduce memory usage, this process is actually split into chunks called tiles based on the output coordinates, as shown below.
 
     split output image into tile grid
     for tile in tile grid:
