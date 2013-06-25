@@ -1,23 +1,50 @@
-# Building RSA and its environment using vagrant:
+# Building RSA and its environment using Vagrant:
 
- 1. Install vagrant using the following [instructions](http://docs.vagrantup.com/v2/installation/index.html).
-    
- 2. Get `rsabuild` vagrant and puppet scripts from GitHub repository:
+ 1. Install vagrant as shown [here](http://docs.vagrantup.com/v2/installation/index.html) or using the following instructions.
  
- 		$ git clone git@code.vpac.org:rsabuild/rsabuild.git
+	Debian/Ubuntu:
+	
+	```
+	$ sudo apt-get install virtualbox
+	$ sudo apt-get install vagrant
+	```
+ 	
+ 2. Get rsabuild vagrant and puppet scripts from GitHub repository:
 
- 3. Go into `rsabuild` directory:
- 
- 		$ cd rsabuild
- 		
- 4. Load up a VM using Vagrant by running:
- 
-		vagrant up
+		$ git clone git@github.com:VPAC/rsabuild.git
+		$ cd rsabuild					# Go into rsabuild directory
+	
+ 3. Load up a guest VM using Vagrant by running:
 		
+		$ vagrant up
+	
 
-After running the above command, you'll will have a fully running Centos VM with RSA installed.
-    
-**Note:** User could easily configure vagrant to load up other type of VM such as Ubuntu with minimum changes to the scripts in rsabuild project.
+	Once the above command finished running, you'll will have a fully running Centos 6.3 VM with RSA installed.
+	
+	Once you ssh into the guest VM, you should see this usage below:
+
+	```
+	$ vagrant ssh
+	
+	Welcome to your newly built CentOS 6.3 guest VM with RSA installed!
+                 Produced by VPAC
+
+	To get started with rsacli:
+		$ rsa -h					# see a complete list of usage
+		$ rsa dataset list			# list all available datasets
+
+	To get started with spatialcubeservice:
+		$ curl http://localhost:8080/spatialcubeservice/Dataset.xml
+
+    ...
+	```
+	As port `8080` is being forwarded to host port `8181`, you can access below URL from host machine directly using port 8181:
+	
+		http://localhost:8181/spatialcubeservice/Dataset.xml
+		
+	To get started with query from host machine:
+	
+		http://localhost:8181/spatialcubeservice/app/index.html
 
 ### Commonly used vagrant commands:
 
@@ -39,8 +66,7 @@ After running the above command, you'll will have a fully running Centos VM with
 
 	$ vagrant init centos-63-x64 http://vpac.org/pub/centos-63-x64.box # Create the VM from the specified box
 
-
 ### How do I commit changes to this rsabuild project?
 
-To contribute, file bug reports or issues, please visit `rsabuild` [GitHub repository](https://github.com/VPAC/rsabuild).
+To contribute, file bug reports or issues, please visit [rsabuild github repository](http://github.com/VPAC/rsabuild).
 
