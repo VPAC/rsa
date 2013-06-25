@@ -227,7 +227,7 @@ Filters operate in a global coordinate system, which is defined as the pixel spa
 
 ![Diagram of coordinate system and image alignment. Image shows two rectangular prisms intersecting, encompassed by an axis-aligned bounding box.](images/query-coordinates.png)
 
-> Coordinate spaces. Grey: inputs. Blue: global. The dashed lines represent a
+> Coordinate spaces. **Grey:** inputs. **Blue:** global. The dashed lines represent a
 > dimension (time) that is part of the global coordinate system but not part
 > of the output dataset.
 
@@ -403,8 +403,8 @@ The goal of this query is to transform a 3D dataset *(time, y, x)* of data into 
 
 ![Class diagram of the query definition classes](images/query-example-maximise.png)
 
-> Filter graph for the maximise query. Left: input dataset, featuring one 2D
-> and one 1D band. Middle: filter. Right: output dataset, featuring two 2D
+> Filter graph for the maximise query. **Left:** input dataset, featuring one 2D
+> and one 1D band. **Middle:** filter. **Right:** output dataset, featuring two 2D
 > bands. The grey sockets are scalar; the blue sockets could be any type -
 > although in this example, all data is scalar.
 
