@@ -19,7 +19,18 @@ For example:
 
 *Rsaquery* is a programmable image processing system that allows the creation of
 such queries. The query engine is specialised for the type of data stored in the
-RSA. The program allows users to define:
+RSA. The following image shows the output of the first query as produced by the
+query engine.
+ 
+![Example query output](images/query-demo-wet.png)
+
+> Output of a water query. **Left:** Landsat 7 input in false colour with *Band3* as
+> red, *Band4* as green and *Band5* as blue at *t = 2010-01-16*. **Middle:** output
+> band *wet* in pseudocolour with dry pixels coloured blue. **Right:** output band
+> *time* in pseudocolour. This image has been scaled down for inclusion in this
+> document.
+
+Rsaquery allows users to define:
 
  - *Filters* that transform image data.
  - *Queries* that link filters to specific datasets.
@@ -31,6 +42,8 @@ to run queries on local files as well.
 The query engine can handle images with any number of heterogeneous bands and
 (currently) up to 4 dimensions. Optionally, the number of dimensions can be
 reduced during processing, e.g. summarising data over time.
+
+## High-level Design
 
 Queries in rsaquery are constructed as directed acyclic graphs (DAGs) of
 filters, like pipelines or workflows in other applications. An illustration of
