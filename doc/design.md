@@ -2,6 +2,7 @@
 
 The Raster Storage Archive (RSA) is a system for storing and processing large
 geospatial datasets. This document presents the high-level design of the system.
+Details on the query engine (rsaquery) are provided in a [separate document](design-rsaquery.md).
 
 ## Software Stack
 
@@ -91,7 +92,7 @@ the data in three ways:
 
  1. Export a section of data as a data cube. The data is mosaiced spatially,
     resulting in one `.nc` file per time slice and band. These are then
-    aggregated through time and band using NCML, and returned to the user as a
+    aggregated through time and band using [NCML][ncml], and returned to the user as a
     `.zip` file. Optionally, the data can be reprojected during the mosaicing.
  1. Query the data using the query engine. The query engine allows custom image
     processing operations during export; in the simplest case a query can simply
@@ -126,5 +127,6 @@ RSA.
 
 [var]: http://www.unidata.ucar.edu/software/netcdf/docs/netcdf/Variables.html
 [gn]: http://geonetwork-opensource.org/
+[ncml]: http://www.unidata.ucar.edu/software/netcdf/ncml/
 [tui]: http://www.unidata.ucar.edu/software/netcdf-java/documentation.htm
 
