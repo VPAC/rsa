@@ -233,11 +233,31 @@ Each `PixelSource` has a bounding box that encompasses the useful extents of the
 
 [Swizzling][swiz] is an operation that transforms a vector by rearranging its components. The operation is specified as a format string, which gets compiled to a `Swizzle` object that can be applied to vectors. Their use is similar to that of regular expressions.
 
-Swizzles has a number of advantages over manual manipulation of the components. They:
+Swizzles have a number of advantages over manual manipulation of the components. They:
 
  - Are concise and expressive.
  - Are easy to build programmatically, e.g. when the number of components is not known in advance.
  - Can be compiled once and used on different vectors.
+
+The following code sample demonstrates the effect:
+
+```java
+VectorReal from = VectorReal.create(1.0, 2.0, 3.0);
+VectorReal to = VectorReal.createEmpty(4);
+
+Swizzle sw = SwizzleFactory.compile("zxyx");
+sw.swizzle(from, to);
+// to == (1.0, 3.0, 2.0, 3.0)
+
+sw = SwizzleFactory.resize(3, 4);
+sw.swizzle(from, to);
+// to == (0.0, 1.0, 2.0, 3.0)
+```
+
+> Swizzle examples. The first example shows a swizzle from a format string.
+> The second demonstrates vector resizing.
+
+Swizzle operations are available for the `VectorReal`, `VectorInt` and `VectorElement` types.
 
 [swiz]: http://en.wikipedia.org/wiki/Swizzling_(computer_graphics)
 
