@@ -1,4 +1,15 @@
-# Query Engine Design
+# Query Engine
+
+Contents:
+
+ 1. [Introduction](#introduction)
+ 1. [High-level Design](#high-level-design)
+ 1. [Filters](#filters)
+ 1. [Queries](#queries)
+ 1. [Architecture](#architecture)
+ 1. [Design](#design)
+
+## Introduction
 
 A common use case for the RSA is to export a section of the data and perform
 some operations on it, such as filtering for pixels that meet certain criteria.
@@ -7,7 +18,7 @@ For example:
  - Find all pixels that represent water over a given time period.
  - Find all pixels that represent vegetation above 1000m.
 
-Rsaquery is a programmable image processing system that allows the creation of
+*Rsaquery* is a programmable image processing system that allows the creation of
 such queries. The query engine is specialised for the type of data stored in the
 RSA. The program allows users to define:
 
@@ -398,4 +409,168 @@ The `ref` attribute of the sampler tag may refer to any pixel source. In this ex
 ```
 
 The output dataset inherits its grid (and coordinate system) from the input dataset. Variables are defined using child tags, and connected to the filter using the `ref` attribute. There is no need to declare dimensions; they will be determined automatically by the query engine. In this case, because of the reduction filter, `Band1` will be demoted from 3D to 2D, and `time` will be promoted from 1D to 2D. Coordinate axes `x` and `y` will be created to match the dimensions.
+
+## Architecture
+
+Rsaquery makes heavy use of the [NetCDF-Java][ncj] library for I/O. The architecture is shown in below. The [xstream][xs] library is also used, for deserialisation of `QueryDefinition`s from XML.
+
+![Technology stack diagram for rsaquery](images/query-arch-standalone.png)
+
+> Query engine technology stack.
+
+The use of NetCDF-Java allows many CDM1 datasets to be read - including NetCDF 3 and 4, provided they are using the classic data model. Rsaquery can be used as an image processing library with any data store that can produce a `NetcdfDataset`. The modified architecture is shown below.
+
+![Technology stack diagram for rsaquery, showing integration with other software as a library](images/query-arch-library.png)
+
+> Rsaquery used as a library.
+
+For example, the Raster Storage Archive (RSA) is a web-based image storage system that has a catalogue in a database. The catalogue allows the RSA to determine the files on disk that make up a dataset. It uses this information to construct virtual datacubes using NetCDF-Java. The datacubes are constructed similarly to NCML datasets, but without the need to store the aggregation on disk.
+
+The datacubes created by the RSA are `NetcdfDataset` objects, which are readily consumed by rsaquery. The following steps are taken when a user asks to run a query:
+
+ 1. RSA constructs a `QueryDefinition` object that contains references to datasets in its storage pool.
+ 1. Rsaquery asks the RSA for the specified datasets via a registered I/O plugin.
+ 1. The RSA creates datacubes (virtual NCML aggregations) of the underlying NetCDF files using NetCDF-Java.
+ 1. The datacubes are processed by rsaquery as though they are regular NetCDF files.
+
+[ncj]: http://www.unidata.ucar.edu/software/netcdf-java/index.html
+[xs]: http://xstream.codehaus.org/
+
+## Design
+
+Central to the design of the query engine is the way filters receive and write out data. As introduced in section [Input, Output and Configuration](#input,-output-and-configuration), filters read from `PixelSource`s and write to `Cell`s. These two types are actually interfaces with a number of sub-types, as shown in the diagram below. Both types can be either scalar or vector, and `PixelSource`s can fetch their data either from datasets using the `Sampler` classes or from other filters using the `FilteredPixel` classes.
+
+![Class diagram of the filter input and output types.](images/query-class.png)
+
+> Class diagram of the filter input and output types.
+
+As can be seen from the diagram, `FilteredPixel`s have a reference to a filter and a cell. When a pixel is asked for, the filtered pixel will first invoke the filter and then read the value from the cell it is bound to.
+
+### Construction
+
+A query is deserialised from a `QueryDefinition` memento - see `Query.setMemento()`. The process for query construction is, in order:
+
+ 1. Definition preprocessing.
+ 1. Create coordinate system.
+ 1. Open input datasets.
+ 1. Configure output dataset.
+ 1. Create and bind filters.
+
+The prominent classes of the construction phase are illustrated below. Each step is detailed in the following sub-sections.
+
+![Class diagram of the filter input and output types.](images/query-io-class.png)
+
+> Class diagram of the dataset input and output types.
+
+#### Definition Preprocessing
+
+The `QueryDefintion` is processed to sort filters into the order required for instantiation: a filter must be constructed before any other filter that refers to it. At this stage variables are expanded too.
+
+#### Create Coordinate System
+
+Adapter (`DatasetInput`) objects are created for the input datasets. The I/O provider (see Figure 13) is asked to fetch the coordinate system of each input. Where possible, the inputs will not actually be opened.
+
+Then, a `QueryCoordinateSystem` object is created to represent the global coordinate system of the query. It is based on the projection of one of the inputs. Its bounds will either be the union of all the input bounds, or some other bounds if specified in the query definition. `Warp` objects are used to transform between coordinate systems when determining the bounds.
+
+Each input dataset is added to the `DatasetStore` to be referred to later.
+
+#### Open Input Datasets
+
+Once the bounds have been determined, the input datasets are opened. The global bounds are transformed to each input's local coordinate system and provided as a hint to the I/O provider to indicate exactly what should be opened. This allows providers that support tiling to optimise which files to include in the aggregation. The RSA is one such provider.
+
+The coordinate system of each input dataset is recalculated after opening, because it may have changed due to the bounds hint.
+
+#### Configure Output Dataset
+
+When creating a new query, the calling application needs to provide an empty `NetcdfFileWriter` dataset to write to. Once the inputs have all been opened and the bounds determined, the query engine will populate the output dataset with metadata based on the specifications in the query definition.
+
+The `DatasetOutputDefinition` contains the definition of a grid and variables. As a first step, the coordinate system is created by copying it from the input dataset specified in the query definition. It is modified a little to update the bounds.
+
+Next the declared variables are dereferenced. For example, if a variable definition was given as:
+
+```xml
+<variable name="Band1" ref="#max/output" />
+```
+
+The missing parameters would need to be filled in. The data type, nodata value and dimensions are inherited from the filter that it refers to; this information is passed from filter to filter using the `Prototype` class.
+
+```xml
+<variable name="Band1" type="float" dimensions="y x" ref="#max/output">
+	<attribute name="_FillValue" value="-999.0" />
+	<attribute name="long_name" value="Band Number 1" />
+</variable>
+```
+
+The variables are not actually created in the target file yet, because first the dimensions need to be created. The required dimensions are accumulated during variable dereferencing.
+
+With all the variables declared, they are created and added to the file. Then the header is committed by calling `NetcdfFileWriteable.create()`, after which it is possible to write actual data (as opposed to metadata). Most of the data is written later, during filter execution - but the coordinate variables are populated immediately based on the bounds and coordinate system.
+
+#### Create and Bind Filters
+
+The purpose of this phase is to construct a filter graph. Filters are created in-order by a `FilterFactory`. First, the filter is instantiated according to the class name given in the `FilterDefinition`. Because the `Filter` interface is quite minimal, the instance is wrapped in a `FilterAdapter` for the convenience of the query engine. Then, the literal parameters (constant values) and pixel sources are attached to the filter. These are fields in the filter that have been declared public; they are found and assigned using reflection. The factory keeps a local `FilterStore` to allow inter-filter references to be resolved.
+
+The way pixel source fields are attached depends on what they refer to. If the `ref` field points to a dataset, then a new `Sampler` will be created to read from the band. Otherwise, a `FilteredPixel` will be found and reused.
+
+#### Execution
+
+The basic process of execution is shown in section [High-level Design](#high-level-design) above. That section explains that the filters are executed once for each pixel in the output image. To reduce memory usage, this process is actually split into chunks called tiles based on the output coordinates, as shown below.
+
+    split output image into tile grid
+    for tile in tile grid:
+	    for each filter binding:
+		    resize binding's buffer to match current tile
+	    for pixel in tile:
+		    for each filter binding:
+			    invoke filter (may be no-op)
+			    transfer data from filter to buffer
+	    for each binding binding:
+		    write buffer to output
+
+> Pseudocode for tiled pixel processing.
+
+Most of the implementation of the above algorithm is located in the `Query` class. However the iteration over individual pixels is handled by a `TileProcessor`, which is an interface currently with two implementations: a single-threaded version, and a multithreaded one.
+
+![Filter pipeline diagram](images/query-graph-threaded.png)
+
+> Filter pipeline diagram, showing the points at which the `TileProcessor` and
+> `Query` classes drive processing.
+
+The `TileProcessor` only explicitly requests data from the filters that are directly attached to the output dataset; the other filters are invoked implicitly.
+
+##### Multithreading
+
+The dashed box in the above diagram shows the section of the pipeline that is involved in multithreading. When multithreading is enabled, the object instances in this region are created multiple times; then multiple worker threads invoke the filters and write to the buffers. The buffers are not duplicated; instead, each thread writes to different pixels in the buffer. For example, with three threads the first thread would write to pixels 0, 3, 6, 9, etc. When a tile is fully processed, the worker threads pause while the buffer is written to disk. They resume again when the next tile is ready.
+
+By duplicating most of the filter pipeline, the threads can operate mostly independently. The filters do not need to be written to be thread-safe, as it is a natural property of the design. The only part of the system that needs to be thread-safe is the `PageCache`, because it actually reads the data from the input datasets. Its function is described below.
+
+##### Paged Input
+
+When a filter requests a pixel from a sampler, it transforms the coordinates and fetches the value from the source band. Like the output, the input bands are also split into tiles, but that happens transparently. The process is:
+
+    transform coordinates from global pixel space to projected coordinates
+    transform from projected coordinates to local (input dataset) pixel space
+    if the coordinates are out of bounds:
+	    snap coordinates to the nearest valid location
+    transform from pixel space to the equivalent pixel in the current tile
+    if the coordinates are out of bounds:
+	    read the correct tile (page)
+    read the pixel value from the current tile
+
+> Pseudocode for tiled pixel processing.
+
+The process is split across the classes shown below.
+
+![Class diagram of the sampling classes](images/query-sampling-class.png)
+
+> Class diagram of the paging system used by samplers. The filter only asks for
+> pixels from the sampler. Data is ultimately read from the `ucar.nc2.Variable`
+> class.
+
+ - The transform to local pixel space is handled by the `Warp` classes. This allows a sampler to use specialised warps for different situations; for example, if the input has the same projection and resolution as the output, a simple offset involving a single vector addition can be used.
+ - Coordinate snapping is handled by the `SamplerStrategy` classes. Again, these are configurable. Snapping the coordinates will make the edges of the image appear to smear beyond the bounds of the dataset; this is useful in many situations including blurring. Other strategies could be implemented, e.g. one that returns nodata or a constant value for pixels that are out of bounds.
+ - The transformation to the pixel space of the tile is handled by the `Page` class, which itself embodies the tile.
+The sampler simply tries to read from the tile. If doing so generates an `IndexOutOfBoundsException`, it is considered to be a page fault. The next page is fetched from the `PageCache`, and then the read is attempted again.
+ - The page cache has a least-recently used cache. If the cache already contains a page for the requested coordinates, it is returned (soft page fault). Otherwise, the requested page is read from the `Variable` (band), added to the cache, and returned to the sampler (hard page fault).
+
+Page faults are relatively expensive, but they tend to happen rarely because of the read pattern of the typical filter. By choosing an appropriate tile size, filters transparently benefit from paged memory with little impact on performance.
 
