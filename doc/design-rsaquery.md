@@ -3,7 +3,6 @@
 Contents:
 
  1. [Introduction](#introduction)
- 1. [High-level Design](#high-level-design)
  1. [Filters](#filters)
  1. [Queries](#queries)
  1. [Architecture](#architecture)
@@ -393,7 +392,6 @@ Next, the filter is declared to connect the input dataset to the output.
 		<sampler name="toKeep" ref="#infile/Band1"  />
 		<sampler name="intime" ref="#infile/time"  />
 	</filter>
-</query>
 ```
 
 Here, the filter has been configured to use the `MaximiseForTime` class presented earlier. The class name must be fully-qualified, and the `.class` file must be on the Java classpath at runtime. The input bands are bound to the `PixelSource` fields by name. Note that `Band1` is connected to both `toMaximise` and `toKeep`.
@@ -406,6 +404,7 @@ The `ref` attribute of the sampler tag may refer to any pixel source. In this ex
 		<variable name="Band1" ref="#max/output" />
 		<variable name="time" ref="#max/outtime" />
 	</output>
+</query>
 ```
 
 The output dataset inherits its grid (and coordinate system) from the input dataset. Variables are defined using child tags, and connected to the filter using the `ref` attribute. There is no need to declare dimensions; they will be determined automatically by the query engine. In this case, because of the reduction filter, `Band1` will be demoted from 3D to 2D, and `time` will be promoted from 1D to 2D. Coordinate axes `x` and `y` will be created to match the dimensions.
@@ -418,7 +417,7 @@ Rsaquery makes heavy use of the [NetCDF-Java][ncj] library for I/O. The architec
 
 > Query engine technology stack.
 
-The use of NetCDF-Java allows many CDM1 datasets to be read - including NetCDF 3 and 4, provided they are using the classic data model. Rsaquery can be used as an image processing library with any data store that can produce a `NetcdfDataset`. The modified architecture is shown below.
+The use of NetCDF-Java allows many [CDM][cdm] datasets to be read - including NetCDF 3 and 4, provided they are using the classic data model. Rsaquery can be used as an image processing library with any data store that can produce a `NetcdfDataset`. The modified architecture is shown below.
 
 ![Technology stack diagram for rsaquery, showing integration with other software as a library](images/query-arch-library.png)
 
@@ -433,12 +432,13 @@ The datacubes created by the RSA are `NetcdfDataset` objects, which are readily 
  1. The RSA creates datacubes (virtual NCML aggregations) of the underlying NetCDF files using NetCDF-Java.
  1. The datacubes are processed by rsaquery as though they are regular NetCDF files.
 
+[cdm]: http://www.unidata.ucar.edu/software/netcdf-java/CDM/
 [ncj]: http://www.unidata.ucar.edu/software/netcdf-java/index.html
 [xs]: http://xstream.codehaus.org/
 
 ## Design
 
-Central to the design of the query engine is the way filters receive and write out data. As introduced in section [Input, Output and Configuration](#input,-output-and-configuration), filters read from `PixelSource`s and write to `Cell`s. These two types are actually interfaces with a number of sub-types, as shown in the diagram below. Both types can be either scalar or vector, and `PixelSource`s can fetch their data either from datasets using the `Sampler` classes or from other filters using the `FilteredPixel` classes.
+Central to the design of the query engine is the way filters receive and write out data. As introduced in section [Input, Output and Configuration](#input-output-and-configuration), filters read from `PixelSource`s and write to `Cell`s. These two types are actually interfaces with a number of sub-types, as shown in the diagram below. Both types can be either scalar or vector, and `PixelSource`s can fetch their data either from datasets using the `Sampler` classes or from other filters using the `FilteredPixel` classes.
 
 ![Class diagram of the filter input and output types.](images/query-class.png)
 
@@ -513,7 +513,7 @@ The way pixel source fields are attached depends on what they refer to. If the `
 
 #### Execution
 
-The basic process of execution is shown in section [High-level Design](#high-level-design) above. That section explains that the filters are executed once for each pixel in the output image. To reduce memory usage, this process is actually split into chunks called tiles based on the output coordinates, as shown below.
+The basic process of execution is shown in the [Introduction](#introduction). That section explains that the filters are executed once for each pixel in the output image. To reduce memory usage, this process is actually split into chunks called tiles based on the output coordinates, as shown below.
 
     split output image into tile grid
     for tile in tile grid:
