@@ -15,21 +15,21 @@ A common use case for the RSA is to export a section of the data and perform
 some operations on it, such as filtering for pixels that meet certain criteria.
 For example:
 
- - Find all pixels that represent water over a given time period.
- - Find all pixels that represent vegetation above 1000m.
+ 1. Find all pixels that represent water over a given time period.
+ 1. Find all pixels that represent vegetation above 1000m.
 
 *Rsaquery* is a programmable image processing system that allows the creation of
 such queries. The query engine is specialised for the type of data stored in the
-RSA. The following image shows the output of the first query as produced by the
-query engine.
+RSA. The following image shows the output of example 1. as produced by the query
+engine.
  
 ![Example query output](images/query-demo-wet.png)
 
-> Output of a water query. **Left:** Landsat 7 input in false colour with *Band3* as
-> red, *Band4* as green and *Band5* as blue at *t = 2010-01-16*. **Middle:** output
-> band *wet* in pseudocolour with dry pixels coloured blue. **Right:** output band
-> *time* in pseudocolour. This image has been scaled down for inclusion in this
-> document.
+> Output of a water query, showing lakes and rivers. **Left:** Landsat 7 input
+> in false colour with *Band3* as red, *Band4* as green and *Band5* as blue at
+> *t = 2010-01-16*. **Middle:** output band *wet* in pseudocolour with dry
+> pixels coloured blue. **Right:** output band *time* in pseudocolour. This
+> image has been scaled down for inclusion in this document.
 
 Rsaquery allows users to define:
 
