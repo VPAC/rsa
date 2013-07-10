@@ -34,7 +34,7 @@ import org.vpac.ndg.query.sampling.PixelSourceScalar;
 public class GreaterOrEqual implements Filter {
 
 	// Parameters.
-	public int value = 1;
+	public float value = 1.0f;
 
 	// Input fields.
 	public PixelSourceScalar input;
@@ -59,7 +59,7 @@ public class GreaterOrEqual implements Filter {
 			mask.unset();
 			return;
 		}
-		if (val.compareTo(value) < 0)
+		if (val.compareTo(value) >= 0)
 			mask.set(match);
 		else
 			mask.set(fail);
