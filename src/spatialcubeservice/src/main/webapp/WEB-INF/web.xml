@@ -27,6 +27,21 @@
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
 
+	<!--
+	This temporarily commented out because of the tomcat 6 bug below:
+	https://issues.apache.org/bugzilla/show_bug.cgi?id=42411
+
+	Currently the DefaultServlet only uses PathInfo to locate the file to serve.
+	It should actually use ServletPath + PathInfo to serve the file.
+	As it is now, it is impossible to use a servlet mapping like the above.
+
+	If you make a request for '/app/blah.gif', ServletPath = '/app' and
+	PathInfo = '/blah.gif'.
+
+	so DefaultServlet will try to serve '/blah.gif' which doesn't exist because it
+	is in the '/app/' directory. if it used ServletPath + PathInfo, it will work
+	as expected.
+
 	<servlet-mapping>
 		<servlet-name>default</servlet-name>
 		<url-pattern>/app/*</url-pattern>
@@ -34,6 +49,33 @@
 	<servlet-mapping>
 		<servlet-name>default</servlet-name>
 		<url-pattern>/resources/*</url-pattern>
+	</servlet-mapping>
+	-->
+
+	<!-- Current solution for handling static contents. A bit hackish but it works. -->
+	<servlet-mapping>
+	    <servlet-name>default</servlet-name>
+	    <url-pattern>*.html</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+	    <servlet-name>default</servlet-name>
+	    <url-pattern>*.htm</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+	    <servlet-name>default</servlet-name>
+	    <url-pattern>*.jpg</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+	 <servlet-name>default</servlet-name>
+	    <url-pattern>*.png</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+	    <servlet-name>default</servlet-name>
+	    <url-pattern>*.css</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+	    <servlet-name>default</servlet-name>
+	    <url-pattern>*.js</url-pattern>
 	</servlet-mapping>
 
 </web-app>
