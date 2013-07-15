@@ -113,6 +113,12 @@
 		<copy todir="${webRoot}/WEB-INF/lib" flatten="true" verbose="true">
 			<path refid="storageManager-classpath" />
 		</copy>
+		<!-- Copy service provider configuration file into classpath -->
+		<copy todir="${build}/META-INF" flatten="false" verbose="true">
+			<fileset dir="src/main/java/META-INF">
+				<include name="**/*" />
+			</fileset>
+		</copy>
 	</target>
 
 	<!-- Compile the java code -->

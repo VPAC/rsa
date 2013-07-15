@@ -40,12 +40,6 @@ import org.vpac.ndg.common.StringUtils;
  */
 public class Utils {
 
-	private static boolean sendNcwmsRequest = false;
-
-	public static boolean sendNcwmsRequest() {
-		return sendNcwmsRequest;
-	}
-
 	/**
 	 * Check whether the given string string matches the given patten.
 	 * 
