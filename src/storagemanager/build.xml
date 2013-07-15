@@ -167,15 +167,14 @@
 			<path refid="classpath" />
 		</copy>
 		<mkdir dir="${dist}/config" />
-		<copy todir="${dist}/config" verbose="true">
-			<fileset dir="${config}" />
-		    <globmapper from="*.SAMPLE" to="*"/>
-		</copy>
 		<copy todir="${build}" flatten="false" verbose="true">
 			<fileset dir="${config}">
-				<include name="mchange-log.properties"/>
-				<include name="README.txt"/>
+				<exclude name="*.SAMPLE"/>
 			</fileset>
+		</copy>
+		<copy todir="${dist}/config" verbose="true" overwrite="true">
+			<fileset dir="${config}" />
+		    <globmapper from="*.SAMPLE" to="*"/>
 		</copy>
 
 		<jar jarfile="${dist}/${app.name}.jar" basedir="${build}">

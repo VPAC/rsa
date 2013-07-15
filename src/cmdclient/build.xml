@@ -222,16 +222,21 @@
 		     directories, the readme files are concatenated. Also, .SAMPLE files
 		     are renamed. Due to the way the globbing works, we need multiple
 		     copy tasks here. -->
-		<copy todir="${dist}/${dist.name}/config" flatten="false" verbose="true">
+		<copy todir="${dist}/${dist.name}/config" flatten="false" verbose="true" overwrite="true">
+			<fileset dir="${storagemanagerConfig}">
+				<exclude name="*.SAMPLE"/>
+				<exclude name="README.txt"/>
+			</fileset>
+			<fileset dir="${config}">
+				<exclude name="*.SAMPLE"/>
+				<exclude name="README.txt"/>
+			</fileset>
+		</copy>
+		<copy todir="${dist}/${dist.name}/config" flatten="false" verbose="true" overwrite="true">
 			<fileset dir="${storagemanagerConfig}" />
 			<!-- Override some of the storagemanager's default config -->
 			<fileset dir="${config}" />
 			<globmapper from="*.SAMPLE" to="*"/>
-		</copy>
-		<copy todir="${dist}/${dist.name}/config" flatten="false" verbose="true">
-			<fileset dir="${config}">
-				<include name="mchange-log.properties"/>
-			</fileset>
 		</copy>
 		<concat destfile="${dist}/${dist.name}/config/README.txt">
 			<fileset file="${storagemanagerConfig}/README.txt" />
