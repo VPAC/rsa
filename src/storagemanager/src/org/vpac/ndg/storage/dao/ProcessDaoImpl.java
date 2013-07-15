@@ -24,11 +24,15 @@ import java.util.List;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.joda.time.DateTime;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
 import org.vpac.ndg.storage.model.Process;
 import org.vpac.ndg.storage.util.CustomHibernateDaoSupport;
 
 public class ProcessDaoImpl extends CustomHibernateDaoSupport implements ProcessDao {
+
+	final Logger log = LoggerFactory.getLogger(ProcessDaoImpl.class);
 
 	@Transactional
 	@Override
@@ -86,13 +90,12 @@ public class ProcessDaoImpl extends CustomHibernateDaoSupport implements Process
 		Query queryDate = session.createQuery("select current_timestamp() from Process p");
 		Date nowDate = (Date) queryDate.list().get(0);
 		DateTime deadlineDate = new DateTime(nowDate).minusMinutes(3);
-		System.err.println("Now:" + nowDate);
+		log.debug("Now:" + nowDate);
 		Query query = session.createQuery("delete Process where latest < :deadline");
 		query.setParameter("deadline", deadlineDate.toDate());
 		int result = query.executeUpdate();
-		System.err.println("delete stale process !!" + result);
+		log.debug("deleted {} stale processes", result);
 		return result;
-//		return 0;
 	}
 
 	@Transactional
