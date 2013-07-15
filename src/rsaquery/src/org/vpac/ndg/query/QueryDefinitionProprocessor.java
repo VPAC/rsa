@@ -408,7 +408,7 @@ public class QueryDefinitionProprocessor {
 			newRef.socketName = varName;
 			refs.add(newRef);
 			if (isDatasetReference)
-				inputVariableReferences.add(nr);
+				inputVariableReferences.add(newRef);
 		}
 		return refs;
 	}

@@ -4,8 +4,8 @@
 	</description>
 
 	<!-- Properies defined here will override those of the child ant scripts. -->
-	<property name="version.number" value="2.3.5" />
-	<property name="svn.info.lastRev" value="r2336" />
+	<property name="version.number" value="2.3.6" />
+	<property name="svn.info.lastRev" value="e6b65fa4ea" />
 
 	<target name="dist" depends="clean,cli,web_services,rsaquery">
 	</target>

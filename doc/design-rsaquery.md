@@ -15,21 +15,21 @@ A common use case for the RSA is to export a section of the data and perform
 some operations on it, such as filtering for pixels that meet certain criteria.
 For example:
 
- - Find all pixels that represent water over a given time period.
- - Find all pixels that represent vegetation above 1000m.
+ 1. Find all pixels that represent water over a given time period.
+ 1. Find all pixels that represent vegetation above 1000m.
 
 *Rsaquery* is a programmable image processing system that allows the creation of
 such queries. The query engine is specialised for the type of data stored in the
-RSA. The following image shows the output of the first query as produced by the
-query engine.
+RSA. The following image shows the output of example 1. as produced by the query
+engine.
  
 ![Example query output](images/query-demo-wet.png)
 
-> Output of a water query. **Left:** Landsat 7 input in false colour with *Band3* as
-> red, *Band4* as green and *Band5* as blue at *t = 2010-01-16*. **Middle:** output
-> band *wet* in pseudocolour with dry pixels coloured blue. **Right:** output band
-> *time* in pseudocolour. This image has been scaled down for inclusion in this
-> document.
+> Output of a water query, showing lakes and rivers. **Left:** Landsat 7 input
+> in false colour with *Band3* as red, *Band4* as green and *Band5* as blue at
+> *t = 2010-01-16*. **Middle:** output band *wet* in pseudocolour with dry
+> pixels coloured blue. **Right:** output band *time* in pseudocolour. This
+> image has been scaled down for inclusion in this document.
 
 Rsaquery allows users to define:
 
@@ -227,7 +227,7 @@ Filters operate in a global coordinate system, which is defined as the pixel spa
 
 ![Diagram of coordinate system and image alignment. Image shows two rectangular prisms intersecting, encompassed by an axis-aligned bounding box.](images/query-coordinates.png)
 
-> Coordinate spaces. Grey: inputs. Blue: global. The dashed lines represent a
+> Coordinate spaces. **Grey:** inputs. **Blue:** global. The dashed lines represent a
 > dimension (time) that is part of the global coordinate system but not part
 > of the output dataset.
 
@@ -403,8 +403,8 @@ The goal of this query is to transform a 3D dataset *(time, y, x)* of data into 
 
 ![Class diagram of the query definition classes](images/query-example-maximise.png)
 
-> Filter graph for the maximise query. Left: input dataset, featuring one 2D
-> and one 1D band. Middle: filter. Right: output dataset, featuring two 2D
+> Filter graph for the maximise query. **Left:** input dataset, featuring one 2D
+> and one 1D band. **Middle:** filter. **Right:** output dataset, featuring two 2D
 > bands. The grey sockets are scalar; the blue sockets could be any type -
 > although in this example, all data is scalar.
 
