@@ -13,7 +13,9 @@ The RSA has a Java API, and two user interfaces:
  * [rsacli](doc/rsacli_tutorial.md) - The command line interface, great for administration and automation.
  * [spatialcubeservice](doc/spatialcubeservice.md) - Web services, and a graphical interface for the query engine.
 
-![Screenshot](doc/images/screenshot.png)
+[![Screenshot](doc/images/video_thumb.jpg)](http://www.youtube.com/watch?v=YZwJW1fABnk)
+
+> Video demonstration and rationale of the RSA.
 
 ## Installation
 
