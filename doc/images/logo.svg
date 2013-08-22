@@ -10,11 +10,14 @@
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    version="1.1"
-   width="350"
+   width="420"
    height="140"
    id="svg2"
-   inkscape:version="0.48.3.1 r9886"
-   sodipodi:docname="logo.svg">
+   inkscape:version="0.48.4 r9939"
+   sodipodi:docname="logo.svg"
+   inkscape:export-filename="/home/adfries/Documents/ula/rsa/doc/images/logo.png"
+   inkscape:export-xdpi="90"
+   inkscape:export-ydpi="90">
   <sodipodi:namedview
      pagecolor="#ffffff"
      bordercolor="#666666"
@@ -29,12 +32,21 @@
      id="namedview21"
      showgrid="false"
      inkscape:zoom="1.9885714"
-     inkscape:cx="179.09044"
-     inkscape:cy="-24.900115"
+     inkscape:cx="188.64504"
+     inkscape:cy="20.358506"
      inkscape:window-x="65"
      inkscape:window-y="24"
      inkscape:window-maximized="1"
-     inkscape:current-layer="layer2" />
+     inkscape:current-layer="layer2"
+     showborder="true">
+    <inkscape:grid
+       type="xygrid"
+       id="grid3777"
+       empspacing="5"
+       visible="true"
+       enabled="true"
+       snapvisiblegridlinesonly="true" />
+  </sodipodi:namedview>
   <defs
      id="defs4">
     <clipPath
@@ -42,7 +54,8 @@
       <path
          d="m 580,902.36218 40,20 40,-20 -40,-20 z"
          id="path3867-5"
-         style="color:#000000;fill:none;stroke:#000000;stroke-width:3;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+         style="color:#000000;fill:none;stroke:#000000;stroke-width:3;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+         inkscape:connector-curvature="0" />
     </clipPath>
     <filter
        x="-0.12753037"
@@ -60,8 +73,9 @@
        id="filter3785"
        x="-0.11659919"
        width="1.2331984"
-       y="-0.23319838"
-       height="1.4663968">
+       y="-0.23319837"
+       height="1.4663968"
+       color-interpolation-filters="sRGB">
       <feGaussianBlur
          inkscape:collect="always"
          stdDeviation="3.8866397"
@@ -76,7 +90,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -88,12 +102,12 @@
        inkscape:connector-curvature="0"
        style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;display:inline"
        id="path4436-0"
-       d="m 120,20 -50,25 0,50 50,25 50,-25 0,-50 z" />
+       d="m 90,20 -50,25 0,50 50,25 50,-25 0,-50 z" />
     <g
        style="display:inline"
        id="g4438-1"
        clip-path="url(#clipPath3865-3)"
-       transform="translate(-500,-822.36232)">
+       transform="translate(-530,-822.36232)">
       <path
          inkscape:connector-curvature="0"
          style="color:#000000;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1px;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
@@ -106,7 +120,7 @@
          d="m 580,902.36221 20,-10 40,20 20,-10 -20,-10 -40,20 z" />
       <path
          inkscape:connector-curvature="0"
-         style="opacity:0.20164609000000000;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;filter:url(#filter3785)"
+         style="opacity:0.20164609;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;filter:url(#filter3785)"
          id="path4444-1"
          d="m 580,890.36218 40,20 40,-20 -40,-20 z" />
     </g>
@@ -114,32 +128,48 @@
        inkscape:connector-curvature="0"
        style="color:#000000;fill:none;stroke:#000000;stroke-width:3;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
        id="path4446-7"
-       d="m 80,80 40,20 40,-20 -40,-20 z" />
+       d="M 50,80 90,100 130,80 90,60 z" />
     <path
        inkscape:connector-curvature="0"
        style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;display:inline"
        id="path4448-2"
-       d="M 120,40 80,60 120,80 160,60 z" />
+       d="M 90,40 50,60 90,80 130,60 z" />
     <path
        inkscape:connector-curvature="0"
        style="fill:#63a8ff;fill-opacity:1;stroke:none;display:inline"
        id="path4450-1"
-       d="M 100,50 140,70 120,80 100,70 140,50 120,40 z" />
+       d="M 70,50 110,70 90,80 70,70 110,50 90,40 z" />
     <path
        inkscape:connector-curvature="0"
        style="fill:none;stroke:#000000;stroke-width:3;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;display:inline"
        id="path4452-2"
-       d="M 80,60 120,80 160,60 120,40 z" />
+       d="M 50,60 90,80 130,60 90,40 z" />
     <text
        sodipodi:linespacing="125%"
-       style="font-size:56.02888107px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-indent:0;text-align:start;text-decoration:none;line-height:125%;letter-spacing:0px;word-spacing:0px;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;text-anchor:start;baseline-shift:baseline;color:#000000;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1px;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate;font-family:DejaVu Sans Mono;-inkscape-font-specification:DejaVu Sans Mono"
+       style="font-size:31.89440727px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-indent:0;text-align:start;text-decoration:none;line-height:125%;letter-spacing:-0.50999999px;word-spacing:0px;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;text-anchor:start;baseline-shift:baseline;color:#000000;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1px;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate;font-family:DejaVu Sans Mono;-inkscape-font-specification:DejaVu Sans Mono"
        xml:space="preserve"
        id="text4454-3"
-       y="90.000107"
-       x="190"><tspan
-         style="font-size:56.02888107px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;font-family:NanumMyeongjo;-inkscape-font-specification:NanumMyeongjo"
+       y="72"
+       x="165"><tspan
+         style="font-size:31.89440727px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:-0.50999999px;writing-mode:lr-tb;text-anchor:start;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
          id="tspan4456-4"
-         y="90.000107"
-         x="190">RSA</tspan></text>
+         y="72"
+         x="165"
+         dx="0"
+         rotate="0 0 0 0 0 0 0 0">SPATIAL<tspan
+   style="font-weight:bold;letter-spacing:-0.50999999px"
+   id="tspan3001"
+   rotate="0 0 0 0 0">CUBE</tspan></tspan></text>
+    <text
+       x="165"
+       y="92"
+       id="text3003"
+       xml:space="preserve"
+       style="font-size:17.68084334999999996px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-indent:0;text-align:start;text-decoration:none;line-height:125%;letter-spacing:0.46000001000000001px;word-spacing:0px;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;text-anchor:start;baseline-shift:baseline;color:#000000;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1px;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate;font-family:DejaVu Sans Mono;-inkscape-font-specification:DejaVu Sans Mono;opacity:0.5"
+       sodipodi:linespacing="125%"><tspan
+         x="165"
+         y="92"
+         id="tspan3005"
+         style="font-size:17.68084334999999996px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0.46000001000000001px;word-spacing:2.46999979000000014px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans">Raster storage archive</tspan></text>
   </g>
 </svg>
