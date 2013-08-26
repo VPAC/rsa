@@ -46,7 +46,7 @@ function _rsa_dataset() {
 
     if [ $actiontoknum -eq $COMP_CWORD ]; then
         local actions
-        actions="list create show"
+        actions="list create search show update delete"
         COMPREPLY=( $(compgen -W "${actions}" -- ${cur}) )
         return 0
     fi
@@ -81,6 +81,21 @@ function _rsa_dataset() {
                 esac
             fi
             ;;
+        update)
+            if [[ ${cur} == -* ]]; then
+                options="--name --abstract"
+            else
+                case ${prev} in
+                    *)
+                        _rsa_list_datasets
+                        return $?
+                        ;;
+                esac
+            fi
+            ;;
+        delete)
+            # To do: list datasets and bands.
+            ;;
     esac
 
     COMPREPLY=( $(compgen -W "${options}" -- ${cur}) )
@@ -95,7 +110,7 @@ function _rsa_timeslice() {
 
     if [ $actiontoknum -eq $COMP_CWORD ]; then
         local actions
-        actions="list create"
+        actions="list show create update delete"
         COMPREPLY=( $(compgen -W "${actions}" -- ${cur}) )
         return 0
     fi
@@ -104,6 +119,9 @@ function _rsa_timeslice() {
         list)
             _rsa_list_datasets
             return $?
+            ;;
+        show)
+            # To do: write function to list datasets.
             ;;
         create)
             if [[ ${cur} == -* ]]; then
@@ -120,6 +138,17 @@ function _rsa_timeslice() {
                 esac
             fi
             ;;
+        update)
+            if [[ ${cur} == -* ]]; then
+                options="--abstract"
+            else
+                # To do: list datasets and timeslices.
+                false
+            fi
+            ;;
+        delete)
+            # To do: list datasets and timeslices.
+            ;;
     esac
 
     COMPREPLY=( $(compgen -W "${options}" -- ${cur}) )
@@ -134,7 +163,7 @@ function _rsa_band() {
 
     if [ $actiontoknum -eq $COMP_CWORD ]; then
         local actions
-        actions="list create"
+        actions="list create update delete"
         COMPREPLY=( $(compgen -W "${actions}" -- ${cur}) )
         return 0
     fi
@@ -159,6 +188,19 @@ function _rsa_band() {
                         ;;
                 esac
             fi
+            ;;
+        update)
+            if [[ ${cur} == -* ]]; then
+                options="--continuous --metadata --name --type"
+            else
+                # To do. Need to check how many non-optional arguments have been
+                # provided, and return either a dataset name or band name.
+                false
+            fi
+            ;;
+        delete)
+            _rsa_list_datasets
+            return $?
             ;;
     esac
 
