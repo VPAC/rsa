@@ -219,7 +219,7 @@ Then go to your GDAL source root dir, and run the build:
 	$ cd swig/java
 	$ make
 	$ sudo cp *.jar *.so /usr/local/lib/
-	$ pushd /usr/loca/lib
+	$ pushd /usr/local/lib
 	$ sudo ln -s libgdalconstjni.so libgdalconstjni.so.1
 	$ sudo ln -s libgdaljni.so libgdaljni.so.1	   
 	$ sudo ln -s libogrjni.so libogrjni.so.1
