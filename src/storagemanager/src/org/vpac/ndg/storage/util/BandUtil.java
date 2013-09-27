@@ -72,6 +72,38 @@ public class BandUtil {
 	private final URL seedurl = BandUtil.class.getResource("/blank_seed.nc");
 
 	/**
+	 * Deletes temporary files that may need to be periodically flushed for specific bands
+	 * @param ds The dataset that the band belongs to.
+	 * @param band The band to get the tile of.
+	 * @throws IOException
+	 */
+	public void deleteTempFiles(Dataset ds, Band band) throws IOException {
+		
+		// The preview data needs to be deleted whenever the underlying band data is
+		// changed
+		Path path = getPreviewDataPath(ds, band);
+		if (Files.exists(path)) {
+			log.debug("Removing Query Engine UI preview for band {} in dataset {}", band, ds);
+			Files.delete(path);
+		}
+	}
+	
+	/**
+	 * Gets the path to the preview dataset as used by the Query Engine UI
+	 * 
+	 * @param ds The dataset that the preview belongs to.
+	 * @param band The band to get the preview of.
+	 * @return The path to the preview file used by the Query Engine.
+	 * @see BandUtil#deleteTempFiles(Dataset, Band)
+	 */
+	public Path getPreviewDataPath(Dataset ds, Band band) {
+		Path dir = datasetUtil.getPath(ds);
+		return dir.resolve("preview.nc");
+	}
+	
+	
+	
+	/**
 	 * Create a blank tile to suit a band.
 	 * 
 	 * @param ds The dataset that the band belongs to.
