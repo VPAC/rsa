@@ -60,5 +60,6 @@
 	<classpathentry kind="lib" path="lib/netcdf-4.3.16.jar"/>
 	<classpathentry kind="lib" path="lib/jna-3.2.7.jar"/>
 	<classpathentry kind="lib" path="lib/platform-3.2.7.jar"/>
+	<classpathentry kind="lib" path="lib/udunits-4.3.16.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
