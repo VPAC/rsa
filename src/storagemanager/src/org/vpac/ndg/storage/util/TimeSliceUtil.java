@@ -174,7 +174,7 @@ public class TimeSliceUtil {
 		if (minprecision < DateUtils.MILLIS_PER_SECOND) {
 			// Precision of less than one second; round to milliseconds.
 			epoch = DateUtils.truncate(mindate, Calendar.SECOND);
-			timeUnits = String.format("Milliseconds since %s",
+			timeUnits = String.format("msec since %s",
 					DateFormatUtils.format(epoch, Default.SECOND_PATTERN));
 
 		} else if (minprecision < DateUtils.MILLIS_PER_MINUTE) {

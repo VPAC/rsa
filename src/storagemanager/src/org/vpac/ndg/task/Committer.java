@@ -138,6 +138,14 @@ public class Committer extends Task {
 		}
 		ts.setBounds(storedBounds);
 
+		try {
+			// the band has been updated, now delete any temporary files that may not
+			// reflect the current state of the bands (ie; preview data used by the Query UI)
+			bandUtil.deleteTempFiles(dataset, band);
+		} catch (IOException e) {
+			throw new TaskException(e);
+		}
+		
 		if (band.getNodata() == null || band.getType() == null) {
 			if (band.getNodata() != null) {
 				if (!band.getNodata().equals(dstnodata))
@@ -150,7 +158,7 @@ public class Committer extends Task {
 					throw new TaskException("Can't change band's type.");
 			}
 			band.setType(datatype);
-
+			
 			try {
 				bandUtil.createBlankTile(dataset, band);
 			} catch (IOException e) {

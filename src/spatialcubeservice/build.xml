@@ -97,18 +97,35 @@
 				<include name="**/*.xml" />
 			</fileset>
 		</copy>
-		<copy todir="${build}" flatten="false" verbose="true">
+
+		<!-- copy config. Because this combines the contents of several
+		     directories, the readme files are concatenated. Also, .SAMPLE files
+		     are renamed. Due to the way the globbing works, we need multiple
+		     copy tasks here. -->
+		<!-- NOTE! These rules are a bit touchy, and it's easy to miss something.
+		     If you need to change this, verify that the resulting archive
+		     varies from the old one in the way you intended by examining its
+		     contents. You might also like to apply the same changes to
+		     ../cmdclient/build.xml. -->
+		<copy todir="${build}" flatten="false" verbose="true" overwrite="true">
+			<fileset dir="${storagemanagerConfig}">
+				<exclude name="*.SAMPLE"/>
+			</fileset>
+			<fileset dir="${config}">
+				<exclude name="*.SAMPLE"/>
+				<exclude name="README.txt"/>
+			</fileset>
+		</copy>
+		<copy todir="${build}" flatten="false" verbose="true" overwrite="true">
 			<fileset dir="${storagemanagerConfig}" />
-			<!-- Override some of the storagemanager's default config -->
+			<globmapper from="*.SAMPLE" to="*"/>
+		</copy>
+		<!-- Override some of the storagemanager's default config -->
+		<copy todir="${build}" flatten="false" verbose="true" overwrite="true">
 			<fileset dir="${config}" />
 			<globmapper from="*.SAMPLE" to="*"/>
 		</copy>
-		<copy todir="${build}" flatten="false" verbose="true">
-			<fileset dir="${storagemanagerConfig}">
-				<include name="README.txt"/>
-				<include name="mchange-log.properties"/>
-			</fileset>
-		</copy>
+
 		<!-- Libraries; ignore directory structure of source -->
 		<copy todir="${webRoot}/WEB-INF/lib" flatten="true" verbose="true">
 			<path refid="storageManager-classpath" />

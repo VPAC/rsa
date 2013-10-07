@@ -135,7 +135,7 @@ public class TimeSliceController {
 		log.debug("Ymin: {}", request.getYmin());
 		log.debug("Ymax: {}", request.getYmax());
 		
-		if(request.getTimesliceId().isEmpty()) {
+		if(request.getTimesliceId() == null || request.getTimesliceId().isEmpty()) {
 			// create timeslice
 			TimeSlice ts = new TimeSlice(request.getCreationDate());
 			datasetDao.addTimeSlice(request.getDatasetId(), ts);

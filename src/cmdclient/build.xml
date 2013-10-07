@@ -222,6 +222,11 @@
 		     directories, the readme files are concatenated. Also, .SAMPLE files
 		     are renamed. Due to the way the globbing works, we need multiple
 		     copy tasks here. -->
+		<!-- NOTE! These rules are a bit touchy, and it's easy to miss something.
+		     If you need to change this, verify that the resulting archive
+		     varies from the old one in the way you intended by examining its
+		     contents. You might also like to apply the same changes to
+		     ../spatialcubeservice/build.xml. -->
 		<copy todir="${dist}/${dist.name}/config" flatten="false" verbose="true" overwrite="true">
 			<fileset dir="${storagemanagerConfig}">
 				<exclude name="*.SAMPLE"/>
