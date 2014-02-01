@@ -51,6 +51,13 @@ vpac.removeAngularHash = function(obj) {
 	}
 };
 
+vpac.datasetNameFromQualname = function(qualname) {
+	// qualname is in the format rsa:small_landsat/100m
+	// this will return small_landsat
+	return qualname.substring(qualname.indexOf(":")+1,qualname.indexOf("/"))
+	
+}
+
 //WebFont.load({
 //	google: {
 //		families: [ 'Inder' ]
