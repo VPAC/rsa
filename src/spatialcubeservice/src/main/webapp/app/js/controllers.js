@@ -31,7 +31,7 @@ vpac.socket.toRef = function(node, socket) {
 	return '#' + node.id + '/' + socket.name;
 };
 
-angular.module('graphEditor').controller('GraphEditor', function GraphEditor($scope, datasets, filters, $http) {
+angular.module('graphEditor').controller('GraphEditor', function GraphEditor($scope, $location, datasets, filters, $http) {
 	console.log('init graph editor');
 
 	// Allow debugging on-demand: press F7 to prevent the page from updating.
@@ -204,115 +204,159 @@ angular.module('graphEditor').controller('GraphEditor', function GraphEditor($sc
 		$scope.fullRepaintRequired = true;
 	};
 
-	$scope.nodes = [ {
-	    "name": "Output",
-	    "id": "output",
-	    "type": "output",
-	    "position": {
-	      "y": 102.7890625,
-	      "x": 776.5,
-	      "left": 708,
-	      "top": 23
-	    },
-	    "inputs": [
-	      {
-	        "name": "grid",
-	        "connections": [],
-	        "type": "meta"
-	      },
-	      {
-	        "name": "band",
-	        "connections": [
-	          "#Blur_0/output"
-	        ],
-	        "type": "scalar",
-	        "synthetic": true
-	      }
-	    ],
-	    "outputs": []
-	  },
-	  {
-	    "position": {
-	      "x": 101,
-	      "y": 59,
-	      "left": 32.5,
-	      "top": 39.2109375
-	    },
-	    "description": "",
-	    "outputs": [
-	      {
-	        "name": "grid",
-	        "type": "meta",
-	        "connections": []
-	      },
-	      {
-	        "name": "time",
-	        "type": "scalar,axis",
-	        "connections": []
-	      },
-	      {
-	        "name": "y",
-	        "type": "scalar,axis",
-	        "connections": []
-	      },
-	      {
-	        "name": "x",
-	        "type": "scalar,axis",
-	        "connections": []
-	      },
-	      {
-	        "name": "B30",
-	        "type": "scalar",
-	        "connections": [
-                "#Blur_0/input"
-	        ]
-	      },
-	      {
-	        "name": "B40",
-	        "type": "scalar",
-	        "connections": []
-	      },
-	      {
-	        "name": "B50",
-	        "type": "scalar",
-	        "connections": []
-	      }
-	    ],
-	    "qualname": "rsa:small_landsat/100m",
-	    "inputs": [],
-	    "name": "small_landsat",
-	    "type": "input",
-	    "id": "small_landsat_0"
-	  },
-	  {
-	    "position": {
-	      "x": 419.5,
-	      "y": 208.7890625,
-	      "left": 351,
-	      "top": 189
-	    },
-	    "description": "Blur pixel using 2D Gaussian kernel",
-	    "outputs": [
-	      {
-	        "name": "output",
-	        "type": "Cell",
-	        "connections": ["#output/band"]
-	      }
-	    ],
-	    "qualname": "org.vpac.ndg.query.Blur",
-	    "inputs": [
-	      {
-	        "name": "input",
-	        "type": "PixelSource",
-	        "connections": [
-	          "#small_landsat_0/B30"
-	        ]
-	      }
-	    ],
-	    "name": "Blur",
-	    "type": "filter",
-	    "id": "Blur_0"
-	  } ];
+	var initnodes = function() {
+		var nodes = [ {
+		    "name": "Output",
+		    "id": "output",
+		    "type": "output",
+		    "position": {
+		      "y": 102.7890625,
+		      "x": 776.5,
+		      "left": 708,
+		      "top": 23
+		    },
+		    "inputs": [
+		      {
+		        "name": "grid",
+		        "connections": [],
+		        "type": "meta"
+		      },
+		      {
+		        "name": "band",
+		        "connections": [
+		          "#Blur_0/output"
+		        ],
+		        "type": "scalar",
+		        "synthetic": true
+		      }
+		    ],
+		    "outputs": []
+		  },
+		  {
+		    "position": {
+		      "x": 101,
+		      "y": 59,
+		      "left": 32.5,
+		      "top": 39.2109375
+		    },
+		    "description": "",
+		    "outputs": [
+		      {
+		        "name": "grid",
+		        "type": "meta",
+		        "connections": []
+		      },
+		      {
+		        "name": "time",
+		        "type": "scalar,axis",
+		        "connections": []
+		      },
+		      {
+		        "name": "y",
+		        "type": "scalar,axis",
+		        "connections": []
+		      },
+		      {
+		        "name": "x",
+		        "type": "scalar,axis",
+		        "connections": []
+		      },
+		      {
+		        "name": "B30",
+		        "type": "scalar",
+		        "connections": [
+	                "#Blur_0/input"
+		        ]
+		      },
+		      {
+		        "name": "B40",
+		        "type": "scalar",
+		        "connections": []
+		      },
+		      {
+		        "name": "B50",
+		        "type": "scalar",
+		        "connections": []
+		      }
+		    ],
+		    "qualname": "rsa:small_landsat/100m",
+		    "inputs": [],
+		    "name": "small_landsat",
+		    "type": "input",
+		    "id": "small_landsat_0"
+		  },
+		  {
+		    "position": {
+		      "x": 419.5,
+		      "y": 208.7890625,
+		      "left": 351,
+		      "top": 189
+		    },
+		    "description": "Blur pixel using 2D Gaussian kernel",
+		    "outputs": [
+		      {
+		        "name": "output",
+		        "type": "Cell",
+		        "connections": ["#output/band"]
+		      }
+		    ],
+		    "qualname": "org.vpac.ndg.query.Blur",
+		    "inputs": [
+		      {
+		        "name": "input",
+		        "type": "PixelSource",
+		        "connections": [
+		          "#small_landsat_0/B30"
+		        ]
+		      }
+		    ],
+		    "name": "Blur",
+		    "type": "filter",
+		    "id": "Blur_0"
+		  } ];
+		
+		//check if the dataset name and bands are specified in the URL, modify the initial 
+		//graph editor setup accordingly
+		//format of the URL needs to be something like (note the / is url encoded as %2F)
+		//   . . . app/index.html#?dataset=rsa:test01%2F25m&bands=13117,13125
+		if (($location.search()).dataset !== undefined && ($location.search()).bands !== undefined) {
+			
+			var datasetqualname = ($location.search()).dataset;
+			var bands = ($location.search()).bands;
+			
+			var datasetname = vpac.datasetNameFromQualname(datasetqualname);
+			
+			var dsnode = nodes[1];
+			dsnode.name = datasetname;
+			dsnode.qualname = datasetqualname;
+			
+			var oldoutputs = dsnode.outputs;
+			var newoutputs = [];
+			
+			for (var i = 0; i < 4; i++) {
+				//add the first 4 outputs (grid, time, y, x) to the new list of outputs for this node
+				newoutputs.push(oldoutputs[i]);
+			}
+			
+			var bandlist = bands.split(",");
+			for (var i = 0; i < bandlist.length; i++) {
+				//add a new output for each of the bands included in the URL
+				var newoutput = {
+				        "name": bandlist[i],
+				        "type": "scalar",
+				        "connections": []
+				      };
+				newoutputs.push(newoutput);
+			}
+			dsnode.outputs = newoutputs;
+
+		}
+		
+		
+		return nodes;
+	};
+	
+	$scope.nodes = initnodes();
 });
 
 
