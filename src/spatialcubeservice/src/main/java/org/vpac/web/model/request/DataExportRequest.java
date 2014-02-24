@@ -44,7 +44,17 @@ public class DataExportRequest {
 	private Point<Double> topLeft;
 	@Nullable
 	private Point<Double> bottomRight;
+	@Nullable
+	private Boolean useBilinearInterpolation;
 	
+	public Boolean getUseBilinearInterpolation() {
+		return useBilinearInterpolation;
+	}
+
+	public void setUseBilinearInterpolation(Boolean useBilinearInterpolation) {
+		this.useBilinearInterpolation = useBilinearInterpolation;
+	}
+
 	public String getDatasetId() {
 		return datasetId;
 	}

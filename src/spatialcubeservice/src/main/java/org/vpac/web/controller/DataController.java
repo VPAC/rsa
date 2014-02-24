@@ -227,6 +227,7 @@ public class DataController {
 		log.debug("Start date: {}", request.getSearchStartDate());
 		log.debug("End date: {}", request.getSearchEndDate());
 		log.debug("Projection: {}", request.getProjection());
+		log.debug("Use Bilinear Interpolation: {}", request.getUseBilinearInterpolation());
 
 		Exporter exporter = new Exporter();
 		// mandatory
@@ -236,6 +237,7 @@ public class DataController {
 		exporter.setStart(request.getSearchStartDate());
 		exporter.setEnd(request.getSearchEndDate());
 		exporter.setTargetProjection(request.getProjection());
+		exporter.setUseBilinearInterpolation(request.getUseBilinearInterpolation());
 		if(request.getTopLeft() != null && request.getBottomRight() != null) {
 			Box b = new Box(request.getTopLeft(), request.getBottomRight());
 			exporter.setExtents(b);
