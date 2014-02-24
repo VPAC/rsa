@@ -48,6 +48,7 @@ import org.vpac.ndg.query.PassThrough;
 import org.vpac.ndg.query.Query;
 import org.vpac.ndg.query.QueryConfigurationException;
 import org.vpac.ndg.query.QueryDefinition;
+import org.vpac.ndg.query.QueryDefinition.CacheDefinition;
 import org.vpac.ndg.query.QueryDefinition.DatasetInputDefinition;
 import org.vpac.ndg.query.QueryDefinition.DatasetOutputDefinition;
 import org.vpac.ndg.query.QueryDefinition.FilterDefinition;
@@ -274,6 +275,15 @@ public class PreviewDatasetProvider implements DatasetProvider {
 		log.info("QD XML : {}", xmlString);
 
 		Version version = Version.netcdf4;
+		
+		//set a cache definition to minimise the number of hard faults that occur
+		//for the preview query this is ok given we know the spatial dimensions being requested
+		CacheDefinition cacheDef = new CacheDefinition();
+		cacheDef.window = "1 128 256";
+		cacheDef.windowAxes = "time y x";
+		cacheDef.volume = 0;
+		cacheDef.pages = 1;
+		qd.cache = cacheDef;
 
 		Path outputFile = getPreviewFile(ds);
 		executeQuery(qd, outputFile, version);
