@@ -232,6 +232,9 @@ angular.module('graphEditor').controller('GraphEditor', function GraphEditor($sc
 							window.location = "../Data/Download/" + taskId;
 							$scope.downloadButtonDisable = false;
 						}
+					} else if (data.state == "EXECUTION_ERROR") {
+						$scope.progressTrackingOn = false;
+						$scope.downloadButtonDisable = false;
 					}
 				});
 				$scope.progressTracking(taskId);
