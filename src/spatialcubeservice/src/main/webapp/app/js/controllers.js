@@ -131,6 +131,7 @@ angular.module('graphEditor').controller('GraphEditor', function GraphEditor($sc
 
 	$scope.currentPreview = null;
 	$scope.previewImages = [];
+	$scope.downloadButtonDisable = false;
 	$scope.getPreviewImages = function() {
 		if ($scope.currentPreview == null)
 			return $scope.previewImages;
@@ -140,32 +141,51 @@ angular.module('graphEditor').controller('GraphEditor', function GraphEditor($sc
 
 	var previewNum = 0;
 	$scope.MAX_PREVIEW_ITEMS = 6;
-	$scope.fetchPreview = function() {
-		var query = vpac.serialiseQuery($scope.nodes, {preview: true});
+	$scope.fetchPreview = function(preview) {
+		if(!preview && $scope.downloadButtonDisable)
+			return;
+		console.log("preview", preview);
+		var query = vpac.serialiseQuery($scope.nodes, {preview: preview});
 		console.log('Fetching preview', query);
-		var requestData = $.param({query: query});
+		var requestData = $.param({query: query, preview:preview});
 		var state = angular.copy($scope.nodes);
 		vpac.removeAngularHash(state);
+		var queryURL = preview ? '../Data/MultiPreviewQuery' : '../Data/QueryOutput.json';
 		console.log(state);
 		$http({
 			method: 'POST',
 			headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-			url: '../Data/MultiPreviewQuery',
+			url: queryURL,
 			data: requestData
-
 		}).success(function(data, status, headers, config) {
-			console.log('fetched', status, data);
-			var preview = {
-				seq: ++previewNum,
-				data: data,
-				nodeGraph: state,
-				success: true
-			};
-			$scope.previewImages = vpac.pushFront($scope.previewImages, preview,
-					$scope.MAX_PREVIEW_ITEMS);
-			$scope.currentPreview = preview;
-			console.log($scope.previewImages);
-
+			console.log('fetched', status, data, config.data);
+			var previewParam = true;
+			if(config.data.indexOf("preview=") != -1) {
+				angular.forEach(config.data.split("&"), function(param){
+					if(param.split("=")[0] == "preview")
+						if(param.split("=")[1] == "true")
+							previewParam = true;
+						else
+							previewParam = false;
+				});
+			}
+			if(previewParam) {
+				var preview = {
+					seq: ++previewNum,
+					data: data,
+					nodeGraph: state,
+					success: true
+				};
+				$scope.previewImages = vpac.pushFront($scope.previewImages, preview,
+						$scope.MAX_PREVIEW_ITEMS);
+				$scope.currentPreview = preview;
+				console.log($scope.previewImages);
+			} else {
+				console.log("taskId", data.taskId);
+				$scope.progressTrackingOn = true;
+				$scope.downloadButtonDisable = true;
+				$scope.progressTracking(data.taskId);
+			}
 		}).error(function(data, status, headers, config) {
 			console.log('Error fetching preview:', status, data);
 			var errstring;
@@ -195,6 +215,29 @@ angular.module('graphEditor').controller('GraphEditor', function GraphEditor($sc
 			$scope.currentPreview = preview;
 		});
 	};
+	$scope.progressTracking = function(taskId) {
+		console.log("taskId - progressTracking:", taskId);
+		if($scope.progressTrackingOn) {
+			setTimeout(function() {
+				$http({
+					method: 'GET',
+					url: "../Data/Task/" + taskId + ".json"
+				}).success(function(data, status, headers, config) {
+					$scope.progress = data.currentStepProgress;
+					if(data.state == "RUNNING") {
+						console.log("progress", data.currentStepProgress);
+					} else if (data.state == "FINISHED") {
+						if(data.currentStepProgress == 100.0 && $scope.progressTrackingOn) {
+							$scope.progressTrackingOn = false;
+							window.location = "../Data/Download/" + taskId;
+							$scope.downloadButtonDisable = false;
+						}
+					}
+				});
+				$scope.progressTracking(taskId);
+			}, 5000);
+		}
+	}
 	$scope.selectPreview = function(preview) {
 		$scope.currentPreview = preview;
 		$scope.restoreState(preview.nodeGraph)

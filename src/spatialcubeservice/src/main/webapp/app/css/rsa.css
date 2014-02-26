@@ -362,6 +362,9 @@ h1 span {
 	text-align: center;
 	background-image: url(../images/camera_icon.png);
 }
+.preview.fulldownload {
+	text-align: center;
+}
 .preview.error {
 	background-image: url(../images/error_icon.png);
 }
@@ -373,6 +376,18 @@ h1 span {
 	width: 121px;
 	height: 121px;
 	overflow: hidden;
+}
+.full a {
+	color: black;
+	text-decoration: none;
+}
+.full a {
+	width: 121px;
+	height: 121px;
+	overflow: hidden;
+}
+.disabled {
+	background-color : gainsboro;
 }
 .preview img {
 	background: url(../images/stipple_bg.png);
