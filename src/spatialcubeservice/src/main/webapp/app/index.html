@@ -3,6 +3,7 @@
 <head>
   <link rel="stylesheet" href="css/jquery-ui/smoothness/jquery-ui.css" />
   <link rel="stylesheet" href="css/angular/bootstrap.css" />
+  <link rel="stylesheet" href="css/angular/ngProgress.css" />
   <link rel="stylesheet" href="css/rsa.css" />
   <script src="lib/jquery/jquery.js"></script>
   <script src="lib/jquery/jquery-ui.js"></script>
@@ -14,6 +15,7 @@
   <script src="lib/angular/transition.js"></script>
   <script src="lib/angular/tabs.js"></script>
   <script src="lib/angular/dialog.js"></script>
+  <script src="lib/angular/ngProgress.js"></script>
 <!--   <script src="lib/webfont.js"></script> -->
 
   <script src="js/util.js"></script>
@@ -69,7 +71,10 @@
         <tabs>
           <pane heading="Preview"><div class="preview-panel">
             <ul class="thumbnails">
-              <li class="preview snapshot"><a class="thumbnail" ng-click="fetchPreview()">Snapshot</a></li>
+              <li class="preview snapshot"><a class="thumbnail" ng-click="fetchPreview(true)">Snapshot</a></li>
+              <li class="preview fulldownload" ng-class="{disabled:downloadButtonDisable}"><a class="thumbnail" ng-disabled="downloadButtonDisable" ng-click="fetchPreview(false)">Full Down<BR/><BR/><BR/><font size="18">{{progress | number:1}}</font>%</a></li>
+			</ul>
+            <ul class="thumbnails">
               <preview ng-repeat="result in getPreviewImages()">
             </ul>
           </div></pane>

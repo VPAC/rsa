@@ -555,6 +555,73 @@ public class DataController {
 		model.addAttribute(ControllerHelper.RESPONSE_ROOT, new QueryResponse(taskId));
 		return "Success";
 	}
+	
+	@RequestMapping(value = "/QueryOutput", method = RequestMethod.POST)
+	public String queryOutput(@RequestParam(required = false) String query,
+			@RequestParam(required = false) String threads,
+			@RequestParam(required = false) Double minX,
+			@RequestParam(required = false) Double minY,
+			@RequestParam(required = false) Double maxX,
+			@RequestParam(required = false) Double maxY,
+			@RequestParam(required = false) String startDate,
+			@RequestParam(required = false) String endDate,
+			@RequestParam(required = false) String netcdfVersion,
+			ModelMap model)
+			throws IOException, QueryConfigurationException {
+
+		// FIXME: this should only be done once!
+		ProviderRegistry.getInstance().clearProivders();
+		ProviderRegistry.getInstance().addProivder(rsaDatasetProvider);
+		ProviderRegistry.getInstance().addProivder(previewDatasetProvider);
+
+		final QueryDefinition qd = QueryDefinition.fromString(query);
+		if(minX != null)
+			qd.output.grid.bounds = String.format("%f %f %f %f", minX, minY, maxX, maxY);
+		
+		if(startDate != null) {
+			qd.output.grid.timeMin = startDate;
+			qd.output.grid.timeMax = endDate;
+		}
+
+		Version version;
+		if (netcdfVersion != null) {
+			if (netcdfVersion.equals("nc3")) {
+				version = Version.netcdf3;
+			} else if (netcdfVersion.equals("nc4")) {
+				version = Version.netcdf4;
+			} else {
+				throw new IllegalArgumentException(String.format(
+						"Unrecognised NetCDF version %s", netcdfVersion));
+			}
+		} else {
+			version = Version.netcdf4;
+		}
+		final Version ver = version;
+
+		final QueryProgress qp = new QueryProgress(jobProgressDao);
+		String taskId = qp.getTaskId();
+		final Integer t = threads == null ? null : Integer.parseInt(threads);
+		Path outputDir = FileUtils.getTargetLocation(taskId);
+		final Path queryPath = outputDir.resolve("query_output.nc");
+		if (!Files.exists(outputDir))
+			Files.createDirectories(outputDir);
+
+		Thread thread = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				try {
+					executeQuery(qd, qp, t, queryPath, ver);
+				} catch (Exception e) {
+					qp.setErrorMessage(e.getMessage());
+					log.error("Task exited abnormally: ", e);
+				}
+			}
+		});
+
+		thread.start();
+		model.addAttribute(ControllerHelper.RESPONSE_ROOT, new QueryResponse(taskId));
+		return "Success";
+	}	
 
 	@RequestMapping(value = "/PreviewQuery", method = RequestMethod.POST)
 	public void previewQuery(@RequestParam(required = false) String query,

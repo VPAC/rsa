@@ -747,4 +747,4 @@ angular.module('graphEditor').filter('rsaquery', function() {
 	return vpac.serialiseQuery;
 });
 
-
+//angular.module('graphEditor', ['ngProgress']);
