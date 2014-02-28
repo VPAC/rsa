@@ -53,6 +53,8 @@ public enum CellSize implements UiOption<CellSize> {
 	m1(12, "1m", 1.0),
 	/** indicates a cell size of 10cm */
 	mm100(13, "10cm", 0.1),
+	/** 75m resolution */
+	m75(14, "75m", 75.0),
 	
 	// For Geographic Coordinate System: unit in decimal degree
 	// FIXME: finalize the degree unit to be used

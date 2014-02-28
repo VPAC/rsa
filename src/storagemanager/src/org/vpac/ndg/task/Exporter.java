@@ -83,8 +83,10 @@ public class Exporter extends Application {
 	private Box internalExtents;
 	private String targetProjection;
 	private int targetEpsgId;
+	private CellSize targetResolution;
 	private TimeSliceDbReadWriteLock lock;
 	private Boolean useBilinearInterpolation;
+	
 	
 	private Dataset dataset;
 	// It's OK to hold a direct reference to the time slices here, because this
@@ -104,6 +106,7 @@ public class Exporter extends Application {
 		timeSliceUtil = (TimeSliceUtil) appContext.getBean("timeSliceUtil");
 		tileManager = (TileManager) appContext.getBean("tileManager");
 		ndgConfigManager = (NdgConfigManager) appContext.getBean("ndgConfigManager");
+		targetResolution = null;
 	}
 
 	@Override
@@ -469,6 +472,10 @@ public class Exporter extends Application {
 		}
 		vrtWarpFile.setResolution(dataset.getResolution());
 		vrtWarpFile.setFormat(GdalFormat.VRT);
+		
+		if (getTargetProjection() != null) {
+			vrtWarpFile.setResolution(targetResolution);
+		}
 
 		Transformer initialTransform = new Transformer();
 		initialTransform.setSource(warpInputs);
@@ -501,7 +508,16 @@ public class Exporter extends Application {
 		if (getTargetProjection() != null) {
 			exportedImage.setEpsgId(targetEpsgId);
 		}
-		exportedImage.setResolution(dataset.getResolution());
+		
+		//if the target resolution is set, use it. Otherwise set to the resolution of the dataset
+		//note that the resolution of the output data has already been determined by the prior
+		//Transformer task
+		if (targetResolution != null) {
+			exportedImage.setResolution(targetResolution);
+		} else {
+			exportedImage.setResolution(dataset.getResolution());
+		}
+		
 		exportedImage.setFormat(GdalFormat.NC);
 
 		Translator ncTranslator = new Translator();
@@ -565,6 +581,14 @@ public class Exporter extends Application {
 		this.targetProjection = targetProjection;
 	}
 
+	public CellSize getTargetResolution() {
+		return targetResolution;
+	}
+
+	public void setTargetResolution(CellSize targetResolution) {
+		this.targetResolution = targetResolution;
+	}
+	
 	public List<String> getBandIds() {
 		return bandIds;
 	}
