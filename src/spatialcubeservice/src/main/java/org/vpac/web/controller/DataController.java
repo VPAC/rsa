@@ -54,6 +54,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.vpac.ndg.CommandUtil;
 import org.vpac.ndg.FileUtils;
 import org.vpac.ndg.common.datamodel.CellSize;
+import org.vpac.ndg.common.datamodel.Format;
 import org.vpac.ndg.common.datamodel.GdalFormat;
 import org.vpac.ndg.datamodel.AggregationDefinition;
 import org.vpac.ndg.datamodel.AggregationOpener;
@@ -229,6 +230,7 @@ public class DataController {
 		log.debug("Projection: {}", request.getProjection());
 		log.debug("Export resolution: {}", request.getResolution());
 		log.debug("Use Bilinear Interpolation: {}", request.getUseBilinearInterpolation());
+		log.debug("Format: {}", request.getFormat());
 		
 		CellSize exportResolution = null;
 		if (request.getResolution() != null) {
@@ -239,6 +241,18 @@ public class DataController {
 			}
 		}
 
+		//default export format is netCDF
+		GdalFormat format = GdalFormat.NC;
+		if (request.getFormat() != null) {
+			try {
+				Format rsaformat = Format.valueOf(request.getFormat());
+				format = GdalFormat.valueOf(rsaformat);
+			} catch (IllegalArgumentException e) {
+				log.warn("Invalid export format string {}, defaulting to NetCDF", request.getFormat());
+			}
+		}
+		
+		
 		Exporter exporter = new Exporter();
 		// mandatory
 		exporter.setDatasetId(request.getDatasetId());
@@ -248,6 +262,7 @@ public class DataController {
 		exporter.setEnd(request.getSearchEndDate());
 		exporter.setTargetProjection(request.getProjection());
 		exporter.setTargetResolution(exportResolution);
+		exporter.setFormat(format);
 		exporter.setUseBilinearInterpolation(request.getUseBilinearInterpolation());
 		if(request.getTopLeft() != null && request.getBottomRight() != null) {
 			Box b = new Box(request.getTopLeft(), request.getBottomRight());
