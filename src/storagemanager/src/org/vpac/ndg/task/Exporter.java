@@ -389,8 +389,11 @@ public class Exporter extends Application {
 	}
 
 	protected String getOutputName() {
-		return String.format("%s_%s", dataset.getName().replace(' ', '_'),
-				dataset.getResolution());
+		String res = dataset.getResolution().toString();
+		if (getTargetResolution() != null) {
+			res = getTargetResolution().toString();
+		}
+		return String.format("%s_%s", dataset.getName().replace(' ', '_'), res);
 	}
 
 	/**
