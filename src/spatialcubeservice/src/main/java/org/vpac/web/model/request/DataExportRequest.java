@@ -41,6 +41,10 @@ public class DataExportRequest {
 	@Nullable
 	private String projection;
 	@Nullable
+	private String resolution;
+	@Nullable
+	private String format;
+	@Nullable
 	private Point<Double> topLeft;
 	@Nullable
 	private Point<Double> bottomRight;
@@ -113,4 +117,23 @@ public class DataExportRequest {
 	public void setBandId(List<String> bandId) {
 		this.bandId = bandId;
 	}
+
+	public String getResolution() {
+		return resolution;
+	}
+
+	public void setResolution(String resolution) {
+		this.resolution = resolution;
+	}
+
+	public String getFormat() {
+		return format;
+	}
+
+	public void setFormat(String format) {
+		this.format = format;
+	}
+	
+	
+	
 }

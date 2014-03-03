@@ -83,8 +83,10 @@ public class Exporter extends Application {
 	private Box internalExtents;
 	private String targetProjection;
 	private int targetEpsgId;
+	private CellSize targetResolution;
 	private TimeSliceDbReadWriteLock lock;
 	private Boolean useBilinearInterpolation;
+	private GdalFormat format;
 	
 	private Dataset dataset;
 	// It's OK to hold a direct reference to the time slices here, because this
@@ -104,6 +106,8 @@ public class Exporter extends Application {
 		timeSliceUtil = (TimeSliceUtil) appContext.getBean("timeSliceUtil");
 		tileManager = (TileManager) appContext.getBean("tileManager");
 		ndgConfigManager = (NdgConfigManager) appContext.getBean("ndgConfigManager");
+		targetResolution = null;
+		format = GdalFormat.NC;
 	}
 
 	@Override
@@ -385,8 +389,11 @@ public class Exporter extends Application {
 	}
 
 	protected String getOutputName() {
-		return String.format("%s_%s", dataset.getName().replace(' ', '_'),
-				dataset.getResolution());
+		String res = dataset.getResolution().toString();
+		if (getTargetResolution() != null) {
+			res = getTargetResolution().toString();
+		}
+		return String.format("%s_%s", dataset.getName().replace(' ', '_'), res);
 	}
 
 	/**
@@ -469,6 +476,10 @@ public class Exporter extends Application {
 		}
 		vrtWarpFile.setResolution(dataset.getResolution());
 		vrtWarpFile.setFormat(GdalFormat.VRT);
+		
+		if (getTargetProjection() != null) {
+			vrtWarpFile.setResolution(targetResolution);
+		}
 
 		Transformer initialTransform = new Transformer();
 		initialTransform.setSource(warpInputs);
@@ -490,19 +501,28 @@ public class Exporter extends Application {
 
 
 		//
-		// TASK 5: Translate temporary VRT back to netCDF. This is where the
+		// TASK 5: Translate temporary VRT to specified format. This is where the
 		// warp happens - despite not using the gdalwarp command!
 		//
 		Path path = getWorkingDirectory().resolve(
-				targetName + GdalFormat.NC.getExtension());
+				targetName + format.getExtension());
 		GraphicsFile exportedImage = new GraphicsFile(path);
 
 		// This must be in EXTERNAL projection
 		if (getTargetProjection() != null) {
 			exportedImage.setEpsgId(targetEpsgId);
 		}
-		exportedImage.setResolution(dataset.getResolution());
-		exportedImage.setFormat(GdalFormat.NC);
+		
+		//if the target resolution is set, use it. Otherwise set to the resolution of the dataset
+		//note that the resolution of the output data has already been determined by the prior
+		//Transformer task
+		if (targetResolution != null) {
+			exportedImage.setResolution(targetResolution);
+		} else {
+			exportedImage.setResolution(dataset.getResolution());
+		}
+		
+		exportedImage.setFormat(format);
 
 		Translator ncTranslator = new Translator();
 		ncTranslator.setSource(vrtWarpFile);
@@ -565,6 +585,14 @@ public class Exporter extends Application {
 		this.targetProjection = targetProjection;
 	}
 
+	public CellSize getTargetResolution() {
+		return targetResolution;
+	}
+
+	public void setTargetResolution(CellSize targetResolution) {
+		this.targetResolution = targetResolution;
+	}
+	
 	public List<String> getBandIds() {
 		return bandIds;
 	}
@@ -607,4 +635,13 @@ public class Exporter extends Application {
 		this.useBilinearInterpolation = useBilinearInterpolation;
 	}
 
+	public GdalFormat getFormat() {
+		return format;
+	}
+
+	public void setFormat(GdalFormat format) {
+		this.format = format;
+	}
+
+	
 }
