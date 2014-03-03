@@ -334,7 +334,7 @@ h1 span {
 }
 .preview-panel .thumbnails {
 	margin-left: 0;
-	max-width: 820px; /* Only 810 is needed, but add 10 for safety */
+	max-width: 1020px; /* Only 810 is needed, but add 10 for safety */
 }
 .thumbnails .preview {
 	margin: 2px;

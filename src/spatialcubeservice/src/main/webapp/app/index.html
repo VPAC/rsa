@@ -71,8 +71,6 @@
             <ul class="thumbnails">
               <li class="preview snapshot"><a class="thumbnail" ng-click="fetchPreview(true)">Snapshot</a></li>
               <li class="preview fulldownload" ng-class="{disabled:downloadButtonDisable}"><a class="thumbnail" ng-disabled="downloadButtonDisable" ng-click="fetchPreview(false)">Full Down<BR/><BR/><BR/><font size="18">{{progress | number:1}}</font>%</a></li>
-			</ul>
-            <ul class="thumbnails">
               <preview ng-repeat="result in getPreviewImages()">
             </ul>
           </div></pane>
