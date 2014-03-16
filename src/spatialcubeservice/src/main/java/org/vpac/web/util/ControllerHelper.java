@@ -27,6 +27,7 @@ import org.springframework.web.bind.WebDataBinder;
 import org.vpac.ndg.Utils;
 import org.vpac.ndg.common.Default;
 import org.vpac.ndg.common.datamodel.CellSize;
+import org.vpac.ndg.geometry.Point;
 
 public class ControllerHelper {
 	public final static String RESPONSE_ROOT = "Response";
@@ -42,6 +43,27 @@ public class ControllerHelper {
 
 		    public String getAsText() {
 		        return new SimpleDateFormat(Default.MILLISECOND_PATTERN).format((Date) getValue());
+		    }        
+
+		});
+	}
+	
+	public void BindPointFormatter(WebDataBinder binder) {
+		binder.registerCustomEditor(Point.class, new PropertyEditorSupport() {
+		    public void setAsText(String value) {
+		    	String[] xysplit = value.split(",");
+		    	
+		    	Point<Double> p = new Point<Double>(Double.parseDouble(xysplit[0]), Double.parseDouble(xysplit[1]));
+		    	
+	            setValue(p);
+		    }
+
+		    public String getAsText() {
+		    	Point ob = (Point)getValue();
+		    	String str = String.format("%s, %s", 
+						                    ob.getX().toString(), 
+						                    ob.getY().toString());
+		        return str;
 		    }        
 
 		});

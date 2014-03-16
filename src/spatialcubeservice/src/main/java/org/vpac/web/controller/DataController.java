@@ -138,6 +138,7 @@ public class DataController {
 	@InitBinder
 	public void binder(WebDataBinder binder) {
 		helper.BindDateTimeFormatter(binder);
+		helper.BindPointFormatter(binder);
 	}
 
 	@RequestMapping(value = "/Form", method = RequestMethod.GET)
