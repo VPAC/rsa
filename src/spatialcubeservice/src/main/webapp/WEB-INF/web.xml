@@ -10,6 +10,11 @@
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
+	<servlet>
+		<servlet-name>akka-initializer</servlet-name>
+		<servlet-class>org.vpac.actor.AkkaInitializer</servlet-class>
+		<load-on-startup>2</load-on-startup>
+	</servlet>
 	<servlet-mapping>
 		<servlet-name>mvc-dispatcher</servlet-name>
 		<url-pattern>/</url-pattern>

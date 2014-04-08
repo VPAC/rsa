@@ -19,6 +19,8 @@
 
 package org.vpac.ndg.geometry;
 
+import java.io.Serializable;
+
 
 /**
  * A simple bounding box defined by two points. This is only suitable when the
@@ -26,7 +28,7 @@ package org.vpac.ndg.geometry;
  * @author adfries
  * @author hsumanto
  */
-public class Box {
+public class Box implements Serializable {
 	private double xMin;
 	private double xMax;
 	private double yMax;
@@ -106,6 +108,29 @@ public class Box {
 			setYMax(other.getYMax());
 	}
 
+	/**
+	 * Minimally expands this bounding box to enclose another.
+	 * 
+	 * @param other
+	 *            The other bounding box that should be enclosed by this one.
+	 */
+	public void intersect(Box other) {
+		if (other.getXMin() > getXMin())
+			setXMin(other.getXMin());
+		if (other.getXMax() < getXMax())
+			setXMax(other.getXMax());
+		if (other.getYMin() > getYMin())
+			setYMin(other.getYMin());
+		if (other.getYMax() < getYMax())
+			setYMax(other.getYMax());
+
+		// Prevent box from turning inside-out (might have changed above)
+		if (getXMax() < getXMin())
+			setXMax(getXMin());
+		if (getYMax() < getYMin())
+			setYMax(getYMin());
+	}
+	
 	/**
 	 * Check if this box intersects the other box. To return true, the other box
 	 * must either:

@@ -7,6 +7,7 @@
 <form method="POST" action="/SpatialCubeService/Data/Import.xml">
 	TaskId : <input type="text" name="taskId"/> <BR />
 	BandId : <input type="text" name="bandId"/> <BR />
+	<input type="hidden" name="srcnodata" value="-1" />
 	<input type="submit"/>
 </form>
 </body>

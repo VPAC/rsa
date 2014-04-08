@@ -26,11 +26,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -51,6 +53,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+import org.vpac.actor.ActorCreator;
+import org.vpac.actor.Frontend;
 import org.vpac.ndg.CommandUtil;
 import org.vpac.ndg.FileUtils;
 import org.vpac.ndg.common.datamodel.CellSize;
@@ -62,6 +66,9 @@ import org.vpac.ndg.datamodel.RsaAggregationFactory;
 import org.vpac.ndg.exceptions.TaskException;
 import org.vpac.ndg.exceptions.TaskInitialisationException;
 import org.vpac.ndg.geometry.Box;
+import org.vpac.ndg.geometry.BoxInt;
+import org.vpac.ndg.geometry.Tile;
+import org.vpac.ndg.geometry.TileManager;
 import org.vpac.ndg.lock.ProcessUpdateTimer;
 import org.vpac.ndg.query.Query;
 import org.vpac.ndg.query.QueryConfigurationException;
@@ -103,6 +110,10 @@ import org.vpac.web.model.response.TaskCollectionResponse;
 import org.vpac.web.model.response.TaskResponse;
 import org.vpac.web.util.ControllerHelper;
 import org.vpac.web.util.Pager;
+import org.vpac.worker.Master;
+
+import com.typesafe.config.Config;
+import com.typesafe.config.ConfigFactory;
 
 import ucar.ma2.Array;
 import ucar.ma2.InvalidRangeException;
@@ -110,6 +121,9 @@ import ucar.nc2.NetcdfFileWriter;
 import ucar.nc2.NetcdfFileWriter.Version;
 import ucar.nc2.Variable;
 import ucar.nc2.dataset.NetcdfDataset;
+// akka
+import akka.actor.*;
+import akka.cluster.Cluster;
 
 @Controller
 @RequestMapping("/Data")
@@ -133,6 +147,8 @@ public class DataController {
 	DatasetProvider rsaDatasetProvider;
 	@Autowired
 	DatasetProvider previewDatasetProvider;
+	@Autowired
+	TileManager tileManager;
 
 	private Pager<JobProgress> pager = new Pager<JobProgress>();
 
@@ -579,6 +595,42 @@ public class DataController {
 
 		thread.start();
 		model.addAttribute(ControllerHelper.RESPONSE_ROOT, new QueryResponse(taskId));
+		return "Success";
+	}
+
+	@RequestMapping(value = "/DQuery", method = RequestMethod.GET)
+	public String distributedQuery() throws IllegalAccessException {
+		
+		String datasetId = "ff808181451b39fd01451b3c34280001";
+		List<TimeSlice> tsList = datasetDao.getTimeSlices(datasetId);
+		Dataset ds = datasetDao.retrieve(datasetId);
+		if(ds == null || tsList == null)
+			throw new IllegalAccessException("No dataset or timeslice");
+		
+		Box extent = timeSliceUtil.aggregateBounds(tsList);
+		List<Tile> tiles = tileManager.getTiles(extent, ds.getResolution());
+
+		String query = "<?xml version='1.0' encoding='UTF-8'?>" +
+		"<query xmlns='http://www.vpac.org/namespaces/rsaquery-0.2'>" +
+			"<input id='vic_0' href='rsa:vic/25m'/>" +
+			"<output id='output'>" +
+			"	<grid/>" +
+			"	<variable name='band' ref='#Pass_Through_0/output'/>" +
+			"</output>" +
+			"<filter id='Pass_Through_0' cls='org.vpac.ndg.query.PassThrough'>" +
+			"	<sampler name='input' ref='#vic_0/B10'/>" +
+			"</filter>" +
+		"</query>";
+		final Version ver = Version.netcdf4;
+		final String path = "";
+		
+		ActorRef frontend = ActorCreator.getFrontend();
+		for(Tile t : tiles) {
+			Box bound = tileManager.getNngGrid().getBounds(t.getIndex(), ds.getResolution());
+			bound.intersect(extent);
+			frontend.tell(new org.vpac.worker.Job.Work(UUID.randomUUID().toString(), query, path, ver, bound),  ActorRef.noSender());
+		}
+
 		return "Success";
 	}
 	
