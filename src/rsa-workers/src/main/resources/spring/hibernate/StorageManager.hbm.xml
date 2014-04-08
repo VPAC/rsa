@@ -1,0 +1,155 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="org.vpac.ndg.storage.model.Band" table="Band" lazy="true" >
+		<id name="id" type="string" column="UUID">
+			<generator class="uuid"/>
+		</id>
+		<property name="name" type="string" column="NAME" unique-key="multicolumn_unique_key_name"/>
+		<property name="type">
+			<type name="org.hibernate.type.EnumType">
+				<param name="enumClass">org.vpac.ndg.rasterdetails.RasterDetails</param>
+				<param name="identifierMethod">toInt</param>
+				<param name="valueOfMethod">fromInt</param>
+			</type>
+		</property>
+		<property name="nodata" type="string" column="NODATA"/>
+		<property name="metadata" type="boolean" column="ISMETADATA"/>    
+		<property name="continuous" type="boolean" column="ISCONTINUOUS"/>
+	</class>
+
+	<class name="org.vpac.ndg.storage.model.Dataset" table="Dataset" lazy="true">
+		<id name="id" type="string" column="UUID">
+			<generator class="uuid"/>
+		</id>
+		<property name="resolution" unique-key="multicolumn_unique_key_name">
+			<type name="org.hibernate.type.EnumType">
+				<param name="enumClass">org.vpac.ndg.common.datamodel.CellSize</param>
+				<param name="identifierMethod">toInt</param>
+				<param name="valueOfMethod">fromInt</param>
+			</type>
+		</property>
+		<property name="precision" type="long" column="PRECISION"/>
+		<property name="name" type="string" column="NAME" unique-key="multicolumn_unique_key_name"/>
+		<property name="created" type="timestamp" column="CREATE_DATE" index="dataset_created_index" />
+		<property name="modified" type="timestamp" column="MODIFIED_DATE"/>
+		<property name="abst" type="string" column="ABSTRACT"/>
+		<list name="bands" table="Band" cascade="all" lazy="true">
+			<key>
+				<column name="DATASET_ID" unique-key="multicolumn_unique_key_name"></column>
+			</key>
+			<list-index column="bandPosition"/>
+			<one-to-many class="org.vpac.ndg.storage.model.Band" />
+		</list>
+		<list name="slices" table="TimeSlice" cascade="all" lazy="true">
+			<key>
+				<column name="DATASET_ID" unique-key="multicolumn_unique_key_name" />
+			</key>
+			<list-index column="position"/>
+			<one-to-many class="org.vpac.ndg.storage.model.TimeSlice" />
+		</list>
+	</class>
+
+	<class name="org.vpac.ndg.storage.model.ActivityInfo" table="ActivityInfo"  lazy="false">
+		<id name="id" type="string" column="ID">
+			<generator class="uuid" />
+		</id>
+		<property name="logCommand" type="text" column="LOG_COMMAND" />
+		<property name="logMessage" type="text" column="LOG_MESSAGE" />
+		<property name="logTime" type="timestamp" column="LOG_TIME"/>
+		<property name="state">
+			<column name="STATE" /> 
+			<type name="org.vpac.ndg.GenericEnumUserType">
+				<param name="enumClass">org.vpac.ndg.common.datamodel.TaskState</param>
+				<param name="identifierMethod">toString</param>
+				<param name="valueOfMethod">valueOf</param>
+			</type>
+		</property>
+	</class>
+
+	<class name="org.vpac.ndg.storage.model.TimeSliceLock" table="TimeSliceLock"  lazy="true">
+		<id name="id" type="string" column="ID">
+			<generator class="uuid" />
+		</id>
+		<property name="processId" type="string" column="PROCESS_ID" />
+		<property name="operation" type="string" column="OPERATION" />
+		<property name="timesliceId" type="string" column="TIMESLICE_ID" />
+		<property name="user" type="string" column="USER_NAME" />
+		<property name="state">
+			<column name="STATE" /> 
+			<type name="org.vpac.ndg.GenericEnumUserType">
+				<param name="enumClass">org.vpac.ndg.common.datamodel.RunningTaskState</param>
+				<param name="identifierMethod">toString</param>
+				<param name="valueOfMethod">valueOf</param>
+			</type>
+		</property>
+	</class>
+
+	<class name="org.vpac.ndg.storage.model.Process" table="Process" lazy="false">
+		<id name="id" type="string" column="ID">
+			<generator class="uuid" />
+		</id>
+		<!-- <property name="latest" generated="insert" column="LATEST" /> -->
+		<timestamp name="latest" access="field" source="db" column="LATEST" />
+	</class>
+
+	<class name="org.vpac.ndg.storage.model.JobProgress" table="JobProgress"  lazy="false">
+		<id name="id" type="string" column="ID">
+			<generator class="uuid" />
+		</id>
+		<property name="numberOfSteps" type="integer" column="NUMSTEPS"  />
+		<property name="currentStep" type="integer" column="CURRENTSTEP" />
+		<property name="currentStepProgress" type="double" column="STEPPROGRESS" />
+		<property name="stepDescription" type="string" column="DESCRIPTION" />
+		<property name="jobDescription" type="text" column="APPLICATION" />
+		<property name="processingSource" type="string" column="SOURCE" />
+		<property name="name" type="string" column="NAME" />
+		<property name="state">
+			<column name="STATE" /> 
+			<type name="org.vpac.ndg.GenericEnumUserType">
+				<param name="enumClass">org.vpac.ndg.common.datamodel.TaskState</param>
+				<param name="identifierMethod">toString</param>
+				<param name="valueOfMethod">valueOf</param>
+			</type>
+		</property>
+		<property name="taskType">
+			<column name="TASKTYPE" /> 
+			<type name="org.vpac.ndg.GenericEnumUserType">
+				<param name="enumClass">org.vpac.ndg.common.datamodel.TaskType</param>
+				<param name="identifierMethod">toString</param>
+				<param name="valueOfMethod">valueOf</param>
+			</type>
+		</property>
+		<property name="errorMessage" type="string" column="ERRORMESSAGE" />
+	</class>
+
+	<class name="org.vpac.ndg.storage.model.TimeSlice" table="TimeSlice" discriminator-value="TimeSlice" lazy="true">
+		<id name="id" type="string" column="UUID">
+			<generator class="uuid"/>
+		</id>
+		<property name="dataAbstract" type="string" column="DATAABSTRACT"/>
+		<property name="relativeLocation" type="string" column="RELATIVELOCATION" />        	
+		<property name="vrtFile" type="string" column="VRT"/>
+		<property name="xmin" type="double" column="X_MIN" />
+		<property name="xmax" type="double" column="X_MAX" />
+		<property name="ymin" type="double" column="Y_MIN" />
+		<property name="ymax" type="double" column="Y_MAX" />
+		<property name="created" type="timestamp" column="CREATED" unique-key="multicolumn_unique_key_name"/>
+		<property name="lockCount" type="integer" column="LOCK_COUNT" />
+		<property name="lockMode" type="character" column="LOCK_MODE" />
+		<!-- No formal mapping to time slice lock table - the way the locks are
+		     acquired is not compatible with Hibernate's caching mechanism. -->
+	</class>
+
+	<class name="org.vpac.ndg.storage.model.Upload" table="upload" discriminator-value="upload">
+		<id name="fileId" type="string" column="fileId">
+			<generator class="uuid"/>
+		</id>
+
+		<property name="timeSliceId" type="string" column="timeSliceId"/>
+		<property name="created" type="timestamp" column="created"/>        
+	</class>
+</hibernate-mapping>

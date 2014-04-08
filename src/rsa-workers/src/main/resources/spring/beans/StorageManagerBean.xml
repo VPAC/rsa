@@ -1,0 +1,59 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+		http://www.springframework.org/schema/context
+		http://www.springframework.org/schema/context/spring-context-3.1.xsd
+		http://www.springframework.org/schema/aop
+		http://www.springframework.org/schema/aop/spring-aop-3.1.xsd">
+	<!-- Service object -->
+	<bean id="applicationContextProvider" class="org.vpac.ndg.ApplicationContextProvider"></bean>
+	<bean id="gdalInterface" class="org.vpac.ndg.GdalInterface" lazy-init="true"/>
+	<bean id="ogrInterface" class="org.vpac.ndg.OgrInterface" lazy-init="true"/>
+	<bean id="datasetDao" class="org.vpac.ndg.storage.dao.DatasetDaoImpl" lazy-init="true" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="uploadDao" class="org.vpac.ndg.storage.dao.UploadDaoImpl" lazy-init="true" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="timeSliceDao" class="org.vpac.ndg.storage.dao.TimeSliceDaoImpl" lazy-init="true" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="bandDao" class="org.vpac.ndg.storage.dao.BandDaoImpl" lazy-init="true" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="activityDao" class="org.vpac.ndg.storage.dao.ActivityDaoImpl" lazy-init="true" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="jobProgressDao" class="org.vpac.ndg.storage.dao.JobProgressDaoImpl" lazy-init="true" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="timeSliceLockDao" class="org.vpac.ndg.storage.dao.TimeSliceLockDaoImpl" lazy-init="true" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="processDao" class="org.vpac.ndg.storage.dao.ProcessDaoImpl" lazy-init="true">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="uploadUtil" class="org.vpac.ndg.storage.util.UploadUtil" lazy-init="true" >
+		<property name="ndgConfigManager" ref="ndgConfigManager" />
+	</bean>
+	<bean id="datasetUtil" class="org.vpac.ndg.storage.util.DatasetUtil" lazy-init="true" >
+		<property name="datasetDao" ref="datasetDao" />
+	</bean>
+	<bean id="timeSliceUtil" class="org.vpac.ndg.storage.util.TimeSliceUtil" lazy-init="true" >
+		<property name="timeSliceDao" ref="timeSliceDao" />
+		<property name="datasetUtil" ref="datasetUtil" />
+	</bean>
+	<bean id="bandUtil" class="org.vpac.ndg.storage.util.BandUtil" lazy-init="true" >
+		<property name="datasetUtil" ref="datasetUtil" />
+		<property name="ndgConfigManager" ref="ndgConfigManager" />
+	</bean>
+	<bean id="ndgConfigManager" class="org.vpac.ndg.configuration.NdgConfigManager" init-method="configure" lazy-init="true">
+	</bean>
+	<bean id="tileManager" class="org.vpac.ndg.geometry.TileManager" lazy-init="true">
+	</bean>
+	<bean id="rsaDatasetReader" class="org.vpac.ndg.datamodel.RsaDatasetReader" lazy-init="true" />
+	<bean id="activityLogger" class="org.vpac.ndg.storagemanager.ActivityLogger" lazy-init="true" />
+</beans>
