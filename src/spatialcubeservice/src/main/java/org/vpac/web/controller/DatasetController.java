@@ -105,7 +105,7 @@ public class DatasetController {
 		log.debug("Abstract: {}", dr.getDataAbstract());
 
 		long precision = Utils.parseTemporalPrecision(dr.getPrecision());
-		if(dr.getId().isEmpty()) {
+		if(dr.getId() == null && dr.getId().isEmpty()) {
 			Dataset newDataset = new Dataset(dr.getName(), dr.getDataAbstract(), dr.getResolution(), precision);
 			datasetDao.create(newDataset);
 			model.addAttribute(ControllerHelper.RESPONSE_ROOT, new DatasetResponse(newDataset));
